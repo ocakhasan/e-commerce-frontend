@@ -4,3 +4,71 @@
     box-sizing: border-box;
 }
 
+.container{
+    max-width: 60em;
+    margin:0 auto;
+}
+
+.nav{
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    max-width: 100%;
+    border: 1px solid black;
+    padding: 1rem 0;
+    background-color: aliceblue;
+    
+}
+
+.nav__ul{
+    display: flex;
+    list-style: none;
+}
+
+.nav__link>a{
+    margin: 0 2rem;
+    color:inherit;
+    text-decoration: none;
+}
+
+.form{
+    padding:1em;
+}
+
+.form-part{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:0.5em 0;
+}
+
+.form-part>input,textarea{
+    padding: 0.25rem;
+    width: 50%;
+}
+
+.form-part>label{
+    font-weight: bold;
+}
+
+.form>p{
+    font-size:1.25rem;
+}
+
+.btn{
+    padding:0.25rem 1rem;
+    font-weight: bold;
+    background-color: transparent;
+    border:1px solid black;
+}
+
+.btn:hover{
+    cursor: pointer;
+    background-color: purple;
+    color:white;
+}
+
+.form-error{
+    color:red;
+}
