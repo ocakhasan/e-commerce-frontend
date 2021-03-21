@@ -13,23 +13,19 @@ function App() {
             <div className="container">
                 <Switch>
                     <Route path="/login">
-                        <Navbar />
                         <Form />
                     </Route>
 
                     <Route path="/signup">
-                        <Navbar />
                         <SignUpForm />
                     </Route>
 
 
                     <Route path="/about">
-                        <Navbar />
                         <Card />
                     </Route>
 
                     <Route path="/">
-                        <Navbar />
                         <Card />
                     </Route>
                 </Switch>

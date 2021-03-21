@@ -1,11 +1,11 @@
 import React from "react";
+import Navbar from "./Navbar";
 
 const Card = () => {
     return (
         <div>
+            <Navbar />
             <p className="card-p">Hello</p>
-            <p className="card-p">My name is Hasan Ocak</p>
-            <p className="card-p">I am handsome</p>
         </div>
     )
 }
