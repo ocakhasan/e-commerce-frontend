@@ -1,28 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Syne+Mono&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.container{
-    max-width: 60em;
-    margin:0 auto;
+body {
+    background-color: azure;
+
 }
 
-.nav{
-    display: flex;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    max-width: 100%;
-    border: 1px solid black;
-    padding: 1rem 0;
-    background-color: aliceblue;
+.container{
+    font-family: 'Syne Mono', monospace;
+    margin:0 1rem;
 }
 
 .nav__ul{
+    font-family: 'Noto Sans JP', sans-serif;
     display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+    font-weight: bold;
+    max-width: 100%;
+    padding: 1rem 0;
     list-style: none;
+    background-color: bisque;
+}
+
+
+.right-links{
+    display:flex;
+    flex-direction: row;
 }
 
 .nav__link>a{
@@ -31,8 +40,21 @@
     text-decoration: none;
 }
 
+.form-div{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    width: 70%;
+    margin:5rem auto;
+}
+
+.login-card{
+    flex:1;
+}
+
+
 .form{
-    padding:1em;
+    flex:1;
 }
 
 .form-part{
@@ -44,8 +66,6 @@
 
 .form-part>input,textarea{
     padding: 0.25rem;
-    width: 50%;
-    max-width: 100%;
 }
 
 .form-part>label{
@@ -73,7 +93,15 @@
     color:red;
 }
 
+@media only screen and (max-width:800px){
+    .form-div{
+        flex-direction: column;
+    }
+
+}
+
 @media only screen and (max-width:600px){
+
 
     .nav{
         flex-direction: column;
@@ -96,9 +124,3 @@
     }
 }
 
-
-@media only screen and (max-width:60em){
-    .container{
-        margin: 1rem;
-    }
-}
