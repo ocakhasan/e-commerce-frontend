@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory} from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Navbar from './Navbar'
@@ -7,6 +7,8 @@ import axios from 'axios'
 
 
 const SignupForm = () => {
+
+    const history = useHistory()
 
 
 
@@ -33,6 +35,7 @@ const SignupForm = () => {
                     console.log(response)
                     if (response.data.status) {
                         console.log('success')
+                        history.push('/')
                     } else {
                         console.log("failure")
                         console.log(response.data.message)

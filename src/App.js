@@ -1,6 +1,6 @@
 import React from 'react'
 import Form from './components/LoginForm'
-import Card from './components/Card'
+import Home from './components/Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
@@ -21,11 +21,11 @@ function App() {
 
 
                     <Route path="/about">
-                        <Card />
+                        <Home />
                     </Route>
 
                     <Route path="/">
-                        <Card />
+                        <Home />
                     </Route>
                 </Switch>
             </div>
