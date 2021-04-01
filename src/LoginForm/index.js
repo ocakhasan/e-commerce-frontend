@@ -1,12 +1,16 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Navbar from "../Navbar";
+import axios from 'axios'
+import './LoginForm.css'
 
 
 
 const LoginForm = () => {
+
+    const history = useHistory();
 
     const formik = useFormik({
         initialValues: {
@@ -19,7 +23,18 @@ const LoginForm = () => {
         }),
 
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            axios
+                .post('/api/login', values)
+                .then((response) => {
+                    console.log(response)
+                    if (response.data.status) {
+                        console.log('success')
+                        history.push('/')
+                    } else {
+                        console.log("failure")
+                        console.log(response.data.message)
+                    }
+                }) 
         },
         validateOnChange: false,
         validateOnBlur: false
@@ -29,10 +44,12 @@ const LoginForm = () => {
         <div>
 
             <Navbar />
+
             <div className="form-div">
                 <div className="login-card">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                    Nulla atque temporibus fugiat at. Unde cumque dicta quis, est doloribus, 
+                    <h2>Login to Shop</h2>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Nulla atque temporibus fugiat at. Unde cumque dicta quis, est doloribus,
                     provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
                 </div>
                 <form onSubmit={formik.handleSubmit} className="form">
@@ -60,6 +77,7 @@ const LoginForm = () => {
                 </form>
             </div>
         </div>
+
 
 
     )

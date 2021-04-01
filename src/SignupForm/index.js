@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Navbar from '../Navbar'
 import axios from 'axios'
+import './SignupForm.css'
 
 
 const SignupForm = () => {
@@ -55,8 +56,8 @@ const SignupForm = () => {
             <Navbar />
 
             <div className="form-div">
-
                 <div className="login-card">
+                    <h2>Signup to Shop</h2>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Nulla atque temporibus fugiat at. Unde cumque dicta quis, est doloribus,
                     provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
