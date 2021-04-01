@@ -1,5 +1,5 @@
 import React from 'react'
-import Form from './LoginForm'
+import LoginForm from './LoginForm'
 import Home from './Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
@@ -12,7 +12,7 @@ function App() {
             <div className="container">
                 <Switch>
                     <Route path="/login">
-                        <Form />
+                        <LoginForm />
                     </Route>
 
                     <Route path="/signup">

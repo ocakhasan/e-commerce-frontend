@@ -6,7 +6,7 @@ import Navbar from "../Navbar";
 
 
 
-const Form = () => {
+const LoginForm = () => {
 
     const formik = useFormik({
         initialValues: {
@@ -65,4 +65,4 @@ const Form = () => {
     )
 }
 
-export default Form
+export default LoginForm
