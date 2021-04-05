@@ -4,6 +4,7 @@ import Home from './components/Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
+import ProductDetail from './components/ProductDetail'
 
 
 function App() {
@@ -22,6 +23,10 @@ function App() {
 
                     <Route path="/about">
                         <Home />
+                    </Route>
+
+                    <Route path="/:id">
+                        <ProductDetail />
                     </Route>
 
                     <Route path="/">
