@@ -2,9 +2,9 @@ import React from "react";
 import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Navbar from "../Navbar";
+import Navbar from "./Navbar";
 import axios from 'axios'
-import './LoginForm.css'
+import './styles/LoginForm.css'
 
 
 

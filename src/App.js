@@ -1,9 +1,9 @@
 import React from 'react'
-import LoginForm from './LoginForm'
-import Home from './Home'
+import LoginForm from './components/LoginForm'
+import Home from './components/Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
-import SignUpForm from "./SignupForm";
+import SignUpForm from "./components/SignupForm";
 
 
 function App() {
