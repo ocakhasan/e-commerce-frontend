@@ -28,13 +28,6 @@ const Home = () => {
                 <img src={process.env.PUBLIC_URL + '/shop.jpg'} className="home-img"></img>
             </div>
 
-            
-
-            <div className="products">
-                {data && data.map(product => (
-                    <Product data={product} />
-                ))}
-            </div>
         </div>
     )
 }

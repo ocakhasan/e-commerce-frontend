@@ -6,13 +6,15 @@ import Navbar from './Navbar'
 import ReactStars from "react-rating-stars-component";
 
 const ProductDetail = () => {
-    const id = useParams()
+    const params = useParams()
     const [data, setData] = useState()
     const [notification, setNotification] = useState('')
 
     useEffect(() => {
+
+        console.log(params.id)
         productService
-            .getProduct(id)
+            .getProduct(params.id)
             .then(response => {
                 console.log(response.message)
                 setData(response.message)
@@ -55,6 +57,8 @@ const ProductDetail = () => {
                                     size={24}
                                     activeColor="#ffd700"
                                 />
+                                
+
                                 <small>200 değerlendirme</small>
                             </div>
                         </div>
