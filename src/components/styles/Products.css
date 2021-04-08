@@ -4,7 +4,7 @@
     align-items: center;
 }   
 
-.container{
+.product_container{
     display:flex;
     flex-direction: column;
     width:100%;
@@ -15,69 +15,77 @@
 }
 
 .main_content{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 70% ;
-    height: 90%;
-    margin:70px auto;
-    padding: 50px 0 0;
-    box-sizing: border-box;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap:1rem;
 }
 
 .header{
-    position:absolute;
-    left: 0;
-    top: 0;
     font-size: 5vw;
 }
 
 .card{
-    width: 200px;
-    border-radius: 15px;
     display:flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    position: relative;
-    transform: scale(.8);
-    transition: all .3s ease-in-out;
+
     margin-bottom: 0px;
+    padding:1rem;
+    height: 100%;
+
+    border-radius: 15px;
+    border:1px solid black;
 }
 
-.card_image{
-    margin-top: -5vw;
-    width:200px ;
+
+
+.card_image>img{
+    width:100%;
 }
 
 .card_header{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px ;
-    margin-bottom: 50px;
     color:blueviolet;
-    font-size:18px;
+    font-size:16px;
 }
 
 .card_detail{
+    margin-top: 1rem;
     display: flex;
     justify-content: center;
+    gap:0.2rem;
     align-items: center;
     flex-direction: column;
 }
 
 .card_price{
-    font-size: 25px;
+    font-size: 1.5rem;
     color:chocolate;
+    font-weight: bold;
 }
 
 .card:hover{
-    background-color: #d9d9d9;
-    transform:scale(0.9);
+    -webkit-box-shadow: 5px 5px 15px 5px #000000; 
+    box-shadow: 5px 5px 15px 5px #000000;
     cursor:pointer;
+}
+
+
+
+.card_button{
+    background-color: #ff6000;
+    color:white;
+    border:1px solid #ff6000;
+    padding:0.3rem 1.5rem;
+    border-radius: 5px;
+    margin-top: 0.3rem;
+}
+
+.card_button:hover{
+    background-color: #e25a05;
+    cursor: pointer;
+}
+
+@media only screen and (max-width:800px){
+    .main_content{
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
