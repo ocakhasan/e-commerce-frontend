@@ -4,9 +4,9 @@ import Home from './components/Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
-import data from "./components/product_data"
+import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
-
+import data from './components/product_data'
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
                     </Route>
 
                     <Route path="/product/:id">
-                        <LoginForm />
+                        <ProductDetail />
                     </Route>
 
                     <Route path="/products">

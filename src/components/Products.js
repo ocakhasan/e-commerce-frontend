@@ -4,6 +4,7 @@ import "./styles/Products.css"
 
 const Products = ({data}) => {
     console.log("in products")
+    console.log("data", data)
     return (
         <div className="product_container">
             <MainContent data= {data}/>     

@@ -1,12 +1,13 @@
-import React from "react";
+import axios from "axios";
+import React, {useState, useEffect} from "react";
 import Navbar from "./Navbar";
 import Products from "./Products"
 import './styles/home.css'
-import data from "./product_data"
-
+import data from './product_data'
 
 const Home = () => {
-    console.log("in home")
+
+    
     return (
         <div>
             <Navbar />

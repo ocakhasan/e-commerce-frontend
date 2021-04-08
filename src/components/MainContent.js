@@ -1,16 +1,16 @@
 import React from "react";
 import "./styles/Products.css"
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
 
 
 const MainContent = ({ data }) => {
     console.log("in main content")
 
-    const listitems = data.map((item) =>
-    
+    const listitems = data.map((item) => (
 
-        <Link to="/login" style={{ textDecoration: 'none' }}>
-            <div className="card" key={item._id}>
+        <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }}>
+            < div className="card" key={item._id} >
                 <div className="card_header">
                     <h2>
                         {item.name}
@@ -28,11 +28,11 @@ const MainContent = ({ data }) => {
                 </div>
 
 
-            </div>
+            </div >
         </Link>
+    ));
 
-
-    );
+    console.log("li", listitems)
     return (
         <div>
             <h1 className="header">Products</h1>
