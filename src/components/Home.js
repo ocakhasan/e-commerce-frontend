@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, {useState, useEffect} from "react";
-import Navbar from "./Navbar";
 import Products from "./Products"
 import './styles/home.css'
 import data from './product_data'
@@ -10,7 +9,6 @@ const Home = () => {
     
     return (
         <div>
-            <Navbar />
             <div className="home">
                 <div className="home-header">
                     <h1>Shop from the Best</h1>

@@ -24,8 +24,6 @@ const ProductDetail = () => {
     }, [])
     if (data) {
         return (
-            <div >
-                <Navbar />
                 <div className="product_detail">
                     <p>{notification}</p>
                     <div className="detail_image">
@@ -72,7 +70,6 @@ const ProductDetail = () => {
 
                 </div>
 
-            </div>
         )
 
     } else {

@@ -39,10 +39,7 @@ const MainContent = ({ data }) => {
             <div className="main_content">
                 {listitems}
             </div>
-
         </div>
-
-
     )
 }
 

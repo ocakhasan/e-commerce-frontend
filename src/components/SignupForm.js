@@ -2,7 +2,6 @@ import React from 'react'
 import { Link, useHistory} from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Navbar from './Navbar'
 import axios from 'axios'
 import './styles/SignupForm.css'
 
@@ -53,7 +52,6 @@ const SignupForm = () => {
     return (
         <div>
 
-            <Navbar />
 
             <div className="form-div">
                 <div className="login-card">
