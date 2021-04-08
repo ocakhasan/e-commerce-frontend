@@ -1,8 +1,12 @@
 import React from "react";
 import Navbar from "./Navbar";
+import Products from "./Products"
 import './styles/home.css'
+import data from "./product_data"
+
 
 const Home = () => {
+    console.log("in home")
     return (
         <div>
             <Navbar />
@@ -15,7 +19,10 @@ const Home = () => {
                 </div>
                 <img src={process.env.PUBLIC_URL + '/shop.jpg'} className="home-img"></img>
             </div>
+            <Products data = {data}/>
         </div>
+
+        
     )
 }
 

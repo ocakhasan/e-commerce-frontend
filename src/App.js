@@ -4,7 +4,7 @@ import Home from './components/Home'
 import { Route, Switch } from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
-
+import Products from "./components/Products"
 
 function App() {
     return (
@@ -26,6 +26,10 @@ function App() {
 
                     <Route path="/">
                         <Home />
+                    </Route>
+
+                    <Route path="/products">
+                        <Products/>
                     </Route>
                 </Switch>
             </div>
