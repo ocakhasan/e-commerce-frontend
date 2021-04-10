@@ -8,6 +8,9 @@ import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
 import data from './components/product_data'
 import Navbar from './components/Navbar'
+import Dashboard from './components/Dashboard'
+
+
 function App() {
 
 
@@ -25,8 +28,8 @@ function App() {
                     </Route>
 
 
-                    <Route path="/about">
-                        <Home />
+                    <Route path="/dashboard">
+                        <Dashboard />
                     </Route>
 
                     <Route path="/product/:id">
