@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, {useState, useEffect} from "react";
 import Products from "./Products"
 import './styles/home.css'
-import data from './product_data'
 
 const Home = () => {
 
@@ -18,7 +16,7 @@ const Home = () => {
                 </div>
                 <img src={process.env.PUBLIC_URL + '/shop.jpg'} className="home-img"></img>
             </div>
-            <Products data = {data}/>
+            <Products />
         </div>
 
         

@@ -16,8 +16,8 @@ const ProductDetail = () => {
         productService
             .getProduct(params.id)
             .then(response => {
-                console.log(response.message)
-                setData(response.message)
+                console.log(response)
+                setData(response.product)
             })
             .catch(_error => setNotification("product idoes not exist"))
 
@@ -27,12 +27,12 @@ const ProductDetail = () => {
                 <div className="product_detail">
                     <p>{notification}</p>
                     <div className="detail_image">
-                        <img className="image" src={data.image} />
+                        <img className="image" src={process.env.PUBLIC_URL + "/glass.jpg"} />
                     </div>
                     <div className="details">
                         <div className="details_header">
-                            <p className="product_name">{data.name}</p>
-                            <small className="product_brand">{data.brand}</small>
+                            <p className="product_name">{data.productName}</p>
+                            <small className="product_brand">BRAND NAME</small>
 
                         </div>
                         <div className="details_price">
@@ -43,13 +43,13 @@ const ProductDetail = () => {
                                 </div>
                                 <div className="prices">
                                     <p className="old_price">3000</p>
-                                    <p className="new_price">{data.price} TL</p>
+                                    <p className="new_price">{data.unitPrice} TL</p>
                                 </div>
 
                             </div>
                             <div className="product_rating">
                                 <ReactStars
-                                    value={data.rating}
+                                    value={data.rate}
                                     count={5}
                                     onChange={() => console.log("kasjfgjsa")}
                                     size={24}

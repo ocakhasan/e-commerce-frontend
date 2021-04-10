@@ -6,7 +6,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
 import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
-import data from './components/product_data'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
 
@@ -37,7 +36,7 @@ function App() {
                     </Route>
 
                     <Route path="/products">
-                        <Products data={data} />
+                        <Products />
                     </Route>
 
                     <Route path="/">
