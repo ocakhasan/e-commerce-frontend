@@ -4,6 +4,7 @@
     align-items: center;
     margin-top:5rem;
     justify-content: space-evenly;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .home-img{
@@ -15,7 +16,7 @@
 .home-header{
     width: 50%;
     justify-content: center;
-    color:#9a4fb1;
+    
 }
 
 .home-header>h1,h2{
@@ -26,15 +27,15 @@
     padding:0.5rem 3rem;
     margin:1rem 0;
     background-color: transparent;
-    color:#9a4fb1;
-    border:1px solid #9a4fb1;
+    
+    border:1px solid black;
     font-weight: bold;
     font-size:1.3rem;
-    font-family: 'Syne Mono', monospace;
+    font-family: inherit;
 }
 
 .home-button:hover{
-    background-color: #9a4fb1;
+    background-color: black;
     color:white;
     cursor: pointer;
 }

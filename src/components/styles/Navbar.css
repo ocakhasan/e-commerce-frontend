@@ -1,5 +1,5 @@
 .nav__ul{
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: space-between;
     font-size: 1.2rem;
@@ -7,8 +7,10 @@
     max-width: 100%;
     padding: 1rem 0;
     list-style: none;
-    background-color: #9a4fb1;
-    color:white;
+    
+    color:black;
+    background-color: rgb(235, 223, 223);
+    border-bottom: 1px solid black;
 }
 
 
@@ -21,6 +23,10 @@
     margin: 0 2rem;
     color:inherit;
     text-decoration: none;
+}
+
+.nav__link>a:hover{
+    border-bottom: 2px solid black;
 }
 
 
