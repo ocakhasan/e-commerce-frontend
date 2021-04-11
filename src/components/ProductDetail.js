@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import productService from '../services/productService'
 import './styles/productDetail.css'
-import Navbar from './Navbar'
 import ReactStars from "react-rating-stars-component";
 
 const ProductDetail = () => {
@@ -21,13 +20,15 @@ const ProductDetail = () => {
             })
             .catch(_error => setNotification("product idoes not exist"))
 
-    }, [])
+    }, [params.id])
+
+    
     if (data) {
         return (
                 <div className="product_detail">
                     <p>{notification}</p>
                     <div className="detail_image">
-                        <img className="image" src={process.env.PUBLIC_URL + "/glass.jpg"} />
+                        <img alt="product" className="image" src={process.env.PUBLIC_URL + "/glass.jpg"} />
                     </div>
                     <div className="details">
                         <div className="details_header">

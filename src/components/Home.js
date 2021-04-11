@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import Products from "./Products"
 import './styles/home.css'
 
@@ -14,7 +14,7 @@ const Home = () => {
                     <button className="home-button">Explore</button>
 
                 </div>
-                <img src={process.env.PUBLIC_URL + '/shop.jpg'} className="home-img"></img>
+                <img src={process.env.PUBLIC_URL + '/shop.jpg'} alt="product" className="home-img"></img>
             </div>
             <Products />
         </div>

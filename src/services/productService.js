@@ -20,8 +20,9 @@ const addProduct = async values => {
 
 const deleteProduct = async id => {
     const path = `${baseUrl}/${id}`
-    const response = await axios.delete(path, {id})
+    const response = await axios.delete(path, { id })
     return response.data
 }
 
-export default { getAllProduct, getProduct , addProduct, deleteProduct }
+const productService = { getAllProduct, getProduct, addProduct, deleteProduct }
+export default productService

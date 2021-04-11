@@ -23,7 +23,7 @@ const MainContent = () => {
         <div>
             <h1 className="header">Products</h1>
             <div className="main_content">
-                {data.map((item) => (
+                {data?.map((item) => (
 
                     <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }}>
                         < div className="card" key={item._id} >
@@ -33,7 +33,7 @@ const MainContent = () => {
                                 </h2>
                             </div>
                             <div className="card_image">
-                                <img src={process.env.PUBLIC_URL + "/glass.jpg"} />
+                                <img src={process.env.PUBLIC_URL + "/glass.jpg"} alt="product"/>
                             </div>
                             <div className="card_detail">
 
