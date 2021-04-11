@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
 import { Route, Switch } from 'react-router'
@@ -8,18 +8,55 @@ import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
+import loginService from './services/loginService'
 
 
 function App() {
+
+    const [user, setUser] = useState(null)
+
+    
+
+    useEffect(() => {
+        const loggedUserJSON= window.localStorage.getItem('logged')
+        if (loggedUserJSON){
+            const user = JSON.parse(loggedUserJSON)
+            setUser(user)
+            
+        }
+    }, [])
+
+    const handleLogin = async (userObject) => {
+        try{
+            console.log(userObject)
+            const response = await loginService.login(userObject)
+            console.log(response)
+            window.localStorage.setItem(
+                'logged', JSON.stringify(response.user)
+            )
+            setUser(response.user)
+            console.log("I am here")
+            return response.status
+            
+        } catch(exception) {
+            console.log("ex", exception) 
+        }
+    }
+
+    const handleLogout = () => {
+        window.localStorage.removeItem('logged')
+        setUser(null)
+    }
+
 
 
     return (
         <Router>
             <div className="container">
-                <Navbar />
+                <Navbar user={user} handleLogout={handleLogout}/>
                 <Switch>
                     <Route path="/login">
-                        < LoginForm />
+                        < LoginForm handleLogin={handleLogin}/>
                     </Route>
 
                     <Route path="/signup">

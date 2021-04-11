@@ -19,6 +19,27 @@
     flex-direction: row;
 }
 
+.nav__links{
+    display:flex;
+    flex-direction: row;
+}
+
+.nav_button{
+    background-color: transparent;
+    padding:0rem 2rem;
+    
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    border:none;
+    
+}
+
+.nav_button:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .nav__link>a{
     margin: 0 2rem;
     color:inherit;

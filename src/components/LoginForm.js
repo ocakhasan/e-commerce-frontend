@@ -1,39 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios'
 import './styles/LoginForm.css'
 
 
 
-const LoginForm = () => {
+const LoginForm = ({handleLogin}) => {
 
     const history = useHistory();
+    const [notification, setNotification] = useState('')
 
     const formik = useFormik({
         initialValues: {
-            email: '',
+            userEmail: '',
             password: '',
         },
         validationSchema: Yup.object({
-            email: Yup.string().email('Invalid email address').required('Email is required'),
+            userEmail: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().required('Password is required')
         }),
 
-        onSubmit: values => {
-            axios
-                .post('/api/login', values)
-                .then((response) => {
-                    console.log(response)
-                    if (response.data.status) {
-                        console.log('success')
-                        history.push('/')
-                    } else {
-                        console.log("failure")
-                        console.log(response.data.message)
-                    }
-                }) 
+        onSubmit: async values => {
+            setNotification('')
+            console.log(values)
+            const result = await handleLogin(values)
+            console.log("result ", result)
+            if (result){
+                history.push('/')
+            } else {
+                setNotification('Wrong Credentials')
+            }
+            
         },
         validateOnChange: false,
         validateOnBlur: false
@@ -42,7 +40,7 @@ const LoginForm = () => {
     return (
         <div>
 
-
+            
             <div className="form-div">
                 <div className="login-card">
                     <h2>Login to Shop</h2>
@@ -53,11 +51,12 @@ const LoginForm = () => {
                 <form onSubmit={formik.handleSubmit} className="form">
                     <div className="form-part">
                         <label className="clr-purple">Email</label>
-                        <input type="email" name="email" {...formik.getFieldProps('email')}
+                        <input type="email" name="email" {...formik.getFieldProps('userEmail')}
                         />
                     </div>
-                    {formik.touched.email && formik.errors.email ? (
-                        <div className="form-error">{formik.errors.email}</div>
+                    
+                    {formik.touched.userEmail && formik.errors.userEmail ? (
+                        <div className="form-error">{formik.errors.userEmail}</div>
                     ) : null}
 
                     <div className="form-part">
@@ -68,12 +67,14 @@ const LoginForm = () => {
                         <div className="form-error">{formik.errors.password}</div>
                     ) : null}
 
-                    <button type="submit" className="btn clr-purple" disabled={formik.isSubmitting}>
+                    <button type="submit" className="btn clr-purple">
                         Login
                     </button>
                     <p>If you do not have an account, you can <Link to="/signup">sign-up</Link> from here</p>
+                
                 </form>
             </div>
+            {notification}
         </div>
 
 
