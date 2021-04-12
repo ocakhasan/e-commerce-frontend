@@ -6,14 +6,8 @@ import productService from '../services/productService'
 //what?
 //product page main content that lists products to the user
 
-<<<<<<< HEAD
 
 const MainContent = () => {
-=======
-//why? 
-//to make product page modular.
-const MainContent = ({data}) => {
->>>>>>> 0b9bdfef45fac11f1ea595c3f34e73bd5bc1e11b
     console.log("in main content")
     const [data, setData] = useState([])
 
