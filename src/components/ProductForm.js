@@ -28,7 +28,7 @@ const ProductForm = ({addProduct}) => {
 
 
 
-        <form onSubmit={formik.handleSubmit} >
+        <form onSubmit={formik.handleSubmit} className="dashboard_form">
             <div className="form-part">
 
                 <input type="text" placeholder="Product Name"
