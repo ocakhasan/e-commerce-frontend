@@ -14,17 +14,17 @@ const SignupForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            email: '',
+            username: '',
+            userEmail: '',
             password: '',
             passwordValidation: ''
         },
         validationSchema: Yup.object({
-            name: Yup.string().required('Name is required'),
-            email: Yup.string().email('Invalid email address').required('Email is required'),
+            username: Yup.string().required('Name is required'),
+            userEmail: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().required('Password is required'),
             passwordValidation: Yup.string()
-                .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                .oneOf([Yup.ref('password') ,null], 'Passwords must match')
         }),
 
         onSubmit: values => {
@@ -64,20 +64,20 @@ const SignupForm = () => {
                 <form onSubmit={formik.handleSubmit} className="form">
                     <div className="form-part">
                         <label className="clr-purple">Name</label>
-                        <input type="text" {...formik.getFieldProps('name')} />
+                        <input type="text" {...formik.getFieldProps('username')} />
                     </div>
 
-                    {formik.touched.name && formik.errors.name ? (
-                        <div className="form-error">{formik.errors.name}</div>
+                    {formik.touched.username && formik.errors.username ? (
+                        <div className="form-error">{formik.errors.username}</div>
                     ) : null}
 
                     <div className="form-part">
                         <label className="clr-purple">Email</label>
-                        <input type="email" name="email" {...formik.getFieldProps('email')} />
+                        <input type="email" name="email" {...formik.getFieldProps('userEmail')} />
                     </div>
 
-                    {formik.touched.email && formik.errors.email ? (
-                        <div className="form-error">{formik.errors.email}</div>
+                    {formik.touched.userEmail && formik.errors.userEmail ? (
+                        <div className="form-error">{formik.errors.userEmail}</div>
                     ) : null}
 
                     <div className="form-part">
