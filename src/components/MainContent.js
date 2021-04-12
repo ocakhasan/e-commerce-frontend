@@ -1,7 +1,11 @@
 import React from "react";
 import "./styles/Products.css"
 
+//what?
+//product page main content that lists products to the user
 
+//why? 
+//to make product page modular.
 const MainContent = ({data}) => {
     console.log("in main content")
 
