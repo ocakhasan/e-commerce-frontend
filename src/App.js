@@ -9,6 +9,7 @@ import Products from './components/Products'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
 import loginService from './services/loginService'
+import UpdateForm from './components/Update'
 
 
 function App() {
@@ -70,6 +71,10 @@ function App() {
 
                     <Route path="/product/:id">
                         <ProductDetail />
+                    </Route>
+
+                    <Route path="/update/product/:id">
+                        <UpdateForm />
                     </Route>
 
                     <Route path="/products">

@@ -27,7 +27,7 @@ const MainContent = () => {
             <div className="main_content">
                 {data?.map((item) => (
 
-                    <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }}>
+                    <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }} key={item._id}>
                         < div className="card" key={item._id} >
                             <div className="card_header">
                                 <h2>
