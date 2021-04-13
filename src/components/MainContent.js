@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./styles/Products.css"
 import { Link } from 'react-router-dom'
 import productService from '../services/productService'
@@ -8,24 +8,69 @@ import productService from '../services/productService'
 
 
 const MainContent = () => {
-    console.log("in main content")
     const [data, setData] = useState([])
+    const [searchTerm,setSearchTerm] = useState("")
+    const [searchResults,setSearchResults] =useState([])
+    const inputEl = useRef("")
+    //console.log(data)
+
 
     useEffect(() => {
         productService
             .getAllProduct()
             .then(response => {
-                console.log(response)
+                //console.log(response)
                 setData(response.products)
             })
 
     }, [])
 
+    const searchHandler = (search_input) => {
+        setSearchTerm(search_input)
+        if(search_input !== ""){
+            const newProductList = data.filter((product)=>{
+                return Object.values(product)
+                .join(" ")
+                .toLowerCase()
+                .includes(search_input.toLowerCase())
+            })
+            console.log(newProductList)
+            setSearchResults(newProductList)
+            
+        }
+        else{
+            setSearchResults(data)
+        }
+    };
+
+    const getSearchTerm =() =>{
+        searchHandler(inputEl.current.value)
+    };
+
     return (
         <div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <h1 className="header">Products</h1>
+
+            <div className="search_bar">
+                <div className="icon_input">
+                    <input 
+                    ref={inputEl}
+                    type="text" 
+                    placeholder = "Search Products" 
+                    className="search_input" value={searchTerm} 
+                    onChange={getSearchTerm}
+                    />
+                    
+                    <button className="search_button" type= "submit">
+                        <p>Search</p>
+                        <i class="fa fa-search"/>
+                    </button>
+                </div>
+            </div>
+
             <div className="main_content">
-                {data?.map((item) => (
+                {(searchTerm.length<1? data:searchResults).map((item) => (
 
                     <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }}>
                         < div className="card" key={item._id} >

@@ -35,7 +35,7 @@ const SignupForm = () => {
                     console.log(response)
                     if (response.data.status) {
                         console.log('success')
-                        history.push('/')
+                        history.push('/login')
                     } else {
                         console.log("failure")
                         console.log(response.data.message)

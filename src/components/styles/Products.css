@@ -33,7 +33,7 @@
     height: 100%;
 
     border-radius: 5px;
-    border:1px solid black;
+    border:.1px solid rgb(133, 133, 133);
 }
 
 .card_image{
@@ -96,4 +96,34 @@
     .main_content{
         grid-template-columns: repeat(2, 1fr);
     }
+}
+
+.search_bar{
+    padding: 1rem;
+    overflow: hidden;
+    box-sizing: border-box;
+
+}
+
+.search_input{
+    float:left;
+    box-sizing:border-box;
+    width: 80%;
+    height: 3rem;
+    padding-left: 1rem;
+    font-size: 1.1rem;
+}
+
+.search_button{
+    box-sizing:border-box;
+    float:left;
+    width:10%;
+    height: 3rem;
+    display: inline;
+    border:.1px solid rgb(133, 133, 133);}
+
+.search_button:hover{
+    background-color:rgb(64, 95, 100);
+    cursor: pointer;
+    transition-duration: 0.3s;
 }
