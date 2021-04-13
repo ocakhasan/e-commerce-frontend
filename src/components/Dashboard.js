@@ -76,7 +76,7 @@ const Dashboard = () => {
                         <div>
                             <p>{comment.content}</p>
                             <button type="submit" onClick={() => approveComment( comment)}
-                                disabled={comment.approval}>Approve</button>
+                                >{comment.approval? "Disapprove": "Approve"}</button>
                         </div>
 
                     ))}

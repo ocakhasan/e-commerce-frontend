@@ -28,7 +28,7 @@ const getAllComments = async () => {
 
 const approveComment = async (comment) => {
     const path = `/api/comments/${comment._id}`
-    const newComment = {...comment, approval: true }
+    const newComment = {...comment, approval: !comment.approval }
     console.log("new", newComment)
     const response = await axios.put(path, newComment)
     return response.data
