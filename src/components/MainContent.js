@@ -13,7 +13,7 @@ const MainContent = () => {
     const [searchResults,setSearchResults] =useState([])
     const inputEl = useRef("")
     //console.log(data)
-
+    
 
     useEffect(() => {
         productService
@@ -21,6 +21,7 @@ const MainContent = () => {
             .then(response => {
                 //console.log(response)
                 setData(response.products)
+                setSearchResults(data)
             })
 
     }, [])
@@ -47,6 +48,10 @@ const MainContent = () => {
         searchHandler(inputEl.current.value)
     };
 
+    const searchFeedback = () =>{
+        setSearchTerm(inputEl.current.value)
+    };
+
     return (
         <div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -59,10 +64,10 @@ const MainContent = () => {
                     type="text" 
                     placeholder = "Search Products" 
                     className="search_input" value={searchTerm} 
-                    onChange={getSearchTerm}
+                    onChange={searchFeedback}
                     />
                     
-                    <button className="search_button" type= "submit">
+                    <button className="search_button" type= "submit" onClick={getSearchTerm}>
                         <p>Search</p>
                         <i class="fa fa-search"/>
                     </button>
