@@ -29,7 +29,6 @@ const UpdateForm = () => {
             )
         } 
         return <p>Loading</p>
-        
     }
     return (
         <div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import productService from '../services/productService'
 import './styles/productDetail.css'
 import ReactStars from "react-rating-stars-component";
@@ -8,6 +8,21 @@ const ProductDetail = () => {
     const params = useParams()
     const [data, setData] = useState()
     const [notification, setNotification] = useState('')
+    const [comment, setComment] = useState('')
+    const history = useHistory()
+
+
+    const handleComment = (e) => {
+        e.preventDefault()
+        if (!window.localStorage.getItem('logged')){
+            history.push("/login")
+        }
+        productService
+            .addComment({
+                productID: data._id,
+                content: comment
+            })
+    }
 
     useEffect(() => {
 
@@ -22,9 +37,11 @@ const ProductDetail = () => {
 
     }, [params.id])
 
-    
+
     if (data) {
         return (
+            <div>
+
                 <div className="product_detail">
                     <p>{notification}</p>
                     <div className="detail_image">
@@ -56,11 +73,13 @@ const ProductDetail = () => {
                                     size={24}
                                     activeColor="#ffd700"
                                 />
-                                
+
 
                                 <small>200 değerlendirme</small>
                             </div>
                         </div>
+
+
 
                         <div className="product_buy">
                             <form>
@@ -70,6 +89,26 @@ const ProductDetail = () => {
                     </div>
 
                 </div>
+
+                <div className="add_comment">
+                    <form onSubmit={handleComment}>
+                        <label>Comment</label>
+                        <input onChange={(e) => setComment(e.target.value)}></input>
+                        <button type="submit">Send</button>
+                    </form>
+
+                </div>
+
+                
+                <div className="comments">
+                    <h2>Comments</h2>
+                    {data.comments && data.comments.map(comment => (
+                        <p>{comment.content}</p>
+                    ))}
+                </div>
+
+
+            </div>
 
         )
 
