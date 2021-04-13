@@ -27,7 +27,7 @@ const MainContent = () => {
     }, [])
 
     const searchHandler = (search_input) => {
-        setSearchTerm(search_input)
+        setSearchTerm(inputEl.current.value)
         if(search_input !== ""){
             const newProductList = data.filter((product)=>{
                 return Object.values(product)
