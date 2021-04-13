@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './styles/dashboard.css'
+import commentService from '../services/commentService';
 
 const Dashboard = () => {
 
     const [productData, setProductData] = useState([])
+    const [commentData, setCommentData] = useState([])
     const [nofitication, setNotification] = useState(null)
 
     useEffect(() => {
@@ -17,6 +19,15 @@ const Dashboard = () => {
             .then(response => {
                 console.log(response)
                 setProductData(response.products)
+            })
+    }, [])
+
+    useEffect(() => {
+        commentService
+            .getAllComments()
+            .then(response => {
+                console.log("comments", response)
+                setCommentData(response.comments)
             })
     }, [])
 
@@ -45,8 +56,33 @@ const Dashboard = () => {
                 console.log(response)
                 setProductData(productData.filter(product => product._id !== response.id))
             })
+    }
 
+    const approveComment = (comment) => {
+        console.log("I am here")
+        commentService
+            .approveComment(comment)
+            .then(response => {
+                setNotification(`Product with ${comment._id} approved`)
+                setTimeout(() => setNotification(null), 3000)
+            })
+    }
 
+    const Comments = () => {
+        if (commentData) {
+            return (
+                <div>
+                    {commentData.map(comment => (
+                        <div>
+                            <p>{comment.content}</p>
+                            <button type="submit" onClick={() => approveComment( comment)}
+                                disabled={comment.approval}>Approve</button>
+                        </div>
+
+                    ))}
+                </div>
+            )
+        } return <p>Loading</p>
     }
 
     const DasbordProduct = () => (
@@ -66,8 +102,8 @@ const Dashboard = () => {
                             onClick={(e) => handleDelete(e, product._id)}>Delete</button>
 
                         <Link to={"/update/product/" + product._id}>
-                            <span className="product_button" 
-                               >Update</span>
+                            <span className="product_button"
+                            >Update</span>
                         </Link>
 
                     </div>
@@ -96,6 +132,7 @@ const Dashboard = () => {
             </TabPanel>
             <TabPanel>
                 <h2>Comments will be here</h2>
+                <Comments />
             </TabPanel>
         </Tabs>
     )

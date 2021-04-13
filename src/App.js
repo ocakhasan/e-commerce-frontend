@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard'
 import loginService from './services/loginService'
 import UpdateForm from './components/Update'
 import productService from './services/productService'
+import commentService from './services/commentService'
 
 
 function App() {
@@ -24,8 +25,8 @@ function App() {
         if (loggedUserJSON){
             const user = JSON.parse(loggedUserJSON)
             productService.setToken(user.token)
+            commentService.setToken(user.token)
             setUser(user)
-            
         }
     }, [])
 

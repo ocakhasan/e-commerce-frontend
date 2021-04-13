@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import productService from '../services/productService'
+import commentService from '../services/commentService'
 import './styles/productDetail.css'
 import ReactStars from "react-rating-stars-component";
 
@@ -17,7 +18,7 @@ const ProductDetail = () => {
         if (!window.localStorage.getItem('logged')){
             history.push("/login")
         }
-        productService
+        commentService
             .addComment({
                 productID: data._id,
                 content: comment
