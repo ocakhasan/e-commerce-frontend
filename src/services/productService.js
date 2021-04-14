@@ -33,7 +33,7 @@ const deleteProduct = async id => {
 
 const updateProduct = async productObject => {
     const url = "/api/update/product"
-    const response = await axios.delete(url, productObject)
+    const response = await axios.post(url, productObject)
     return response.data
 }
 

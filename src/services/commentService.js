@@ -27,6 +27,7 @@ const getAllComments = async () => {
 }
 
 const approveComment = async (comment) => {
+    console.log("comment comes", comment)
     const path = `/api/comments/${comment._id}`
     const newComment = {...comment, approval: !comment.approval }
     console.log("new", newComment)

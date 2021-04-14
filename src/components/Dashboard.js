@@ -63,8 +63,13 @@ const Dashboard = () => {
         commentService
             .approveComment(comment)
             .then(response => {
-                setNotification(`Product with ${comment._id} approved`)
-                setTimeout(() => setNotification(null), 3000)
+                console.log("comment approval", response)
+                console.log("comments", commentData)
+                if (response.status) {
+                    setNotification(`Product with ${comment._id} approved`)
+                    setTimeout(() => setNotification(null), 3000)
+                    setCommentData(commentData.map(com => com._id === comment._id ? {...comment, approval:!comment.approval} : com))
+                }
             })
     }
 
