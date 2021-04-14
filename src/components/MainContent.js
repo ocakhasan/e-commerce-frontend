@@ -10,7 +10,7 @@ import productService from '../services/productService'
 const MainContent = () => {
     const [data, setData] = useState([])
     const [searchTerm,setSearchTerm] = useState("")
-    const [searchResults,setSearchResults] =useState([])
+    const [searchResults,setSearchResults] =useState(undefined)
     const inputEl = useRef("")
     //console.log(data)
     
@@ -21,7 +21,7 @@ const MainContent = () => {
             .then(response => {
                 //console.log(response)
                 setData(response.products)
-                setSearchResults(data)
+                setSearchResults(response.products)
             })
 
     }, [])
@@ -75,7 +75,7 @@ const MainContent = () => {
             </div>
 
             <div className="main_content">
-                {(searchTerm.length<1? data:searchResults).map((item) => (
+                {searchResults?.map((item) => (
 
                     <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }}>
                         < div className="card" key={item._id} >
