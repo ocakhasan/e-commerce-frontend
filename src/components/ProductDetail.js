@@ -7,7 +7,8 @@ import ReactStars from "react-rating-stars-component";
 
 const ProductDetail = () => {
     const params = useParams()
-    const [data, setData] = useState()
+    const [data, setData] = useState(null)
+    const [commentData, setCommentData] = useState(null)
     const [notification, setNotification] = useState('')
     const [comment, setComment] = useState('')
     const history = useHistory()
@@ -23,6 +24,11 @@ const ProductDetail = () => {
                 productID: data._id,
                 content: comment
             })
+            .then(response => {
+                if (response.status){
+                    setCommentData(response.comments)
+                }
+            })
     }
 
     useEffect(() => {
@@ -33,6 +39,7 @@ const ProductDetail = () => {
             .then(response => {
                 console.log(response)
                 setData(response.product)
+                setCommentData(response.product.comments)
             })
             .catch(_error => setNotification("product idoes not exist"))
 
@@ -103,8 +110,12 @@ const ProductDetail = () => {
                 
                 <div className="comments">
                     <h2>Comments</h2>
-                    {data.comments && data.comments.map(comment => (
-                        <p>{comment.content}</p>
+                    {commentData && commentData.map(comment => (
+                        
+                        <div className="product_comment">
+                            <p>{comment.content}</p>
+
+                        </div>
                     ))}
                 </div>
 

@@ -13,9 +13,12 @@ const addComment = async commentObj => {
 
     }
 
+    
+
     console.log("body", bodyToSend)
     const url = "/api/comment"
     const response = await axios.post(url, bodyToSend)
+    console.log("response.data", response.data)
     return response.data
 }
 
