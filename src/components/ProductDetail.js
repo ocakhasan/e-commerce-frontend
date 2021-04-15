@@ -1,13 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import productService from '../services/productService'
+import commentService from '../services/commentService'
 import './styles/productDetail.css'
 import ReactStars from "react-rating-stars-component";
 
 const ProductDetail = () => {
     const params = useParams()
-    const [data, setData] = useState()
+    const [data, setData] = useState(null)
+    const [commentData, setCommentData] = useState(null)
     const [notification, setNotification] = useState('')
+    const [comment, setComment] = useState('')
+    const history = useHistory()
+
+
+    const handleComment = (e) => {
+        e.preventDefault()
+        if (!window.localStorage.getItem('logged')){
+            history.push("/login")
+        }
+        commentService
+            .addComment({
+                productID: data._id,
+                content: comment
+            })
+            .then(response => {
+                if (response.status){
+                    setCommentData(response.comments)
+                }
+            })
+    }
 
     useEffect(() => {
 
@@ -17,14 +39,17 @@ const ProductDetail = () => {
             .then(response => {
                 console.log(response)
                 setData(response.product)
+                setCommentData(response.product.comments)
             })
             .catch(_error => setNotification("product idoes not exist"))
 
     }, [params.id])
 
-    
+
     if (data) {
         return (
+            <div>
+
                 <div className="product_detail">
                     <p>{notification}</p>
                     <div className="detail_image">
@@ -56,11 +81,13 @@ const ProductDetail = () => {
                                     size={24}
                                     activeColor="#ffd700"
                                 />
-                                
+
 
                                 <small>200 değerlendirme</small>
                             </div>
                         </div>
+
+
 
                         <div className="product_buy">
                             <form>
@@ -70,6 +97,30 @@ const ProductDetail = () => {
                     </div>
 
                 </div>
+
+                <div className="add_comment">
+                    <form onSubmit={handleComment}>
+                        <label>Comment</label>
+                        <input onChange={(e) => setComment(e.target.value)}></input>
+                        <button type="submit">Send</button>
+                    </form>
+
+                </div>
+
+                
+                <div className="comments">
+                    <h2>Comments</h2>
+                    {commentData && commentData.map(comment => (
+                        
+                        <div className="product_comment">
+                            <p>{comment.content}</p>
+
+                        </div>
+                    ))}
+                </div>
+
+
+            </div>
 
         )
 

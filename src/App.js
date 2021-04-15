@@ -9,20 +9,24 @@ import Products from './components/Products'
 import Navbar from './components/Navbar'
 import Dashboard from './components/Dashboard'
 import loginService from './services/loginService'
+import UpdateForm from './components/Update'
+import productService from './services/productService'
+import commentService from './services/commentService'
 
 
 function App() {
 
     const [user, setUser] = useState(null)
-
+    
     
 
     useEffect(() => {
         const loggedUserJSON= window.localStorage.getItem('logged')
         if (loggedUserJSON){
             const user = JSON.parse(loggedUserJSON)
+            productService.setToken(user.token)
+            commentService.setToken(user.token)
             setUser(user)
-            
         }
     }, [])
 
@@ -35,6 +39,7 @@ function App() {
                 'logged', JSON.stringify(response.user)
             )
             setUser(response.user)
+            productService.setToken(response.user.token)
             console.log("I am here")
             return response.status
             
@@ -70,6 +75,10 @@ function App() {
 
                     <Route path="/product/:id">
                         <ProductDetail />
+                    </Route>
+
+                    <Route path="/update/product/:id">
+                        <UpdateForm />
                     </Route>
 
                     <Route path="/products">

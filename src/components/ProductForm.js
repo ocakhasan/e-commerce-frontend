@@ -2,7 +2,7 @@ import React from 'react'
 import { useFormik } from 'formik'
 
 
-const ProductForm = ({addProduct}) => {
+const ProductForm = ({ addProduct }) => {
 
     const formik = useFormik({
         initialValues: {
@@ -28,60 +28,54 @@ const ProductForm = ({addProduct}) => {
 
 
 
-        <form onSubmit={formik.handleSubmit} >
+        <form onSubmit={formik.handleSubmit} className="dashboard_form">
             <div className="form-part">
+                <label className="clr-purple">Product Name</label>
 
-                <input type="text" placeholder="Product Name"
+                <input type="text"
                     {...formik.getFieldProps('productName')} />
             </div>
 
 
 
             <div className="form-part">
-                <input type="text" placeholder="description"
+                <label className="clr-purple">description</label>
+                <input type="text"
                     {...formik.getFieldProps('description')} />
             </div>
 
-            
+
 
             <div className="form-part">
-                
-                <input type="number" placeholder="Price" 
+                <label className="clr-purple">Price</label>
+                <input type="number"
                     {...formik.getFieldProps('unitPrice')} />
             </div>
 
             <div className="form-part">
-                
-                <input type="number" placeholder="Category" 
+                <label className="clr-purple">Category</label>
+                <input type="number" 
                     {...formik.getFieldProps('categoryID')} />
             </div>
 
             <div className="form-part">
-                
-                <input type="number" placeholder="Stock" 
+            <label className="clr-purple">Stock</label>
+                <input type="number" 
                     {...formik.getFieldProps('stock')} />
             </div>
 
             <div className="form-part">
-                
-                <input type="number" placeholder="Warranty" 
+                <label className="clr-purple">Warranty</label>
+                <input type="number" 
                     {...formik.getFieldProps('warranty')} />
             </div>
-
-        
-
-           
-
-            
 
 
             <button type="submit" className="btn clr-purple">
                 Add Product
             </button>
-           
 
         </form>
-
 
     )
 
