@@ -105,6 +105,10 @@
     margin-bottom: 2rem;
 }
 
+.product_buy{
+    margin-top:1rem;
+}
+
 .product_comment{
     background-color: aliceblue;
     padding:.5rem;

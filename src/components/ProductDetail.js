@@ -18,17 +18,18 @@ const ProductDetail = () => {
         e.preventDefault()
         if (!window.localStorage.getItem('logged')){
             history.push("/login")
+        } else {
+            commentService
+                .addComment({
+                    productID: data._id,
+                    content: comment
+                })
+                .then(response => {
+                    if (response.status){
+                        setCommentData(response.comments)
+                    }
+                })
         }
-        commentService
-            .addComment({
-                productID: data._id,
-                content: comment
-            })
-            .then(response => {
-                if (response.status){
-                    setCommentData(response.comments)
-                }
-            })
     }
 
     useEffect(() => {
@@ -58,7 +59,7 @@ const ProductDetail = () => {
                     <div className="details">
                         <div className="details_header">
                             <p className="product_name">{data.productName}</p>
-                            <small className="product_brand">BRAND NAME</small>
+                            <p >{data.description}</p>
 
                         </div>
                         <div className="details_price">
@@ -86,6 +87,8 @@ const ProductDetail = () => {
                                 <small>200 değerlendirme</small>
                             </div>
                         </div>
+
+                        <p>Current Stock : {data.stock}</p>
 
 
 

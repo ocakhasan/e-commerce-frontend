@@ -1,26 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import ProductForm from './ProductForm'
 import productService from '../services/productService'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import commentService from '../services/commentService';
 import 'react-tabs/style/react-tabs.css';
 import './styles/dashboard.css'
-import commentService from '../services/commentService';
 
 const Dashboard = () => {
 
     const [productData, setProductData] = useState([])
     const [commentData, setCommentData] = useState([])
+    const [allowed, setAllowed] = useState(false)
     const [nofitication, setNotification] = useState(null)
+    const history = useHistory()
 
     useEffect(() => {
-        productService
-            .getAllProduct()
-            .then(response => {
-                console.log(response)
-                setProductData(response.products)
-            })
-    }, [])
+        const logged = JSON.parse(window.localStorage.getItem('logged'))
+        console.log(logged)
+        console.log(logged.userType)
+
+
+        if (!logged ){
+            history.push("/login")
+        } else if( logged.userType === 0) {
+            setNotification("You are not allowed for the admin panel")
+        }
+        else {
+            setAllowed(true)
+            productService
+                .getAllProduct()
+                .then(response => {
+                    console.log(response)
+                    setProductData(response.products)
+                })
+        }
+    }, [history])
+    
 
     useEffect(() => {
         commentService
@@ -92,7 +108,7 @@ const Dashboard = () => {
 
     const DasbordProduct = () => (
         <div className="dashboard_div">
-            {nofitication && <p className="clr-green">{nofitication}</p>}
+            
             <ProductForm addProduct={addProduct} />
             {productData.map(product => (
 
@@ -126,20 +142,25 @@ const Dashboard = () => {
     )
 
     return (
-        <Tabs>
-            <TabList>
-                <Tab>Products</Tab>
-                <Tab>Comments</Tab>
-            </TabList>
+        <div>
 
-            <TabPanel>
-                <DasbordProduct />
-            </TabPanel>
-            <TabPanel>
-                <h2>Comments will be here</h2>
-                <Comments />
-            </TabPanel>
-        </Tabs>
+            {nofitication && <p className="clr-green">{nofitication}</p>}
+            {allowed && <Tabs>
+                <TabList>
+                    <Tab>Products</Tab>
+                    <Tab>Comments</Tab>
+                </TabList>
+    
+                <TabPanel>
+                    <DasbordProduct />
+                </TabPanel>
+                <TabPanel>
+                    <h2>Comments will be here</h2>
+                    <Comments />
+                </TabPanel>
+            </Tabs>}
+            
+        </div>
     )
 }
 
