@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './styles/Navbar.css'
 
 const Navbar = ({ user, handleLogout}) => {
+    
     return (
         <nav className="nav">
             <ul className="nav__ul">
@@ -15,6 +16,7 @@ const Navbar = ({ user, handleLogout}) => {
                         user &&
                         <div className="nav__links">
                             <li className="nav__link"><Link to="/dashboard">Dashboard</Link></li>
+                            
                             <li className="nav__link">
                                 <button className="nav_button" onClick={() => handleLogout()}>Logout</button>
                             </li>

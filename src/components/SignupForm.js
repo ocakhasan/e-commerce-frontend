@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, useHistory} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
@@ -8,8 +8,13 @@ import './styles/SignupForm.css'
 
 const SignupForm = () => {
 
-    const history = useHistory()
 
+    const history = useHistory()
+    useEffect(() => {
+        if (window.localStorage.getItem('logged')){
+            history.push("/")
+        }
+    }, [history])
 
 
     const formik = useFormik({
@@ -24,7 +29,7 @@ const SignupForm = () => {
             userEmail: Yup.string().email('Invalid email address').required('Email is required'),
             password: Yup.string().required('Password is required'),
             passwordValidation: Yup.string()
-                .oneOf([Yup.ref('password') ,null], 'Passwords must match')
+                .oneOf([Yup.ref('password'), null], 'Passwords must match')
         }),
 
         onSubmit: values => {

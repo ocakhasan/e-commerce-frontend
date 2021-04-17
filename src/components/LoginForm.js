@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -6,10 +6,18 @@ import './styles/LoginForm.css'
 
 
 
-const LoginForm = ({handleLogin}) => {
+const LoginForm = ({ handleLogin }) => {
 
-    const history = useHistory();
+
+
     const [notification, setNotification] = useState('')
+    const history = useHistory();
+    useEffect(() => {
+        if (window.localStorage.getItem('logged')) {
+            history.push("/")
+        }
+    }, [history])
+    
 
     const formik = useFormik({
         initialValues: {
@@ -26,21 +34,23 @@ const LoginForm = ({handleLogin}) => {
             console.log(values)
             const result = await handleLogin(values)
             console.log("result ", result)
-            if (result){
+            if (result) {
                 history.push('/')
             } else {
                 setNotification('Wrong Credentials')
             }
-            
+
         },
         validateOnChange: false,
         validateOnBlur: false
     })
 
+    
+
     return (
         <div>
 
-            
+
             <div className="form-div">
                 <div className="login-card">
                     <h2>Login to Shop</h2>
@@ -54,7 +64,7 @@ const LoginForm = ({handleLogin}) => {
                         <input type="email" name="email" {...formik.getFieldProps('userEmail')}
                         />
                     </div>
-                    
+
                     {formik.touched.userEmail && formik.errors.userEmail ? (
                         <div className="form-error">{formik.errors.userEmail}</div>
                     ) : null}
@@ -71,7 +81,7 @@ const LoginForm = ({handleLogin}) => {
                         Login
                     </button>
                     <p>If you do not have an account, you can <Link to="/signup">sign-up</Link> from here</p>
-                
+
                 </form>
             </div>
             {notification}
