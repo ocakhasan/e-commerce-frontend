@@ -1,8 +1,14 @@
 import React from "react";
 import { Link } from 'react-router-dom'
 import './styles/Navbar.css'
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 const Navbar = ({ user, handleLogout}) => {
+
+    const dashboard = user?.userType!==0 ? 
+                        <li className="nav__link"><Link to="/dashboard">Dashboard</Link></li> : 
+                        <li className="nav__link"><Link to="cart"><ShoppingCartIcon />Cart</Link></li>
+                       
     
     return (
         <nav className="nav">
@@ -12,11 +18,13 @@ const Navbar = ({ user, handleLogout}) => {
 
 
                 <div className="right-links">
+                   
+                    
                     {
                         user &&
+                        
                         <div className="nav__links">
-                            <li className="nav__link"><Link to="/dashboard">Dashboard</Link></li>
-                            
+                            {dashboard}
                             <li className="nav__link">
                                 <button className="nav_button" onClick={() => handleLogout()}>Logout</button>
                             </li>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
 import { Route, Switch } from 'react-router'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, useHistory } from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
 import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
@@ -18,6 +18,7 @@ import cartService from './services/cartService'
 function App() {
 
     const [user, setUser] = useState(null)
+    const history = useHistory()
     
     
 
@@ -56,6 +57,7 @@ function App() {
     const handleLogout = () => {
         window.localStorage.removeItem('logged')
         setUser(null)
+        history.push("/login")
     }
 
 
@@ -76,6 +78,10 @@ function App() {
 
                     <Route path="/dashboard">
                         <Dashboard />
+                    </Route>
+
+                    <Route path="/cart">
+                        <h1>Cart</h1>
                     </Route>
 
                     <Route path="/product/:id">
