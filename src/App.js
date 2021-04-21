@@ -12,6 +12,7 @@ import loginService from './services/loginService'
 import UpdateForm from './components/Update'
 import productService from './services/productService'
 import commentService from './services/commentService'
+import cartService from './services/cartService'
 
 
 function App() {
@@ -24,8 +25,12 @@ function App() {
         const loggedUserJSON= window.localStorage.getItem('logged')
         if (loggedUserJSON){
             const user = JSON.parse(loggedUserJSON)
+            console.log("user", user)
+            console.log("token", user.token)
             productService.setToken(user.token)
             commentService.setToken(user.token)
+            cartService.setToken(user.token)
+
             setUser(user)
         }
     }, [])
@@ -34,13 +39,13 @@ function App() {
         try{
             console.log(userObject)
             const response = await loginService.login(userObject)
-            console.log(response)
             window.localStorage.setItem(
                 'logged', JSON.stringify(response.user)
             )
             setUser(response.user)
             productService.setToken(response.user.token)
-            console.log("I am here")
+            commentService.setToken(response.user.token)
+            cartService.setToken(response.user.token)
             return response.status
             
         } catch(exception) {

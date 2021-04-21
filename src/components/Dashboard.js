@@ -5,6 +5,18 @@ import { Link, useHistory } from 'react-router-dom'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import commentService from '../services/commentService';
 import 'react-tabs/style/react-tabs.css';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button'
+import DeleteIcon from '@material-ui/icons/Delete';
+import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import './styles/dashboard.css'
 
 const Dashboard = () => {
@@ -15,15 +27,16 @@ const Dashboard = () => {
     const [nofitication, setNotification] = useState(null)
     const history = useHistory()
 
+
     useEffect(() => {
         const logged = JSON.parse(window.localStorage.getItem('logged'))
         console.log(logged)
         console.log(logged.userType)
 
 
-        if (!logged ){
+        if (!logged) {
             history.push("/login")
-        } else if( logged.userType === 0) {
+        } else if (logged.userType === 0) {
             setNotification("You are not allowed for the admin panel")
         }
         else {
@@ -36,7 +49,7 @@ const Dashboard = () => {
                 })
         }
     }, [history])
-    
+
 
     useEffect(() => {
         commentService
@@ -50,14 +63,18 @@ const Dashboard = () => {
 
     const addProduct = (values) => {
 
+        console.log(values)
+        const toSend = { userType: 2, ...values }
+        console.log(toSend)
         productService
-            .addProduct(values)
+            .addProduct(toSend)
             .then(response => {
                 setNotification("New Product Added")
                 setTimeout(() => setNotification(null), 3000)
                 console.log(response)
                 setProductData(productData.concat(response.product))
             })
+            .catch(error => console.log(error))
 
     }
 
@@ -84,7 +101,7 @@ const Dashboard = () => {
                 if (response.status) {
                     setNotification(`Product with ${comment._id} approved`)
                     setTimeout(() => setNotification(null), 3000)
-                    setCommentData(commentData.map(com => com._id === comment._id ? {...comment, approval:!comment.approval} : com))
+                    setCommentData(commentData.map(com => com._id === comment._id ? { ...comment, approval: !comment.approval } : com))
                 }
             })
     }
@@ -92,24 +109,47 @@ const Dashboard = () => {
     const Comments = () => {
         if (commentData) {
             return (
-                <div>
-                    {commentData.map(comment => (
-                        <div>
-                            <p>{comment.content}</p>
-                            <button type="submit" onClick={() => approveComment( comment)}
-                                >{comment.approval? "Disapprove": "Approve"}</button>
-                        </div>
+                <TableContainer style={{ maxWidth: 900, margin: "auto" }} component={Paper}>
 
-                    ))}
-                </div>
+                    <h1>Comments</h1>
+                    <Table size="small" aria-label="a dense table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Comment</TableCell>
+                                <TableCell align="right">Owner</TableCell>
+                                <TableCell align="right">Date</TableCell>
+                                <TableCell align="right">Approve</TableCell>
+
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+
+                            {commentData.map(comment => (
+                                <TableRow key={comment._id}>
+                                    <TableCell component="th" scope="row">
+                                        {comment.content}
+                                    </TableCell>
+                                    <TableCell align="right">{comment.owner}</TableCell>
+                                    <TableCell align="right">{new Date(comment.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell align="right">
+                                        <Button variant="contained" color="primary"
+                                            onClick={() => approveComment(comment)}>{comment.approval ? <div className="approveIcon"><ThumbDownIcon /> Disapprove</div> : <div className="approveIcon"><ThumbUpIcon />Approve</div>}
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             )
         } return <p>Loading</p>
     }
 
-    const DasbordProduct = () => (
+    /* const DasbordProduct = () => (
         <div className="dashboard_div">
-            
-            <ProductForm addProduct={addProduct} />
+
+
             {productData.map(product => (
 
 
@@ -130,36 +170,73 @@ const Dashboard = () => {
                     </div>
 
                 </div>
-
-
-
-
-
-
             ))}
         </div>
+    ) */
 
+    const Products = () => (
+
+        <TableContainer style={{ maxWidth: 900, margin: "auto" }} component={Paper}>
+            <h1>Products</h1>
+            <Table size="small" aria-label="a dense table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Product</TableCell>
+                        <TableCell align="center">Description</TableCell>
+                        <TableCell align="center">Rate</TableCell>
+                        <TableCell align="right">Delete</TableCell>
+                        <TableCell align="right">Update</TableCell>
+
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+
+                    {productData.map(product => (
+                        <TableRow key={product._id}>
+                            <TableCell component="th" scope="row">
+                                {product.productName}
+                            </TableCell>
+                            <TableCell align="center">{product.description}</TableCell>
+                            <TableCell align="center">{product.rateCount}</TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" color="secondary"
+                                    onClick={(e) => handleDelete(e, product._id)}>
+                                    <DeleteIcon />Delete
+                                </Button>
+                            </TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
+                                    <SystemUpdateAltIcon />
+                                    Update
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     )
 
     return (
         <div>
 
             {nofitication && <p className="clr-green">{nofitication}</p>}
-            {allowed && <Tabs>
+             {allowed && <Tabs>
                 <TabList>
                     <Tab>Products</Tab>
                     <Tab>Comments</Tab>
                 </TabList>
-    
+
                 <TabPanel>
-                    <DasbordProduct />
+                    <ProductForm addProduct={addProduct}/>
+                    <Products />
                 </TabPanel>
                 <TabPanel>
-                    <h2>Comments will be here</h2>
                     <Comments />
                 </TabPanel>
-            </Tabs>}
-            
+            </Tabs>} 
+
         </div>
     )
 }

@@ -22,6 +22,7 @@ const getProduct = async (id) => {
 
 const addProduct = async values => {
     const response = await axios.post(baseUrl, values)
+    console.log("response", response.data)
     return response.data
 }
 
@@ -31,10 +32,21 @@ const deleteProduct = async id => {
     return response.data
 }
 
-const updateProduct = async productObject => {
-    const url = "/api/update/product"
-    const response = await axios.post(url, productObject)
-    return response.data
+const updateProduct = async (oldObject, newObject) => {
+    console.log(oldObject)
+    console.log(newObject)
+    const toSend = {rate: oldObject.rateCount, token,  ...newObject}
+    console.log(toSend)
+    const url = `/admin/pm/product/${oldObject._id}`
+    try{
+        const response = await axios.put(url, toSend)
+        return response.data
+
+    } catch {
+        console.log("error")
+    }
+    
+    
 }
 
 const addComment = async commentObj => {

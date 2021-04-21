@@ -42,18 +42,17 @@ const UpdateForm = () => {
                 productName: data.productName,
                 description: data.description,
                 unitPrice: data.unitPrice,
-                categoryID: data.stock,
-                stock: data.warranty,
-                warranty: data.categoryID,
+                categoryID: data.categoryID,
+                stock: data.stock,
+                warranty: data.warranty,
                 rate: 0
             },
     
             onSubmit: values => {
                 console.log('post request to submit')
-                const toSend = {...values, _id:params.id}
-                console.log("ToSEnd", toSend)
+                
                 productService
-                    .updateProduct(toSend)
+                    .updateProduct(data, values)
                     .then((response) => {
                         console.log(response)
                         history.push('/dashboard')

@@ -33,3 +33,9 @@
     cursor:pointer;
     background-color: rgb(141, 180, 141);
 }
+
+.approveIcon{
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+}
