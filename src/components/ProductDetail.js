@@ -17,9 +17,10 @@ const ProductDetail = () => {
     const params = useParams()
     const [data, setData] = useState(null)
     const [commentData, setCommentData] = useState(null)
-    const [success, setSuccess] = useState(null)
     const [comment, setComment] = useState('')
     const [rating, setRating] = useState(0)
+    const [notification, setNotification] = useState(null)
+    const [success, setSuccess] = useState(false)
     const history = useHistory()
 
 
@@ -33,11 +34,21 @@ const ProductDetail = () => {
                 .addComment({
                     productID: data._id,
                     content: comment
-                })
-                .then(response => {
+                }).then(response => {
                     if (response.status) {
                         setCommentData(response.comments)
+                        setNotification("Comment sent! Waiting for approval!")
+                        setSuccess(true)
+                        setTimeout(() => setNotification(null), 3000)
+                    } else {
+                        setNotification("Comment did not sent.")
+                        setSuccess(false)
+                        setTimeout(() => setNotification(null), 3000)
                     }
+                }).catch(_error => {
+                    setNotification("Comment did not sent.")
+                    setSuccess(false)
+                    setTimeout(() => setNotification(null), 3000)
                 })
         }
     }
@@ -58,7 +69,7 @@ const ProductDetail = () => {
 
     const handleRate = (nextValue, prevValue, name) => {
         setRating(nextValue)
-        const currentTotalRate = data.rateCount * data.rateTotal
+        //const currentTotalRate = data.rateCount * data.rateTotal
     }
 
     const addCart = (e) => {
@@ -68,13 +79,19 @@ const ProductDetail = () => {
             .addProductCard(data._id)
             .then(response => {
                 if (response.status) {
-                    setSuccess(<Alert severity="success">Product Added</Alert> )
+                    setNotification("Product added to cart successfully")
+                    setSuccess(true)
+                    setTimeout(() => setNotification(null), 3000)
                 } else {
-                    setSuccess(<Alert severity="error">Product is not added</Alert> )
+                    setNotification("Operation unsuccessful")
+                    setSuccess(false)
+                    setTimeout(() => setNotification(null), 3000)
                 }
             })
             .catch(_error => {
+                setNotification("Operation unsuccessful")
                 setSuccess(false)
+                setTimeout(() => setNotification(null), 3000)
             })
     }
 
@@ -83,7 +100,7 @@ const ProductDetail = () => {
     if (data) {
         return (
             <div>
-                {success}
+                {notification && <Alert severity={success ? "success" : "error"}>{notification}</Alert>}
                 <div className="product_detail">
 
                     <div className="detail_image">
@@ -166,7 +183,7 @@ const ProductDetail = () => {
         )
 
     } else {
-        return <h1>Loading</h1>
+        return <Alert severity="info">Loading</Alert>
     }
 }
 

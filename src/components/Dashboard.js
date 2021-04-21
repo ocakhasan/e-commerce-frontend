@@ -17,6 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import Alert from '@material-ui/lab/Alert';
 import './styles/dashboard.css'
 
 const Dashboard = () => {
@@ -24,7 +25,8 @@ const Dashboard = () => {
     const [productData, setProductData] = useState([])
     const [commentData, setCommentData] = useState([])
     const [allowed, setAllowed] = useState(false)
-    const [nofitication, setNotification] = useState(null)
+    const [notification, setNotification] = useState(null)
+    const [success, setSuccess] = useState(false)
     const history = useHistory()
 
 
@@ -63,18 +65,27 @@ const Dashboard = () => {
 
     const addProduct = (values) => {
 
-        console.log(values)
         const toSend = { userType: 2, ...values }
-        console.log(toSend)
         productService
             .addProduct(toSend)
             .then(response => {
-                setNotification("New Product Added")
-                setTimeout(() => setNotification(null), 3000)
-                console.log(response)
-                setProductData(productData.concat(response.product))
+                if (response.status) {
+                    setNotification("New Product Added")
+                    setSuccess(true)
+                    setTimeout(() => setNotification(null), 3000)
+                    setProductData(productData.concat(response.product))
+                } else {
+                    setNotification("Product did not added")
+                    setSuccess(false)
+                    setTimeout(() => setNotification(null), 3000)
+                }
+
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                setNotification("Product did not added")
+                setSuccess(false)
+                setTimeout(() => setNotification(null), 3000)
+            })
 
     }
 
@@ -86,8 +97,20 @@ const Dashboard = () => {
         productService
             .deleteProduct(id)
             .then(response => {
-                console.log(response)
-                setProductData(productData.filter(product => product._id !== response.id))
+                if (response.status) {
+                    setNotification(`Product ${id} is deleted`)
+                    setSuccess(true)
+                    setTimeout(() => setNotification(null), 3000)
+                    setProductData(productData.filter(product => product._id !== response.id))
+                } else {
+                    setNotification(`Product ${id} is not deleted`)
+                    setSuccess(false)
+                    setTimeout(() => setNotification(null), 3000)
+                }
+            }).catch(_error => {
+                setNotification(`Product ${id} is not deleted`)
+                setSuccess(false)
+                setTimeout(() => setNotification(null), 3000)
             })
     }
 
@@ -101,8 +124,18 @@ const Dashboard = () => {
                 if (response.status) {
                     setNotification(`Product with ${comment._id} approved`)
                     setTimeout(() => setNotification(null), 3000)
+                    setSuccess(true)
                     setCommentData(commentData.map(com => com._id === comment._id ? { ...comment, approval: !comment.approval } : com))
+                } else {
+                    setNotification(`Approval did not happen`)
+                    setSuccess(false)
+                    setTimeout(() => setNotification(null), 3000)
                 }
+            })
+            .catch(_error => {
+                setNotification(`Approval did not happen`)
+                setSuccess(false)
+                setTimeout(() => setNotification(null), 3000)
             })
     }
 
@@ -116,7 +149,9 @@ const Dashboard = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Comment</TableCell>
+                                <TableCell align="right">Product</TableCell>
                                 <TableCell align="right">Owner</TableCell>
+
                                 <TableCell align="right">Date</TableCell>
                                 <TableCell align="right">Approve</TableCell>
 
@@ -129,6 +164,7 @@ const Dashboard = () => {
                                     <TableCell component="th" scope="row">
                                         {comment.content}
                                     </TableCell>
+                                    <TableCell align="right"><Link to={"/product/" + comment.product}>{comment.product}</Link></TableCell>
                                     <TableCell align="right">{comment.owner}</TableCell>
                                     <TableCell align="right">{new Date(comment.createdAt).toLocaleDateString()}</TableCell>
                                     <TableCell align="right">
@@ -146,33 +182,6 @@ const Dashboard = () => {
         } return <p>Loading</p>
     }
 
-    /* const DasbordProduct = () => (
-        <div className="dashboard_div">
-
-
-            {productData.map(product => (
-
-
-                <div className="dashboard_product" key={product._id}>
-                    <div className="product_details">
-                        <Link to={"/product/" + product._id}><p className="prod_name">{product.productName}</p></Link>
-                        <p className="prod_desc">{product.description}</p>
-                    </div>
-                    <div className="product_buttons">
-                        <button className="product_button" type="submit"
-                            onClick={(e) => handleDelete(e, product._id)}>Delete</button>
-
-                        <Link to={"/update/product/" + product._id}>
-                            <span className="product_button"
-                            >Update</span>
-                        </Link>
-
-                    </div>
-
-                </div>
-            ))}
-        </div>
-    ) */
 
     const Products = () => (
 
@@ -183,6 +192,8 @@ const Dashboard = () => {
                     <TableRow>
                         <TableCell>Product</TableCell>
                         <TableCell align="center">Description</TableCell>
+                        <TableCell align="center">Price</TableCell>
+
                         <TableCell align="center">Rate</TableCell>
                         <TableCell align="right">Delete</TableCell>
                         <TableCell align="right">Update</TableCell>
@@ -197,6 +208,7 @@ const Dashboard = () => {
                                 {product.productName}
                             </TableCell>
                             <TableCell align="center">{product.description}</TableCell>
+                            <TableCell align="center">{product.unitPrice}</TableCell>
                             <TableCell align="center">{product.rateCount}</TableCell>
                             <TableCell align="right">
                                 <Button variant="contained" color="secondary"
@@ -221,21 +233,21 @@ const Dashboard = () => {
     return (
         <div>
 
-            {nofitication && <p className="clr-green">{nofitication}</p>}
-             {allowed && <Tabs>
+            {notification && <Alert severity={success? "success": "error"}>{notification}</Alert>}
+            {allowed && <Tabs>
                 <TabList>
                     <Tab>Products</Tab>
                     <Tab>Comments</Tab>
                 </TabList>
 
                 <TabPanel>
-                    <ProductForm addProduct={addProduct}/>
                     <Products />
+                    <ProductForm addProduct={addProduct} />
                 </TabPanel>
                 <TabPanel>
                     <Comments />
                 </TabPanel>
-            </Tabs>} 
+            </Tabs>}
 
         </div>
     )
