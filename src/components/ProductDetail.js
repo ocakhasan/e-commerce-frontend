@@ -24,6 +24,7 @@ const ProductDetail = () => {
 
 
     const handleComment = (e) => {
+        console.log("New Product")
         e.preventDefault()
         if (!window.localStorage.getItem('logged')) {
             history.push("/login")
