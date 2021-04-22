@@ -11,6 +11,7 @@ import Comment from './ProductUtils/Comment'
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 import StarRatingComponent from 'react-star-rating-component';
 
 const ProductDetail = () => {
@@ -63,7 +64,7 @@ const ProductDetail = () => {
                 setData(response.product)
                 setCommentData(response.product.comments)
             })
-            
+
 
     }, [params.id])
 
@@ -75,24 +76,42 @@ const ProductDetail = () => {
     const addCart = (e) => {
         e.preventDefault()
         console.log("add to cart")
-        cartService
-            .addProductCard(data._id)
-            .then(response => {
-                if (response.status) {
-                    setNotification("Product added to cart successfully")
-                    setSuccess(true)
-                    setTimeout(() => setNotification(null), 3000)
-                } else {
+        if (!window.localStorage.getItem("logged")) {
+            if (!window.localStorage.getItem("cart_without_login")) {
+                let currentCart = [data._id]
+                console.log(typeof(currentCart))
+                window.localStorage.setItem("cart_without_login", JSON.stringify(currentCart))
+            } else {
+                let currentCart = JSON.parse(window.localStorage.getItem("cart_without_login"))
+                console.log(typeof(currentCart))
+                window.localStorage.setItem("cart_without_login", JSON.stringify(currentCart.concat(data._id)))
+            }
+            setNotification("Product added to cart successfully")
+            setSuccess(true)
+            setTimeout(() => setNotification(null), 3000)
+        } else {
+            cartService
+                .addProductCard(data._id)
+                .then(response => {
+                    if (response.status) {
+                        setNotification("Product added to cart successfully")
+                        setSuccess(true)
+                        setTimeout(() => setNotification(null), 3000)
+                        window.localStorage.setItem("logged", JSON.stringify(response.user))
+                    } else {
+                        setNotification("Operation unsuccessful")
+                        setSuccess(false)
+                        setTimeout(() => setNotification(null), 3000)
+                    }
+                })
+                .catch(_error => {
                     setNotification("Operation unsuccessful")
                     setSuccess(false)
                     setTimeout(() => setNotification(null), 3000)
-                }
-            })
-            .catch(_error => {
-                setNotification("Operation unsuccessful")
-                setSuccess(false)
-                setTimeout(() => setNotification(null), 3000)
-            })
+                })
+
+        }
+
     }
 
 
@@ -100,7 +119,11 @@ const ProductDetail = () => {
     if (data) {
         return (
             <div>
-                {notification && <Alert severity={success ? "success" : "error"}>{notification}</Alert>}
+                {notification && <Snackbar open={notification} autoHideDuration={6000} >
+                    <Alert severity={success ? "success" : "error"}>
+                        {notification}
+                    </Alert>
+                </Snackbar>}
                 <div className="product_detail">
 
                     <div className="detail_image">
@@ -171,9 +194,10 @@ const ProductDetail = () => {
 
                 <div className="comments">
                     <h2>Comments</h2>
-                    {commentData && commentData.map(comment => (
-
-                        <Comment comment={comment} />
+                    {commentData && commentData.reverse().map(comment => (
+                        <div>
+                            {comment.approval?  <Comment comment={comment} /> : null}
+                        </div>
                     ))}
                 </div>
 

@@ -18,6 +18,7 @@ import SystemUpdateAltIcon from '@material-ui/icons/SystemUpdateAlt';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 import './styles/dashboard.css'
 
 const Dashboard = () => {
@@ -122,7 +123,7 @@ const Dashboard = () => {
                 console.log("comment approval", response)
                 console.log("comments", commentData)
                 if (response.status) {
-                    setNotification(`Product with ${comment._id} approved`)
+                    setNotification(`Operation successfull`)
                     setTimeout(() => setNotification(null), 3000)
                     setSuccess(true)
                     setCommentData(commentData.map(com => com._id === comment._id ? { ...comment, approval: !comment.approval } : com))
@@ -233,7 +234,17 @@ const Dashboard = () => {
     return (
         <div>
 
-            {notification && <Alert severity={success? "success": "error"}>{notification}</Alert>}
+            {
+                notification && 
+                <Snackbar open={notification} autoHideDuration={6000} >
+                    <Alert severity={success? "success": "error"}>
+                        {notification}
+                    </Alert>
+                </Snackbar>
+            
+                //<Alert severity={success? "success": "error"}>{notification}</Alert>
+            }
+
             {allowed && <Tabs>
                 <TabList>
                     <Tab>Products</Tab>

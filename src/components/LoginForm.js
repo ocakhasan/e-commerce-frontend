@@ -3,6 +3,8 @@ import { Link, useHistory } from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './styles/LoginForm.css'
+import Alert from '@material-ui/lab/Alert';
+import Snackbar from '@material-ui/core/Snackbar';
 
 
 
@@ -10,14 +12,15 @@ const LoginForm = ({ handleLogin }) => {
 
 
 
-    const [notification, setNotification] = useState('')
+    const [notification, setNotification] = useState(null)
+
     const history = useHistory();
     useEffect(() => {
         if (window.localStorage.getItem('logged')) {
             history.push("/")
         }
     }, [history])
-    
+
 
     const formik = useFormik({
         initialValues: {
@@ -30,14 +33,14 @@ const LoginForm = ({ handleLogin }) => {
         }),
 
         onSubmit: async values => {
-            setNotification('')
             console.log(values)
             const result = await handleLogin(values)
             console.log("result ", result)
             if (result) {
                 history.push('/')
             } else {
-                setNotification('Wrong Credentials')
+                setNotification('Wrong Credentials. Please try again')
+                setTimeout(() => setNotification(null), 3000)
             }
 
         },
@@ -45,13 +48,15 @@ const LoginForm = ({ handleLogin }) => {
         validateOnBlur: false
     })
 
-    
+
 
     return (
         <div>
-
-
+            {notification && <Alert severity="error">
+                {notification}
+            </Alert>}
             <div className="form-div">
+
                 <div className="login-card">
                     <h2>Login to Shop</h2>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -84,7 +89,6 @@ const LoginForm = ({ handleLogin }) => {
 
                 </form>
             </div>
-            {notification}
         </div>
 
 

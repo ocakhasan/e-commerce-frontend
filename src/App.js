@@ -13,6 +13,7 @@ import UpdateForm from './components/Update'
 import productService from './services/productService'
 import commentService from './services/commentService'
 import cartService from './services/cartService'
+import Cart from './components/Cart'
 
 
 function App() {
@@ -81,7 +82,7 @@ function App() {
                     </Route>
 
                     <Route path="/cart">
-                        <h1>Cart</h1>
+                        <Cart />
                     </Route>
 
                     <Route path="/product/:id">
