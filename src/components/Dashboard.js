@@ -19,13 +19,14 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import './styles/dashboard.css'
 
 const Dashboard = () => {
 
     const [productData, setProductData] = useState([])
     const [commentData, setCommentData] = useState([])
-    const [allowed, setAllowed] = useState(false)
+    const [allowed, setAllowed] = useState(0)
     const [notification, setNotification] = useState(null)
     const [success, setSuccess] = useState(false)
     const history = useHistory()
@@ -33,9 +34,6 @@ const Dashboard = () => {
 
     useEffect(() => {
         const logged = JSON.parse(window.localStorage.getItem('logged'))
-        console.log(logged)
-        console.log(logged.userType)
-
 
         if (!logged) {
             history.push("/login")
@@ -43,7 +41,7 @@ const Dashboard = () => {
             setNotification("You are not allowed for the admin panel")
         }
         else {
-            setAllowed(true)
+            setAllowed(logged.userType)
             productService
                 .getAllProduct()
                 .then(response => {
@@ -152,7 +150,6 @@ const Dashboard = () => {
                                 <TableCell>Comment</TableCell>
                                 <TableCell align="right">Product</TableCell>
                                 <TableCell align="right">Owner</TableCell>
-
                                 <TableCell align="right">Date</TableCell>
                                 <TableCell align="right">Approve</TableCell>
 
@@ -192,12 +189,16 @@ const Dashboard = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Product</TableCell>
-                        <TableCell align="center">Description</TableCell>
-                        <TableCell align="center">Price</TableCell>
+                        <TableCell align="right">Description</TableCell>
+                        <TableCell align="right">Price</TableCell>
+                        {allowed === 2 ?
+                            <TableCell align="right">Rate</TableCell> :
+                            <TableCell align="right">Previous Price</TableCell>}
 
-                        <TableCell align="center">Rate</TableCell>
-                        <TableCell align="right">Delete</TableCell>
-                        <TableCell align="right">Update</TableCell>
+                        {allowed === 2 ? <div><TableCell align="right">Delete</TableCell>
+                            <TableCell align="right">Update</TableCell></div> :
+                            <TableCell align="right">Set Price</TableCell>}
+
 
                     </TableRow>
                 </TableHead>
@@ -208,23 +209,36 @@ const Dashboard = () => {
                             <TableCell component="th" scope="row">
                                 {product.productName}
                             </TableCell>
-                            <TableCell align="center">{product.description}</TableCell>
-                            <TableCell align="center">{product.unitPrice}</TableCell>
-                            <TableCell align="center">{product.rateCount}</TableCell>
-                            <TableCell align="right">
-                                <Button variant="contained" color="secondary"
-                                    onClick={(e) => handleDelete(e, product._id)}>
-                                    <DeleteIcon />Delete
-                                </Button>
-                            </TableCell>
-                            <TableCell align="right">
-                                <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
-                                    <SystemUpdateAltIcon />
-                                    Update
-                                </Button>
-                            </TableCell>
-                        </TableRow>
+                            <TableCell align="right">{product.description}</TableCell>
+                            <TableCell align="right">{product.unitPrice}</TableCell>
+                            {allowed===2 ? 
+                            <TableCell align="right">{product.rateCount}</TableCell>
+                            : <TableCell align="right">{product.previousPrice}</TableCell>}
+                            
+                            {allowed === 2 ?
+                                <div>
+                                    <TableCell align="right">
+                                        <Button variant="contained" color="secondary"
+                                            onClick={(e) => handleDelete(e, product._id)}>
+                                            <DeleteIcon />Delete
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
+                                            <SystemUpdateAltIcon />
+                                            Update
+                                        </Button>
+                                    </TableCell>
+                                </div> :
+                                <TableCell align="right">
+                                    <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
+                                        <AttachMoneyIcon />
+                                        Set Price
+                                    </Button>
+                                </TableCell>
+                            }
 
+                        </TableRow>
                     ))}
                 </TableBody>
             </Table>
@@ -235,17 +249,17 @@ const Dashboard = () => {
         <div>
 
             {
-                notification && 
+                notification &&
                 <Snackbar open={notification} autoHideDuration={6000} >
-                    <Alert severity={success? "success": "error"}>
+                    <Alert severity={success ? "success" : "error"}>
                         {notification}
                     </Alert>
                 </Snackbar>
-            
+
                 //<Alert severity={success? "success": "error"}>{notification}</Alert>
             }
 
-            {allowed && <Tabs>
+            {allowed === 2 ? <Tabs>
                 <TabList>
                     <Tab>Products</Tab>
                     <Tab>Comments</Tab>
@@ -258,7 +272,7 @@ const Dashboard = () => {
                 <TabPanel>
                     <Comments />
                 </TabPanel>
-            </Tabs>}
+            </Tabs> : <Products />}
 
         </div>
     )

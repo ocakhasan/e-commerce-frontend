@@ -35,18 +35,18 @@ const deleteProduct = async id => {
 const updateProduct = async (oldObject, newObject) => {
     console.log(oldObject)
     console.log(newObject)
-    const toSend = {rate: oldObject.rateCount, token,  ...newObject}
+    const toSend = { rate: oldObject.rateCount, token, ...newObject }
     console.log(toSend)
     const url = `/admin/pm/product/${oldObject._id}`
-    try{
+    try {
         const response = await axios.put(url, toSend)
         return response.data
 
     } catch {
         console.log("error")
     }
-    
-    
+
+
 }
 
 const addComment = async commentObj => {
@@ -62,5 +62,24 @@ const addComment = async commentObj => {
     return response.data
 }
 
-const productService = { getAllProduct, getProduct, addProduct, deleteProduct, updateProduct, setToken, addComment }
+
+const changePrice = async (basePrice, previousPrice, product) => {
+    console.log(basePrice, previousPrice, product)
+    const url = `/admin/sm/product/${product._id}`
+    const toSend = { ...product, unitPrice: basePrice, previousPrice: previousPrice, token}
+    console.log(toSend)
+    const response = await axios.put(url, toSend)
+    return response.data
+
+}
+const productService = {
+    getAllProduct, 
+    getProduct, 
+    addProduct, 
+    deleteProduct, 
+    updateProduct, 
+    setToken, 
+    addComment,
+    changePrice
+}
 export default productService

@@ -79,11 +79,11 @@ const ProductDetail = () => {
         if (!window.localStorage.getItem("logged")) {
             if (!window.localStorage.getItem("cart_without_login")) {
                 let currentCart = [data._id]
-                console.log(typeof(currentCart))
+                console.log(typeof (currentCart))
                 window.localStorage.setItem("cart_without_login", JSON.stringify(currentCart))
             } else {
                 let currentCart = JSON.parse(window.localStorage.getItem("cart_without_login"))
-                console.log(typeof(currentCart))
+                console.log(typeof (currentCart))
                 window.localStorage.setItem("cart_without_login", JSON.stringify(currentCart.concat(data._id)))
             }
             setNotification("Product added to cart successfully")
@@ -117,6 +117,29 @@ const ProductDetail = () => {
 
 
     if (data) {
+
+        let priceBlock = null
+        if (data.previousPrice !== 0) {
+
+            const salePercentage = Math.floor((data.unitPrice - data.previousPrice) * 100 / (data.unitPrice))
+            priceBlock =
+                <div className="sale_prices">
+                    <div className="sale">
+                        <p>%{salePercentage}</p>
+                        <small>İndirim</small>
+                    </div>
+                    <div className="prices">
+                        <p className="old_price">{data.unitPrice}</p>
+                        <p className="new_price">{data.previousPrice} TL</p>
+                    </div>
+
+
+                </div>
+        } else {
+            priceBlock = <div className="sale_prices">
+                <p className="new_price">{data.unitPrice} TL</p>
+            </div>
+        }
         return (
             <div>
                 {notification && <Snackbar open={notification} autoHideDuration={6000} >
@@ -136,17 +159,7 @@ const ProductDetail = () => {
 
                         </div>
                         <div className="details_price">
-                            <div className="sale_prices">
-                                <div className="sale">
-                                    <p>%2</p>
-                                    <small>İndirim</small>
-                                </div>
-                                <div className="prices">
-                                    <p className="old_price">{data.previousPrice}</p>
-                                    <p className="new_price">{data.unitPrice} TL</p>
-                                </div>
-
-                            </div>
+                            {priceBlock}
                             <div className="product_rating">
                                 <StarRatingComponent
                                     name={data._id}
@@ -175,28 +188,27 @@ const ProductDetail = () => {
                                 <p>You cannot buy</p>
                         }
 
+                        <div className="add_comment">
+                            <form onSubmit={handleComment}>
+
+                                <TextField id="standard-error" label="Comment" defaultValue=""
+                                    onChange={(e) => setComment(e.target.value)} />
+                                <Button variant="contained" color="primary" type="submit">Send</Button>
+
+                            </form>
+                        </div>
 
                     </div>
 
                 </div>
 
-                <div className="add_comment">
-                    <form onSubmit={handleComment}>
-
-                        <TextField id="standard-error" label="Comment" defaultValue=""
-                            onChange={(e) => setComment(e.target.value)} />
-                        <Button variant="contained" color="primary" type="submit">Send</Button>
-
-                    </form>
-
-                </div>
 
 
                 <div className="comments">
                     <h2>Comments</h2>
                     {commentData && commentData.reverse().map(comment => (
                         <div>
-                            {comment.approval?  <Comment comment={comment} /> : null}
+                            {comment.approval ? <Comment comment={comment} /> : null}
                         </div>
                     ))}
                 </div>

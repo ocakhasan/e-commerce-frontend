@@ -3,11 +3,14 @@ import { useParams, useHistory } from 'react-router-dom'
 import productService from '../services/productService'
 import { useFormik } from 'formik'
 import Button from "@material-ui/core/Button"
+import SalesUpdateForm from './DashboardUtils/SalesUpdateForm'
 
 
 const UpdateForm = () => {
     const params = useParams()
     const [data, setData] = useState(null)
+    const [user, setUser] = useState(1)
+    
 
 
     useEffect(() => {
@@ -18,6 +21,13 @@ const UpdateForm = () => {
                 setData(response.product)
             })
     }, [params.id])
+
+    useEffect(() => {
+        const logged = window.localStorage.getItem("logged")
+        if (logged) {
+            setUser(JSON.parse(logged).userType)
+        }
+    }, [])
 
     const ProductInfo = () => {
         if (data) {
@@ -35,9 +45,75 @@ const UpdateForm = () => {
         return <p>Loading</p>
     }
 
-    const UpdateForm = () => {
-        const history = useHistory()
+    const SalesProductInfo = () => {
+        if (data) {
+            return (
+                <ul>
+                    <li>Product Name = {data.productName}</li>
+                   
+                    <li>Unit Price = {data.unitPrice}</li>
+                    <li>Previous Price = {data.previousPrice}</li>
 
+                    <li>Stock = {data.stock}</li>
+                </ul>
+            )
+        }
+        return <p>Loading</p>
+    }
+
+    /* const SalesUpdateForm = () => {
+        const history = useHistory()
+        const formik = useFormik({
+            initialValues: {
+                unitPrice: data.unitPrice,
+                previousPrice: data.previousPrice
+            },
+
+            onSubmit: values => {
+                console.log('post request to submit')
+                productService
+                    .updateProduct(data, values)
+                    .then((response) => {
+                        console.log(response)
+                        history.push('/dashboard')
+                    })
+
+            },
+            validateOnChange: false,
+            validateOnBlur: false
+        })
+
+        return (
+
+
+
+            <form onSubmit={formik.handleSubmit}>
+
+                <div className="form-part">
+                    <label className="clr-purple">Base Price</label>
+                    <input type="number"
+                        {...formik.getFieldProps('unitPrice')} />
+                </div>
+
+                <div className="form-part">
+                    <label className="clr-purple">Sale Price</label>
+                    <input type="number"
+                        {...formik.getFieldProps('previousPrice')} />
+                </div>
+
+
+                <Button variant="outlined" color="secondary">
+                    Set the Price
+                </Button>
+
+            </form>
+
+        )
+    } */
+
+    const UpdateForm = () => {
+        
+        const history = useHistory()
         const formik = useFormik({
             initialValues: {
                 productName: data.productName,
@@ -111,8 +187,8 @@ const UpdateForm = () => {
                 </div>
 
 
-                <Button variant="outlined" color="secondary">
-                    Add Product
+                <Button type="submit" variant="outlined" color="secondary">
+                    Update Product 
                 </Button>
 
             </form>
@@ -124,7 +200,8 @@ const UpdateForm = () => {
         <div>
             <ProductInfo />
             <h3>Update Product</h3>
-            {data && <UpdateForm />}
+            {user===1 && data && <SalesUpdateForm data={data}/>}
+            {user===2 && data && <UpdateForm />}
 
 
         </div>
