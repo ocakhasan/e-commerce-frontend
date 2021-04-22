@@ -115,3 +115,11 @@
     border:1px solid black;
     margin-top: .2rem;
 }
+
+.detail_form{
+    display: flex;
+    margin: 1rem 0rem;
+    flex-direction: column;
+    width: 50%;
+    gap: 1rem;
+}

@@ -4,6 +4,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import './styles/SignupForm.css'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+
 
 
 const SignupForm = () => {
@@ -11,7 +14,7 @@ const SignupForm = () => {
 
     const history = useHistory()
     useEffect(() => {
-        if (window.localStorage.getItem('logged')){
+        if (window.localStorage.getItem('logged')) {
             history.push("/")
         }
     }, [history])
@@ -66,48 +69,43 @@ const SignupForm = () => {
                     provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
                 </div>
 
-                <form onSubmit={formik.handleSubmit} className="form">
-                    <div className="form-part">
-                        <label className="clr-purple">Name</label>
-                        <input type="text" {...formik.getFieldProps('username')} />
-                    </div>
+                <form onSubmit={formik.handleSubmit} className="detail_form">
+                    <TextField variant="outlined" type="text" id="standard-error"
+                        label="Username"
+                        {...formik.getFieldProps('username')} />
 
                     {formik.touched.username && formik.errors.username ? (
                         <div className="form-error">{formik.errors.username}</div>
                     ) : null}
 
-                    <div className="form-part">
-                        <label className="clr-purple">Email</label>
-                        <input type="email" name="email" {...formik.getFieldProps('userEmail')} />
-                    </div>
+                    <TextField variant="outlined" type="email" id="standard-error"
+                        label="Email"
+                        {...formik.getFieldProps('userEmail')} />
 
                     {formik.touched.userEmail && formik.errors.userEmail ? (
                         <div className="form-error">{formik.errors.userEmail}</div>
                     ) : null}
 
-                    <div className="form-part">
-                        <label className="clr-purple">Password</label>
-                        <input type="password" name="password" {...formik.getFieldProps('password')} />
-                    </div>
+                    <TextField variant="outlined" type="password" id="standard-error"
+                        label="Password"
+                        {...formik.getFieldProps('password')} />
 
                     {formik.touched.password && formik.errors.password ? (
                         <div className="form-error">{formik.errors.password}</div>
                     ) : null}
 
-                    <div className="form-part">
-                        <label className="clr-purple">Password Again</label>
-                        <input type="password" name="passwordValidation"
-                            {...formik.getFieldProps('passwordValidation')} />
-                    </div>
+                    <TextField variant="outlined" type="password" id="standard-error"
+                        label="Password Again"
+                        {...formik.getFieldProps('passwordValidation')} />
 
                     {formik.touched.passwordValidation && formik.errors.passwordValidation ? (
                         <div className="form-error">{formik.errors.passwordValidation}</div>
                     ) : null}
 
 
-                    <button type="submit" className="btn clr-purple">
+                    <Button type="submit" color="primary" variant="contained">
                         Sign Up
-                    </button>
+                    </Button>
                     <p>If you have an account, you can <Link to="/login">login</Link> from here</p>
 
                 </form>

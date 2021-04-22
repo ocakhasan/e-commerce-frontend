@@ -4,6 +4,7 @@ import productService from '../services/productService'
 import { useFormik } from 'formik'
 import Button from "@material-ui/core/Button"
 import SalesUpdateForm from './DashboardUtils/SalesUpdateForm'
+import ProductUpdateForm from './DashboardUtils/UpdateForm'
 
 
 const UpdateForm = () => {
@@ -111,7 +112,7 @@ const UpdateForm = () => {
         )
     } */
 
-    const UpdateForm = () => {
+    /* const UpdateForm = () => {
         
         const history = useHistory()
         const formik = useFormik({
@@ -195,13 +196,13 @@ const UpdateForm = () => {
 
         )
 
-    }
+    } */
     return (
         <div>
             <ProductInfo />
             <h3>Update Product</h3>
             {user===1 && data && <SalesUpdateForm data={data}/>}
-            {user===2 && data && <UpdateForm />}
+            {user===2 && data && <ProductUpdateForm data={data}/>}
 
 
         </div>

@@ -1,26 +1,35 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { useFormik } from 'formik'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import productService from '../../services/productService'
+import TextField from '@material-ui/core/TextField'
+import SaveIcon from '@material-ui/icons/Save';
 
 
-const ProductForm = ({ addProduct }) => {
+const ProductUpdateForm = ({ data }) => {
 
+    const history = useHistory()
     const formik = useFormik({
         initialValues: {
-            productName: '',
-            description: '',
-            unitPrice: 0,
-            categoryID: 0,
-            stock: 0,
-            warranty: 0,
-            rate: 0
+            productName: data?.productName,
+            description: data?.description,
+            unitPrice: data?.unitPrice,
+            categoryID: data?.categoryID,
+            stock: data?.stock,
+            warranty: data?.warranty,
+            rate: data.rateCount
         },
 
         onSubmit: values => {
             console.log('post request to submit')
-            addProduct(values)
+
+            productService
+                .updateProduct(data, values)
+                .then((response) => {
+                    console.log(response)
+                    history.push('/dashboard')
+                })
 
         },
         validateOnChange: false,
@@ -32,8 +41,6 @@ const ProductForm = ({ addProduct }) => {
 
 
         <form onSubmit={formik.handleSubmit} className="detail_form">
-
-
             <TextField variant="outlined" id="standard-error" label="Product Name"
                 {...formik.getFieldProps('productName')} />
 
@@ -87,7 +94,8 @@ const ProductForm = ({ addProduct }) => {
 
 
             <Button type="submit" variant="contained" color="primary">
-                <AddBoxIcon />Add Product
+                <SaveIcon />
+                Save
             </Button>
 
         </form>
@@ -96,4 +104,4 @@ const ProductForm = ({ addProduct }) => {
 
 }
 
-export default ProductForm
+export default ProductUpdateForm

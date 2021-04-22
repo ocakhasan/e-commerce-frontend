@@ -2,9 +2,10 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useFormik } from 'formik'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import productService from '../../services/productService'
 
-const SalesUpdateForm = ({data}) => {
+const SalesUpdateForm = ({ data }) => {
     const history = useHistory()
     const formik = useFormik({
         initialValues: {
@@ -30,22 +31,32 @@ const SalesUpdateForm = ({data}) => {
 
 
 
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} className="detail_form">
 
-            <div className="form-part">
-                <label className="clr-purple">Base Price</label>
-                <input type="number"
-                    {...formik.getFieldProps('unitPrice')} />
-            </div>
+            <TextField
+                variant="outlined"
+                id="standard-number"
+                label="Price"
+                type="number"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                {...formik.getFieldProps('unitPrice')}
+            />
 
-            <div className="form-part">
-                <label className="clr-purple">Sale Price</label>
-                <input type="number"
-                    {...formik.getFieldProps('previousPrice')} />
-            </div>
+            <TextField
+                variant="outlined"
+                id="standard-number"
+                label="Price"
+                type="number"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                {...formik.getFieldProps('previousPrice')}
+            />
 
 
-            <Button variant="outlined" color="secondary" type="submit">
+            <Button variant="contained" color="primary" type="submit">
                 Set the Price
             </Button>
 

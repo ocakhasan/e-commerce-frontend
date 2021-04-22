@@ -91,9 +91,9 @@ const Dashboard = () => {
     const handleDelete = (e, id) => {
 
         e.preventDefault()
-        setNotification("Product is Deleted")
-        setTimeout(() => setNotification(null), 3000)
-        productService
+        var result = window.confirm("You sure about deleting?")
+        if (result) {
+            productService
             .deleteProduct(id)
             .then(response => {
                 if (response.status) {
@@ -111,6 +111,7 @@ const Dashboard = () => {
                 setSuccess(false)
                 setTimeout(() => setNotification(null), 3000)
             })
+        }
     }
 
     const approveComment = (comment) => {
@@ -141,7 +142,7 @@ const Dashboard = () => {
     const Comments = () => {
         if (commentData) {
             return (
-                <TableContainer style={{ maxWidth: 900, margin: "auto" }} component={Paper}>
+                <TableContainer component={Paper}>
 
                     <h1>Comments</h1>
                     <Table size="small" aria-label="a dense table">
@@ -183,7 +184,7 @@ const Dashboard = () => {
 
     const Products = () => (
 
-        <TableContainer style={{ maxWidth: 900, margin: "auto" }} component={Paper}>
+        <TableContainer component={Paper}>
             <h1>Products</h1>
             <Table size="small" aria-label="a dense table">
                 <TableHead>
@@ -195,10 +196,10 @@ const Dashboard = () => {
                             <TableCell align="right">Rate</TableCell> :
                             <TableCell align="right">Previous Price</TableCell>}
 
-                        {allowed === 2 ? <div><TableCell align="right">Delete</TableCell>
-                            <TableCell align="right">Update</TableCell></div> :
+                        {allowed === 2 ? <TableCell align="right">Delete</TableCell> :
                             <TableCell align="right">Set Price</TableCell>}
 
+                        {allowed === 2 ? <TableCell align="right">Update</TableCell> : null}
 
                     </TableRow>
                 </TableHead>
@@ -211,25 +212,20 @@ const Dashboard = () => {
                             </TableCell>
                             <TableCell align="right">{product.description}</TableCell>
                             <TableCell align="right">{product.unitPrice}</TableCell>
-                            {allowed===2 ? 
-                            <TableCell align="right">{product.rateCount}</TableCell>
-                            : <TableCell align="right">{product.previousPrice}</TableCell>}
-                            
                             {allowed === 2 ?
-                                <div>
-                                    <TableCell align="right">
-                                        <Button variant="contained" color="secondary"
-                                            onClick={(e) => handleDelete(e, product._id)}>
-                                            <DeleteIcon />Delete
-                                        </Button>
-                                    </TableCell>
-                                    <TableCell align="right">
-                                        <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
-                                            <SystemUpdateAltIcon />
-                                            Update
-                                        </Button>
-                                    </TableCell>
-                                </div> :
+                                <TableCell align="right">{product.rateCount}</TableCell>
+                                : <TableCell align="right">{product.previousPrice}</TableCell>}
+
+                            {allowed === 2 ?
+
+                                <TableCell align="right">
+                                    <Button variant="contained" color="secondary"
+                                        onClick={(e) => handleDelete(e, product._id)}>
+                                        <DeleteIcon />Delete
+                                    </Button>
+                                </TableCell>
+
+                                :
                                 <TableCell align="right">
                                     <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
                                         <AttachMoneyIcon />
@@ -237,6 +233,13 @@ const Dashboard = () => {
                                     </Button>
                                 </TableCell>
                             }
+
+                            {allowed === 2 ? <TableCell align="right">
+                                <Button variant="contained" color="primary" href={"/update/product/" + product._id}>
+                                    <SystemUpdateAltIcon />
+                                    Update
+                                </Button>
+                            </TableCell> : null}
 
                         </TableRow>
                     ))}

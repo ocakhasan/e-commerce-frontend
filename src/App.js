@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import Home from './components/Home'
-import { Route, Switch } from 'react-router'
-import { BrowserRouter as Router, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, useHistory, Route, Switch } from 'react-router-dom'
 import SignUpForm from "./components/SignupForm";
 import ProductDetail from './components/ProductDetail'
 import Products from './components/Products'
@@ -68,36 +67,36 @@ function App() {
             <div className="container">
                 <Navbar user={user} handleLogout={handleLogout}/>
                 <Switch>
-                    <Route path="/login">
+                    <Route exact path="/login">
                         < LoginForm handleLogin={handleLogin}/>
                     </Route>
 
-                    <Route path="/signup">
+                    <Route exact path="/signup">
                         <SignUpForm />
                     </Route>
 
 
-                    <Route path="/dashboard">
+                    <Route exact path="/dashboard">
                         <Dashboard />
                     </Route>
 
-                    <Route path="/cart">
+                    <Route exact path="/cart">
                         <Cart />
                     </Route>
 
-                    <Route path="/product/:id">
+                    <Route exact path="/product/:id">
                         <ProductDetail />
                     </Route>
 
-                    <Route path="/update/product/:id">
+                    <Route exact path="/update/product/:id">
                         <UpdateForm />
                     </Route>
 
-                    <Route path="/products">
+                    <Route exact path="/products">
                         <Products />
                     </Route>
 
-                    <Route path="/">
+                    <Route exact path="/">
                         <Home />
                     </Route>
                 </Switch>

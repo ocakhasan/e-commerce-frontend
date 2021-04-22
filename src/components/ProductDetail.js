@@ -189,12 +189,14 @@ const ProductDetail = () => {
                         }
 
                         <div className="add_comment">
-                            <form onSubmit={handleComment}>
+                            <form onSubmit={handleComment} className="detail_form">
 
-                                <TextField id="standard-error" label="Comment" defaultValue=""
-                                    onChange={(e) => setComment(e.target.value)} />
+                                <TextField id="standard-error" label="Comment" variant="outlined"
+                                    onChange={(e) => setComment(e.target.value)} multiline
+                                    rows={2}/>
+                                
                                 <Button variant="contained" color="primary" type="submit">Send</Button>
-
+                                
                             </form>
                         </div>
 
@@ -206,7 +208,7 @@ const ProductDetail = () => {
 
                 <div className="comments">
                     <h2>Comments</h2>
-                    {commentData && commentData.reverse().map(comment => (
+                    {commentData && commentData.map(comment => (
                         <div>
                             {comment.approval ? <Comment comment={comment} /> : null}
                         </div>
