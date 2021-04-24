@@ -32,40 +32,82 @@ const Dashboard = () => {
     const history = useHistory()
 
 
-    useEffect(() => {
+    const handleNotification = (message, isSuccess) => {
+        setNotification(message)
+        setSuccess(isSuccess)
+        setTimeout(() => setNotification(null), 3000)
+    }
+
+    useEffect(async () => {
         const logged = JSON.parse(window.localStorage.getItem('logged'))
 
         if (!logged) {
             history.push("/login")
         } else if (logged.userType === 0) {
-            setNotification("You are not allowed for the admin panel")
+            handleNotification("You are not allowed for the admin panel", false)
         }
         else {
             setAllowed(logged.userType)
-            productService
+            try {
+                const response = await productService.getAllProduct()
+                if (response.status) {
+                    console.log(response)
+                    setProductData(response.products)
+                } else {
+                    handleNotification("Product did not fetched. There is a problem", false)
+                }
+            } catch (exception) {
+                handleNotification("Product did not fetched. There is a problem", false)
+            }
+            /* productService
                 .getAllProduct()
                 .then(response => {
                     console.log(response)
                     setProductData(response.products)
-                })
+                }) */
         }
     }, [history])
 
 
-    useEffect(() => {
-        commentService
-            .getAllComments()
-            .then(response => {
-                console.log("comments", response)
+    useEffect(async () => {
+        try {
+            const response = await commentService.getAllComments()
+            if (response.status) {
                 setCommentData(response.comments)
-            })
+            } else {
+                handleNotification("Comments did not fetched. There is a problem", false)
+
+            }
+        } catch (exception) {
+            handleNotification("Comments did not fetched. There is a problem", false)
+        }
+
+        /*  commentService
+             .getAllComments()
+             .then(response => {
+                 console.log("comments", response)
+                 setCommentData(response.comments)
+             }) */
     }, [])
 
 
-    const addProduct = (values) => {
+    const addProduct = async (values) => {
 
         const toSend = { userType: 2, ...values }
-        productService
+        try {
+            const response = await productService.addProduct(toSend)
+            if (response.status) {
+                handleNotification("New Product Added", true)
+                setProductData(productData.concat(response.product))
+            } else {
+                handleNotification("Adding Product Unsuccessful", true)
+
+            }
+        } catch (exception) {
+            handleNotification("Adding Product Unsuccessful", true)
+        }
+
+        /* productService
             .addProduct(toSend)
             .then(response => {
                 if (response.status) {
@@ -84,39 +126,63 @@ const Dashboard = () => {
                 setNotification("Product did not added")
                 setSuccess(false)
                 setTimeout(() => setNotification(null), 3000)
-            })
+            }) */
 
     }
 
-    const handleDelete = (e, id) => {
+    const handleDelete = async (e, id) => {
 
         e.preventDefault()
         var result = window.confirm("You sure about deleting?")
         if (result) {
-            productService
-            .deleteProduct(id)
-            .then(response => {
+            try {
+                const response = await productService.deleteProduct(id)
                 if (response.status) {
-                    setNotification(`Product ${id} is deleted`)
-                    setSuccess(true)
-                    setTimeout(() => setNotification(null), 3000)
+                    handleNotification(`Product ${id} is deleted`, true)
                     setProductData(productData.filter(product => product._id !== response.id))
                 } else {
+                    handleNotification(`Product ${id} is not deleted`, false)
+                }
+            } catch (exception) {
+                handleNotification(`Product ${id} is not deleted`, false)
+            }
+
+            /* productService
+                .deleteProduct(id)
+                .then(response => {
+                    if (response.status) {
+                        setNotification(`Product ${id} is deleted`)
+                        setSuccess(true)
+                        setTimeout(() => setNotification(null), 3000)
+                        setProductData(productData.filter(product => product._id !== response.id))
+                    } else {
+                        setNotification(`Product ${id} is not deleted`)
+                        setSuccess(false)
+                        setTimeout(() => setNotification(null), 3000)
+                    }
+                }).catch(_error => {
                     setNotification(`Product ${id} is not deleted`)
                     setSuccess(false)
                     setTimeout(() => setNotification(null), 3000)
-                }
-            }).catch(_error => {
-                setNotification(`Product ${id} is not deleted`)
-                setSuccess(false)
-                setTimeout(() => setNotification(null), 3000)
-            })
+                }) */
         }
     }
 
-    const approveComment = (comment) => {
+    const approveComment = async (comment) => {
         console.log("I am here")
-        commentService
+        try {
+            const response = await commentService.approveComment(comment)
+            if (response.status) {
+                handleNotification(`Operation successful`, true)
+                setCommentData(commentData.map(com => com._id === comment._id ? { ...comment, approval: !comment.approval } : com))
+            } else {
+                handleNotification(`Approval did not happen`, false)
+            }
+        } catch (exception) {
+            handleNotification(`Approval did not happen`, false)
+        }
+
+        /* commentService
             .approveComment(comment)
             .then(response => {
                 console.log("comment approval", response)
@@ -136,7 +202,7 @@ const Dashboard = () => {
                 setNotification(`Approval did not happen`)
                 setSuccess(false)
                 setTimeout(() => setNotification(null), 3000)
-            })
+            }) */
     }
 
     const Comments = () => {
