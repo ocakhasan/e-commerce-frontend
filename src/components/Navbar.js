@@ -2,6 +2,7 @@ import React from "react";
 import { Link} from 'react-router-dom'
 import './styles/Navbar.css'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Button from '@material-ui/core/Button'
 
 const Navbar = ({ user, handleLogout }) => {
 
@@ -19,7 +20,7 @@ const Navbar = ({ user, handleLogout }) => {
 
                 <div className="right-links">
                     {(!user || user.userType === 0 ) ?
-                        <li className="nav__link"><Link to="/cart"><ShoppingCartIcon />Cart</Link></li> :
+                        <Link to="/cart"><Button ><ShoppingCartIcon />Cart</Button></Link>:
                         null}
 
                     {
@@ -29,7 +30,7 @@ const Navbar = ({ user, handleLogout }) => {
                             {dashboard}
 
                             <li className="nav__link">
-                                <button className="nav_button" onClick={() => handleLogout()}>Logout</button>
+                                <button className="nav_button" onClick={handleLogout}>Logout</button>
                             </li>
                         </div>
                     }

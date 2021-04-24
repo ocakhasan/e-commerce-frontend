@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import StarRatingComponent from 'react-star-rating-component';
 
 const ProductDetail = () => {
@@ -193,10 +194,10 @@ const ProductDetail = () => {
 
                                 <TextField id="standard-error" label="Comment" variant="outlined"
                                     onChange={(e) => setComment(e.target.value)} multiline
-                                    rows={2}/>
-                                
+                                    rows={2} />
+
                                 <Button variant="contained" color="primary" type="submit">Send</Button>
-                                
+
                             </form>
                         </div>
 
@@ -221,7 +222,12 @@ const ProductDetail = () => {
         )
 
     } else {
-        return <Alert severity="info">Loading</Alert>
+        return (
+            <div>
+                <h2>Product is Loading</h2>
+                <CircularProgress />
+            </div>
+        )
     }
 }
 
