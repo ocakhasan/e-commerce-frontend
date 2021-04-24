@@ -21,6 +21,7 @@ function App() {
     const history = useHistory()
     
     
+    
 
     useEffect(() => {
         const loggedUserJSON= window.localStorage.getItem('logged')
@@ -55,9 +56,9 @@ function App() {
     }
 
     const handleLogout = () => {
+        
         window.localStorage.removeItem('logged')
         setUser(null)
-        history.push("/login")
     }
 
 

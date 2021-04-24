@@ -1,13 +1,15 @@
 import React from "react";
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './styles/Navbar.css'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Button from '@material-ui/core/Button'
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 
 const Navbar = ({ user, handleLogout }) => {
 
     const dashboard = user?.userType !== 0 ?
-        <li className="nav__link"><Link to="/dashboard">Dashboard</Link></li> : null
+        <Link to="/dashboard"><Button ><DashboardIcon />Dashboard</Button></Link> : null
 
 
 
@@ -19,27 +21,26 @@ const Navbar = ({ user, handleLogout }) => {
 
 
                 <div className="right-links">
-                    {(!user || user.userType === 0 ) ?
-                        <Link to="/cart"><Button ><ShoppingCartIcon />Cart</Button></Link>:
+                    {user && <Link to="/profile"><Button ><PersonOutlineIcon /> {user.username}</Button></Link>}
+                    {(!user || user.userType === 0) ?
+                        <Link to="/cart"><Button ><ShoppingCartIcon />Cart</Button></Link> :
                         null}
 
                     {
                         user &&
 
                         <div className="nav__links">
+                            
                             {dashboard}
-
-                            <li className="nav__link">
-                                <button className="nav_button" onClick={handleLogout}>Logout</button>
-                            </li>
+                            <Button  type="submit" onClick={handleLogout}>Logout</Button>
                         </div>
                     }
 
                     {
                         !user &&
                         <div className="nav__links">
-                            <li className="nav__link"><Link to="/signup">Signup</Link></li>
-                            <li className="nav__link"><Link to="/login">Login</Link></li>
+                            <Link to="/signup"><Button >Signup</Button></Link>
+                            <Link to="/login"><Button >Login</Button></Link>
                         </div>
                     }
 

@@ -22,6 +22,7 @@ const ProductDetail = () => {
     const [comment, setComment] = useState('')
     const [rating, setRating] = useState(0)
     const [notification, setNotification] = useState(null)
+    const [loading, setLoading] = useState(true)
     const [success, setSuccess] = useState(false)
     const history = useHistory()
 
@@ -61,9 +62,16 @@ const ProductDetail = () => {
         productService
             .getProduct(params.id)
             .then(response => {
-                console.log(response)
-                setData(response.product)
-                setCommentData(response.product.comments)
+                if(response.status) {
+                    console.log(response)
+                    setData(response.product)
+                    setLoading(false)
+                    setCommentData(response.product.comments)
+                } else {
+                    setLoading(false)
+                }
+            }).catch(_error => {
+                setLoading(false)
             })
 
 
@@ -141,6 +149,8 @@ const ProductDetail = () => {
                 <p className="new_price">{data.unitPrice} TL</p>
             </div>
         }
+
+
         return (
             <div>
                 {notification && <Snackbar open={notification} autoHideDuration={6000} >
@@ -221,7 +231,13 @@ const ProductDetail = () => {
 
         )
 
-    } else {
+    } else if (!data && !loading){
+        return (
+            <h1>There is no product like this! Or we have a problem.</h1>
+        )
+    }
+    
+    else {
         return (
             <div>
                 <h2>Product is Loading</h2>
