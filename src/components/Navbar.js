@@ -21,17 +21,18 @@ const Navbar = ({ user, handleLogout }) => {
 
 
                 <div className="right-links">
-                    {user && <Link to="/profile"><Button ><PersonOutlineIcon /> {user.username}</Button></Link>}
                     {(!user || user.userType === 0) ?
                         <Link to="/cart"><Button ><ShoppingCartIcon />Cart</Button></Link> :
                         null}
 
+                        
                     {
                         user &&
 
                         <div className="nav__links">
                             
                             {dashboard}
+                            <Link to="/profile"><Button ><PersonOutlineIcon /> {user.username}</Button></Link>
                             <Button  type="submit" onClick={handleLogout}>Logout</Button>
                         </div>
                     }

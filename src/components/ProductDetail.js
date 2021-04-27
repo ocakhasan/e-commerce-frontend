@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams, Link } from 'react-router-dom'
 
 import productService from '../services/productService'
 import commentService from '../services/commentService'
@@ -233,7 +233,11 @@ const ProductDetail = () => {
 
     } else if (!data && !loading){
         return (
-            <h1>There is no product like this! Or we have a problem.</h1>
+            <div>
+                <h3>There is no product like this! Or we have a problem.</h3>
+                <p>You can go to homepage from <Link to="/">here</Link></p>
+
+            </div>
         )
     }
     

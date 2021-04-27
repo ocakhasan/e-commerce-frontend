@@ -8,7 +8,7 @@ const Comment = ({ comment }) => {
     return (
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
-                <Avatar alt="Remy Sharp" src={imgLink} />
+                <Avatar alt="Remy Sharp" >{comment.owner.slice(0, 1)}</Avatar>
             </Grid>
             <Grid  item xs spacing={4} zeroMinWidth>
                 <h4 style={{ margin: 0, textAlign: "left" }}>{comment.owner}</h4>

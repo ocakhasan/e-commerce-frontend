@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const MainContent = () => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState(undefined)
@@ -17,15 +17,20 @@ const MainContent = () => {
     //console.log(data)
 
 
-    useEffect(() => {
-        productService
-            .getAllProduct()
-            .then(response => {
-                //console.log(response)
+    useEffect(async () => {
+        try {
+            const response = await productService.getAllProduct()
+            if (response.status) {
                 setData(response.products)
                 setLoading(false)
                 setSearchResults(response.products)
-            })
+            } else {
+                setLoading(false)
+            }
+        } catch (exception) {
+            setLoading(false)
+        }
+
 
     }, [])
 
@@ -62,6 +67,13 @@ const MainContent = () => {
                 <CircularProgress />
             </div>
         )
+    } else if (!loading && !data) {
+        return (
+            <div>
+                <h2>There is a problem! Products are not loaded.</h2>
+                
+            </div>
+        )
     }
     else {
 
@@ -83,7 +95,7 @@ const MainContent = () => {
 
                         <button className="search_button" type="submit" onClick={getSearchTerm}>
                             <p>Search</p>
-                            <i class="fa fa-search" />
+                            <i className="fa fa-search" />
                         </button>
                     </div>
                 </div>
