@@ -13,6 +13,7 @@ import productService from './services/productService'
 import commentService from './services/commentService'
 import cartService from './services/cartService'
 import Cart from './components/Cart'
+import Profile from './components/Profile'
 
 
 function App() {
@@ -95,6 +96,10 @@ function App() {
 
                     <Route exact path="/products">
                         <Products />
+                    </Route>
+
+                    <Route exact path="/profile">
+                        <Profile />
                     </Route>
 
                     <Route exact path="/">

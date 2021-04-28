@@ -12,30 +12,35 @@ const Cart = () => {
     useEffect(() => {
         const logged = window.localStorage.getItem("logged")
         if (logged) {
+            console.log("I am logged", logged)
             setUser(true)
-            setData(JSON.parse(logged).cart)
-            /* cartService
+            cartService
                 .getCartProducts()
                 .then(response => {
                     if (response.status) {
                         setData(response.cart)
-                        setNotification("Cart Information is Ready!")
-                        setTimeout(() => setNotification(null), 3000)
-                    } else {
-                        setNotification("Cart operation unsuccessfull")
-                        setTimeout(() => setNotification(null), 3000)
-
-                    }
-                }).catch(_error => {
-                    setNotification("Cart operation unsuccessfull")
-                    setTimeout(() => setNotification(null), 3000)
-                }) */
+                    } 
+                })
+            
         } else {
             setUser(false)
             const cart_without_user = window.localStorage.getItem("cart_without_login")
+            console.log(cart_without_user)
             if (cart_without_user) {
-                setData(JSON.parse(cart_without_user))
-                setNotification("Cart Information is Ready!")
+                cartService
+                    .getProductWithoutUser(cart_without_user)
+                    .then(response => {
+                        
+                        if (response.status) {
+                            setData(response.cart)
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+            }
+            else {
+                
+                setNotification("There is no product")
                 setTimeout(() => setNotification(null), 3000)
             }
         }
@@ -50,7 +55,7 @@ const Cart = () => {
                 <div>
                     <p>Loggged in user with Cart</p>
                     {data.map(product => (
-                        <p>{product}</p>
+                        <p>{product._id}</p>
                     ))}
                 </div>
 
@@ -61,7 +66,7 @@ const Cart = () => {
                     <div>
                         <p>Logged without user cart</p>
                         {data.map(product => (
-                            <p>{product}</p>
+                            <p>{product._id}</p>
                         ))}
                     </div>
                 )

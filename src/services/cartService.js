@@ -23,10 +23,17 @@ const getCartProducts = async () => {
         },
         data: data
     }; */
-    const response = await axios.get(url, {params: {token}})
+    const response = await axios.post(url, {token})
     return response.data
 }
 
-const cartService = { addProductCard, setToken, getCartProducts }
+const getProductWithoutUser = async (ids) => {
+    const cartIds = JSON.stringify(ids)
+    const url = "/api/cart/userless"
+    const response = await axios.post(url, {cartIds})
+    return response.data
+}
+
+const cartService = { addProductCard, setToken, getCartProducts, getProductWithoutUser }
 
 export default cartService

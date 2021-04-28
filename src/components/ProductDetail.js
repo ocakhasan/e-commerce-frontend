@@ -186,7 +186,7 @@ const ProductDetail = () => {
                                 />
 
 
-                                <small>{data.rateTotal} değerlendirme</small>
+                                <small>{data.rateCount} değerlendirme</small>
                             </div>
                         </div>
 
