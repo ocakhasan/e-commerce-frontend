@@ -26,6 +26,12 @@ const ProductDetail = () => {
     const [success, setSuccess] = useState(false)
     const history = useHistory()
 
+    const handleNotification = (message, isSuccess) => {
+        setNotification(message)
+        setSuccess(isSuccess)
+        setTimeout(() => setNotification(null), 3000)
+    }
+
 
     const handleComment = (e) => {
         console.log("New Product")
@@ -62,7 +68,7 @@ const ProductDetail = () => {
         productService
             .getProduct(params.id)
             .then(response => {
-                if(response.status) {
+                if (response.status) {
                     console.log(response)
                     setData(response.product)
                     setLoading(false)
@@ -73,12 +79,22 @@ const ProductDetail = () => {
             }).catch(_error => {
                 setLoading(false)
             })
-
-
     }, [params.id])
 
-    const handleRate = (nextValue, prevValue, name) => {
+
+    const handleRate = async (nextValue, prevValue, name) => {
         setRating(nextValue)
+        try {
+            const response = await productService.rateProduct(data._id, nextValue)
+            if (response.status) {
+                setData(response.product)
+                handleNotification("Your rate is sent", true)
+            } else {
+                handleNotification("There is a problem", false)
+            }
+        } catch (exception) {
+            handleNotification("There is a problem", false)
+        }
         //const currentTotalRate = data.rateCount * data.rateTotal
     }
 
@@ -95,32 +111,22 @@ const ProductDetail = () => {
                 console.log(typeof (currentCart))
                 window.localStorage.setItem("cart_without_login", JSON.stringify(currentCart.concat(data._id)))
             }
-            setNotification("Product added to cart successfully")
-            setSuccess(true)
-            setTimeout(() => setNotification(null), 3000)
+            handleNotification("Product added to cart successfully", true)
         } else {
             cartService
                 .addProductCard(data._id)
                 .then(response => {
                     if (response.status) {
-                        setNotification("Product added to cart successfully")
-                        setSuccess(true)
-                        setTimeout(() => setNotification(null), 3000)
+                        handleNotification("Product added to cart successfully", true)
                         window.localStorage.setItem("logged", JSON.stringify(response.user))
                     } else {
-                        setNotification("Operation unsuccessful")
-                        setSuccess(false)
-                        setTimeout(() => setNotification(null), 3000)
+                        handleNotification("Operation unsuccessful", false)
                     }
                 })
                 .catch(_error => {
-                    setNotification("Operation unsuccessful")
-                    setSuccess(false)
-                    setTimeout(() => setNotification(null), 3000)
+                    handleNotification("Operation unsuccessful", false)
                 })
-
         }
-
     }
 
 
@@ -175,12 +181,12 @@ const ProductDetail = () => {
                                 <StarRatingComponent
                                     name={data._id}
                                     starCount={5}
-                                    value={rating}
+                                    value={data.rate}
                                     onStarClick={handleRate}
                                 />
 
 
-                                <small>{data.rateCount} değerlendirme</small>
+                                <small>{data.rateTotal} değerlendirme</small>
                             </div>
                         </div>
 
@@ -231,7 +237,7 @@ const ProductDetail = () => {
 
         )
 
-    } else if (!data && !loading){
+    } else if (!data && !loading) {
         return (
             <div>
                 <h3>There is no product like this! Or we have a problem.</h3>
@@ -240,7 +246,7 @@ const ProductDetail = () => {
             </div>
         )
     }
-    
+
     else {
         return (
             <div>

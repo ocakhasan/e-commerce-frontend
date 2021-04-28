@@ -72,6 +72,13 @@ const changePrice = async (basePrice, previousPrice, product) => {
     return response.data
 
 }
+
+const rateProduct = async (id, rate) => {
+    const url = "/api/rate/product"
+    const toSend = {id, input_rate: rate}
+    const response = await axios.post(url, toSend)
+    return response.data
+}
 const productService = {
     getAllProduct, 
     getProduct, 
@@ -80,6 +87,7 @@ const productService = {
     updateProduct, 
     setToken, 
     addComment,
-    changePrice
+    changePrice,
+    rateProduct
 }
 export default productService
