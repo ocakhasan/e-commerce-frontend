@@ -69,7 +69,7 @@ const SignupForm = () => {
                     provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
                 </div>
 
-                <form onSubmit={formik.handleSubmit} className="detail_form">
+                <form onSubmit={formik.handleSubmit} className="detail_form" data-testid='form'>
                     <TextField variant="outlined" type="text" id="standard-error"
                         label="Username"
                         {...formik.getFieldProps('username')} />

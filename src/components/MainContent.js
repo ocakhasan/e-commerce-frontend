@@ -17,19 +17,22 @@ const MainContent = () => {
     //console.log(data)
 
 
-    useEffect(async () => {
-        try {
-            const response = await productService.getAllProduct()
-            if (response.status) {
-                setData(response.products)
-                setLoading(false)
-                setSearchResults(response.products)
-            } else {
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await productService.getAllProduct()
+                if (response.status) {
+                    setData(response.products)
+                    setLoading(false)
+                    setSearchResults(response.products)
+                } else {
+                    setLoading(false)
+                }
+            } catch (exception) {
                 setLoading(false)
             }
-        } catch (exception) {
-            setLoading(false)
         }
+        fetchData()
 
 
     }, [])

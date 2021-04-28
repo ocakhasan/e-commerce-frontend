@@ -65,13 +65,13 @@ const LoginForm = ({ handleLogin }) => {
                     Nulla atque temporibus fugiat at. Unde cumque dicta quis, est doloribus,
                     provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
                 </div>
-                <form onSubmit={formik.handleSubmit} className="detail_form">
+                <form onSubmit={formik.handleSubmit} className="detail_form" data-testid='form'>
                     {/* <div className="form-part">
                         <label className="clr-purple">Email</label>
                         <input type="email" name="email" {...formik.getFieldProps('userEmail')}
                         />
                     </div> */}
-                    <TextField variant="outlined" type="email" id="standard-error" 
+                    <TextField variant="outlined" type="email" id="email" 
                     label="Email"
                         {...formik.getFieldProps('userEmail')} />
 
@@ -83,7 +83,7 @@ const LoginForm = ({ handleLogin }) => {
                         <label className="clr-purple">Password</label>
                         <input type="password" name="password" {...formik.getFieldProps('password')} />
                     </div> */}
-                    <TextField variant="outlined" type="password" id="standard-error" 
+                    <TextField variant="outlined" type="password" id="password" 
                     label="Password"
                         {...formik.getFieldProps('password')} />
                     {formik.touched.password && formik.errors.password ? (
@@ -93,7 +93,7 @@ const LoginForm = ({ handleLogin }) => {
                     <Button type="submit" variant="contained" color="primary">
                         Login
                     </Button>
-                    <p>If you do not have an account, you can <Link to="/signup">sign-up</Link> from here</p>
+                    {/* <p>If you do not have an account, you can <Link to="/signup">sign-up</Link> from here</p> */}
 
                 </form>
             </div>

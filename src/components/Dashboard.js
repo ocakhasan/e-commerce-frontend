@@ -38,56 +38,71 @@ const Dashboard = () => {
         setTimeout(() => setNotification(null), 3000)
     }
 
-    useEffect(async () => {
-        const logged = JSON.parse(window.localStorage.getItem('logged'))
+    useEffect( () => {
 
-        if (!logged) {
-            history.push("/login")
-        } else if (logged.userType === 0) {
-            handleNotification("You are not allowed for the admin panel", false)
-        }
-        else {
-            setAllowed(logged.userType)
-            try {
-                const response = await productService.getAllProduct()
-                if (response.status) {
-                    console.log(response)
-                    setProductData(response.products)
-                } else {
+        async function fetchData() {
+        
+            const logged = JSON.parse(window.localStorage.getItem('logged'))
+        
+            if (!logged) {
+                history.push("/login")
+            } else if (logged.userType === 0) {
+                handleNotification("You are not allowed for the admin panel", false)
+            }
+            else {
+                setAllowed(logged.userType)
+                try {
+                    const response = await productService.getAllProduct()
+                    if (response.status) {
+                        console.log(response)
+                        setProductData(response.products)
+                    } else {
+                        handleNotification("Product did not fetched. There is a problem", false)
+                    }
+                } catch (exception) {
                     handleNotification("Product did not fetched. There is a problem", false)
                 }
-            } catch (exception) {
-                handleNotification("Product did not fetched. There is a problem", false)
+                /* productService
+                    .getAllProduct()
+                    .then(response => {
+                        console.log(response)
+                        setProductData(response.products)
+                    }) */
             }
-            /* productService
-                .getAllProduct()
-                .then(response => {
-                    console.log(response)
-                    setProductData(response.products)
-                }) */
+            
         }
+        fetchData()
+            
     }, [history])
 
 
-    useEffect(async () => {
-        try {
-            const response = await commentService.getAllComments()
-            if (response.status) {
-                setCommentData(response.comments)
-            } else {
-                handleNotification("Comments did not fetched. There is a problem", false)
+    useEffect(() => {
 
+        async function fetchData() {
+
+            try {
+                const response = await commentService.getAllComments()
+                if (response.status) {
+                    setCommentData(response.comments)
+                } else {
+                    handleNotification("Comments did not fetched. There is a problem", false)
+    
+                }
+            } catch (exception) {
+                handleNotification("Comments did not fetched. There is a problem", false)
             }
-        } catch (exception) {
-            handleNotification("Comments did not fetched. There is a problem", false)
+    
+            /*  commentService
+                 .getAllComments()
+                 .then(response => {
+                     console.log("comments", response)
+                     setCommentData(response.comments)
+                 }) */
+
         }
 
-        /*  commentService
-             .getAllComments()
-             .then(response => {
-                 console.log("comments", response)
-                 setCommentData(response.comments)
-             }) */
+        fetchData()
+        
     }, [])
 
 
