@@ -3,6 +3,7 @@ import { render, fireEvent, screen, act } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import LoginForm from '../LoginForm'
 import { BrowserRouter as Router } from 'react-router-dom'
+import axios from 'axios'
 
 describe('<LoginForm />', () => {
 
@@ -106,6 +107,49 @@ describe('<LoginForm />', () => {
 
         expect(queryByText("Email is required")).not.toBeInTheDocument();
         expect(queryByText("Password is required")).not.toBeInTheDocument();
+    })
+ */
+
+    /* test('allows user to login successfully', async () => {
+        jest.mock("axios");
+
+        const UserResponse = {
+            status: true,
+            user: {
+                username: 'ocakhasan',
+                userEmail: 'ocakhasan@gmail.com',
+                token: 'token'
+            }
+        }
+
+        const { getByTestId } = render(
+            <Router>
+                <LoginForm handleLogin={handleLogin} />
+            </Router>
+        )
+        axios.post.mockImplementation(() => Promise.resolve(UserResponse));
+
+        await act(async () => {
+            fireEvent.change(screen.getByLabelText("Email"), {
+                target: { value: 'ocakhasan@gmail.com' },
+            });
+
+            fireEvent.change(screen.getByLabelText("Password"), {
+                target: { value: 'deneme' },
+            })
+        });
+
+        await act(async () => {
+            fireEvent.submit(getByTestId('form'))
+        });
+
+        expect(window.localStorage.getItem('logged')).toEqual(UserResponse)
+
+
+
+
+
+
     }) */
 })
 
