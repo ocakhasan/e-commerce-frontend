@@ -11,6 +11,7 @@ const ProductForm = ({ addProduct }) => {
         initialValues: {
             productName: '',
             description: '',
+            imagePath: '',
             unitPrice: 0,
             categoryID: 0,
             stock: 0,
@@ -40,6 +41,11 @@ const ProductForm = ({ addProduct }) => {
             <TextField variant="outlined" id="standard-error" label="Product Description"
 
                 {...formik.getFieldProps('description')} />
+
+            <TextField variant="outlined" id="standard-error" label="Image path"
+
+                {...formik.getFieldProps('imagePath')} />
+
 
             <TextField
                 variant="outlined"

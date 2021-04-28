@@ -152,7 +152,7 @@ const ProductDetail = () => {
                 </div>
         } else {
             priceBlock = <div className="sale_prices">
-                <p className="new_price">{data.unitPrice} TL</p>
+                <p className="new_price">{data.unitPrice} $</p>
             </div>
         }
 
@@ -186,7 +186,7 @@ const ProductDetail = () => {
                                 />
 
 
-                                <small>{data.rateCount} değerlendirme</small>
+                                <small>{data.rateTotal} değerlendirme</small>
                             </div>
                         </div>
 
