@@ -18,7 +18,8 @@ const ProductUpdateForm = ({ data }) => {
             categoryID: data?.categoryID,
             stock: data?.stock,
             warranty: data?.warranty,
-            rate: data.rateCount
+            rate: data?.rateCount,
+            imagePath: data?.imagePath
         },
 
         onSubmit: values => {
@@ -47,6 +48,10 @@ const ProductUpdateForm = ({ data }) => {
             <TextField variant="outlined" id="standard-error" label="Product Description"
 
                 {...formik.getFieldProps('description')} />
+
+            <TextField variant="outlined" id="standard-error" label="Image path"
+
+                {...formik.getFieldProps('imagePath')} />
 
             <TextField
                 variant="outlined"

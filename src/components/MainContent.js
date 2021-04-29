@@ -121,7 +121,7 @@ const MainContent = () => {
                                     <p className="card_price">
                                         {item.unitPrice}TL
                                     </p>
-                                    <button className="card_button">Add to Cart</button>
+                                    <button className="card_button">Get Details</button>
                                 </div>
 
 

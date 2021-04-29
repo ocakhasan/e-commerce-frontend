@@ -3,6 +3,7 @@ import { useParams} from 'react-router-dom'
 import productService from '../services/productService'
 import SalesUpdateForm from './DashboardUtils/SalesUpdateForm'
 import ProductUpdateForm from './DashboardUtils/UpdateForm'
+import CartProduct from './CartUtils/CartProduct'
 
 
 const UpdateForm = () => {
@@ -31,14 +32,8 @@ const UpdateForm = () => {
     const ProductInfo = () => {
         if (data) {
             return (
-                <ul>
-                    <li>Product Name = {data.productName}</li>
-                    <li>Description = {data.description}</li>
-                    <li>Unit Price = {data.unitPrice}</li>
-                    <li>Stock = {data.stock}</li>
-                    <li>Warranty = {data.warranty}</li>
-                    <li>Category = {data.categoryID}</li>
-                </ul>
+                
+                <CartProduct product={data} showButton={false}/>
             )
         }
         return <p>Loading</p>

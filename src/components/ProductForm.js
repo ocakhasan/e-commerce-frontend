@@ -34,6 +34,7 @@ const ProductForm = ({ addProduct }) => {
 
         <form onSubmit={formik.handleSubmit} className="detail_form">
 
+            <h2>Add New Product</h2>
 
             <TextField variant="outlined" id="standard-error" label="Product Name"
                 {...formik.getFieldProps('productName')} />

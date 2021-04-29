@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CartProdut({ product, handleDelete }) {
+export default function CartProdut({ product, handleDelete, showButton }) {
   const classes = useStyles();
 
   return (
@@ -56,7 +56,7 @@ export default function CartProdut({ product, handleDelete }) {
                   ID: {product._id}
                 </Typography>
               </Grid>
-              <Grid item>
+              {showButton ? <Grid item>
                 <Button
                   variant="body2"
                   type="submit"
@@ -64,7 +64,8 @@ export default function CartProdut({ product, handleDelete }) {
                 >
                   Remove
                 </Button>
-              </Grid>
+              </Grid>: null}
+              
             </Grid>
             <Grid item>
               <Typography variant="subtitle1">${product.unitPrice}</Typography>

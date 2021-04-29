@@ -38,6 +38,7 @@
 
 .card_image{
     display:flex;
+    flex:2;
     justify-content: center;
 }
 
@@ -46,6 +47,7 @@
 }
 
 .card_header{
+    flex:1;
     text-align:center;  
     color:rgb(65, 58, 58);
     height: 2rem;
@@ -56,6 +58,7 @@
 }
 
 .card_detail{
+    flex:1;
     margin-top: 1rem;
     display: flex;
     justify-content: center;

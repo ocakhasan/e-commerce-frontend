@@ -49,6 +49,7 @@
 .new_price{
     font-size: 1.5rem;
     font-weight: bold;
+    color: rgb(70, 65, 65)
 }
 
 .product_name{
@@ -93,6 +94,18 @@
     color:white;
     border-radius: 3px;
 
+}
+
+.rate_div{
+    transform: scale(1.2);
+}
+
+.yellow_color{
+    color:#ff6000;
+}
+
+.gray_color{
+    color:gray;
 }
 
 .buy_button:hover{

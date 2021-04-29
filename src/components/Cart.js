@@ -64,7 +64,8 @@ const Cart = () => {
         handleNotification("Product is deleted from the cart", true);
         let copyObj = data;
         const index = data.indexOf(id);
-        setData(copyObj.splice(index, 1));
+
+        setData(data.filter((product) => product !== data[index]));
       } else {
         handleNotification("There is a problem", false);
       }
@@ -106,7 +107,7 @@ const Cart = () => {
         <div>
           <Grid direction="column" spacing={5}>
             {data?.map((product) => (
-              <CartProduct product={product} handleDelete={handleDelete} />
+              <CartProduct product={product} handleDelete={handleDelete} showButton={true}/>
             ))}
           </Grid>
         </div>
@@ -119,6 +120,7 @@ const Cart = () => {
               <CartProduct
                 product={product}
                 handleDelete={handleDeleteUserless}
+                showButton={true}
               />
             ))}
           </Grid>
