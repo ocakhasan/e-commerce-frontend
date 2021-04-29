@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import LoginForm from './components/LoginForm'
-import Home from './components/Home'
-import { BrowserRouter as Router, useHistory, Route, Switch } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+import Cart from './components/Cart';
+import Dashboard from './components/Dashboard';
+import Home from './components/Home';
+import LoginForm from './components/LoginForm';
+import Navbar from './components/Navbar';
+import ProductDetail from './components/ProductDetail';
+import Products from './components/Products';
+import Profile from './components/Profile';
 import SignUpForm from "./components/SignupForm";
-import ProductDetail from './components/ProductDetail'
-import Products from './components/Products'
-import Navbar from './components/Navbar'
-import Dashboard from './components/Dashboard'
-import loginService from './services/loginService'
-import UpdateForm from './components/Update'
-import productService from './services/productService'
-import commentService from './services/commentService'
-import cartService from './services/cartService'
-import Cart from './components/Cart'
-import Profile from './components/Profile'
+import UpdateForm from './components/Update';
+import cartService from './services/cartService';
+import commentService from './services/commentService';
+import loginService from './services/loginService';
+import productService from './services/productService';
 
 
 function App() {
@@ -27,14 +27,14 @@ function App() {
     useEffect(() => {
         const loggedUserJSON= window.localStorage.getItem('logged')
         if (loggedUserJSON){
-            const user = JSON.parse(loggedUserJSON)
-            console.log("user", user)
-            console.log("token", user.token)
-            productService.setToken(user.token)
-            commentService.setToken(user.token)
-            cartService.setToken(user.token)
+            const userLocal = JSON.parse(loggedUserJSON)
+            console.log("user", userLocal)
+            console.log("token", userLocal.token)
+            productService.setToken(userLocal.token)
+            commentService.setToken(userLocal.token)
+            cartService.setToken(userLocal.token)
 
-            setUser(user)
+            setUser(userLocal)
         }
     }, [])
 
@@ -99,7 +99,7 @@ function App() {
                     </Route>
 
                     <Route exact path="/profile">
-                        <Profile />
+                        <Profile setUser={setUser} user={user} />
                     </Route>
 
                     <Route exact path="/">
