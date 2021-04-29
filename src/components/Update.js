@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams} from 'react-router-dom'
 import productService from '../services/productService'
-import { useFormik } from 'formik'
-import Button from "@material-ui/core/Button"
 import SalesUpdateForm from './DashboardUtils/SalesUpdateForm'
 import ProductUpdateForm from './DashboardUtils/UpdateForm'
 

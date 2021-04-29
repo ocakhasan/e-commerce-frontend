@@ -1,147 +1,145 @@
-import React, { useState, useEffect } from 'react'
-import cartService from '../services/cartService'
-import Alert from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
-import { CircularProgress } from '@material-ui/core';
-import Button from '@material-ui/core/Button'
-import CartProduct from './CartUtils/CartProduct'
-import Grid from '@material-ui/core/Grid';
+import { CircularProgress } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
+import Alert from "@material-ui/lab/Alert";
+import React, { useEffect, useState } from "react";
+import cartService from "../services/cartService";
+import CartProduct from "./CartUtils/CartProduct";
 
 const Cart = () => {
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notification, setNotification] = useState(null);
+  const [success, setSuccess] = useState(true);
 
-    const [user, setUser] = useState(null)
-    const [data, setData] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [notification, setNotification] = useState(null)
-    const [success, setSuccess] = useState(true)
-
-    useEffect(() => {
-        const logged = window.localStorage.getItem("logged")
-        if (logged) {
-            console.log("I am logged", logged)
-            setUser(true)
-            cartService
-                .getCartProducts()
-                .then(response => {
-                    if (response.status) {
-                        setData(response.cart)
-                        setLoading(false)
-                    }
-                })
-
-        } else {
-            setUser(false)
-            const cart_without_user = window.localStorage.getItem("cart_without_login")
-            console.log(cart_without_user)
-            if (cart_without_user) {
-                cartService
-                    .getProductWithoutUser(cart_without_user)
-                    .then(response => {
-
-                        if (response.status) {
-                            setData(response.cart)
-                            setLoading(false)
-                        } else {
-                            setLoading(false)
-                        }
-                    }).catch(error => {
-                        console.log(error)
-                        setLoading(false)
-                    })
-            }
-            else {
-                handleNotification("There is no product", false)
-                setLoading(false)
-            }
+  useEffect(() => {
+    const logged = window.localStorage.getItem("logged");
+    if (logged) {
+      console.log("I am logged", logged);
+      setUser(true);
+      cartService.getCartProducts().then((response) => {
+        if (response.status) {
+          setData(response.cart);
+          setLoading(false);
         }
-    }, [])
-
-    const handleNotification = (message, isSuccess) => {
-        setNotification(message)
-        setSuccess(isSuccess)
-        setTimeout(() => setNotification(null), 3000)
-    }
-
-    const handleDelete = async (id) => {
-        try {
-            const response = await cartService.deleteProduct(id)
+      });
+    } else {
+      setUser(false);
+      const cart_without_user = window.localStorage.getItem(
+        "cart_without_login"
+      );
+      console.log(cart_without_user);
+      if (cart_without_user) {
+        cartService
+          .getProductWithoutUser(cart_without_user)
+          .then((response) => {
             if (response.status) {
-                handleNotification("Product is deleted from the cart", true)
-                let copyObj = data
-                const index = data.indexOf(id);
-                setData(copyObj.splice(index, 1))
+              setData(response.cart);
+              setLoading(false);
             } else {
-                handleNotification("There is a problem", false)
+              setLoading(false);
             }
-
-        } catch (exception) {
-            handleNotification("There is a problem", false)
-        }
+          })
+          .catch((error) => {
+            console.log(error);
+            setLoading(false);
+          });
+      } else {
+        handleNotification("There is no product", false);
+        setLoading(false);
+      }
     }
+  }, []);
 
-    const handleDeleteUserless = (id) => {
-        try {
-            setData(data.filter(product => product._id !== id))
-            handleNotification("Product is deleted from the cart", true)
-            const cart = window.localStorage.getItem("cart_without_login")
-            console.log("cart", cart)
-            console.log("cart[0]", cart[0])
-            let currentCart = JSON.parse(cart)
-            console.log("current cart", currentCart)
-            console.log("current cart[0]", currentCart[0])
-            const index = currentCart.indexOf(id);
-            console.log("index", index)
-            window.localStorage.setItem('cart_without_login', JSON.stringify(currentCart.splice(index, 1)))
-        } catch (exception) {
-            
-            handleNotification("There is a problem", false)
-            console.log(exception.message)
-        }
+  const handleNotification = (message, isSuccess) => {
+    setNotification(message);
+    setSuccess(isSuccess);
+    setTimeout(() => setNotification(null), 3000);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await cartService.deleteProduct(id);
+      if (response.status) {
+        handleNotification("Product is deleted from the cart", true);
+        let copyObj = data;
+        const index = data.indexOf(id);
+        setData(copyObj.splice(index, 1));
+      } else {
+        handleNotification("There is a problem", false);
+      }
+    } catch (exception) {
+      handleNotification("There is a problem", false);
     }
+  };
 
-    const ToShow = () => {
-        if (user) {
-            return (
-                <div>
-                    <Grid direction="column" spacing={5} >
-                        {data?.map(product => (
-                            <CartProduct product={product} handleDelete={handleDelete}/>
-                            
-                        ))}
-                    </Grid>
-    
-                </div>
-            )
+  const handleDeleteUserless = (id) => {
+    try {
+      setLoading(true);
+      const cart = window.localStorage.getItem("cart_without_login");
+      if (!cart) {
+        throw new Error("cannot find cart on local");
+      }
 
-        } else {
-            return (
-                <div>
-                    <Grid direction="column" spacing={5} >
-                        {data?.map(product => (
-                            <CartProduct product={product} handleDelete={handleDeleteUserless}/>
-                            
-                        ))}
-                    </Grid>
-    
-                </div>
-            )
-        }
+      let currentCart = JSON.parse(cart);
+      const index = currentCart.indexOf(id);
+      if (index < 0) {
+        throw new Error(`cannot delete {id}`);
+      }
+      setData(data.filter((product) => product !== data[index]));
+      currentCart.splice(index, 1);
+
+      window.localStorage.setItem(
+        "cart_without_login",
+        JSON.stringify(currentCart)
+      );
+    } catch (exception) {
+      handleNotification("There is a problem", false);
+      console.log(exception.message);
     }
+    setLoading(false);
+  };
 
-    const LoadingScreen = () => (
+  const ToShow = () => {
+    if (user) {
+      return (
         <div>
-            <p>Loading products in cart</p>
-            <CircularProgress />
+          <Grid direction="column" spacing={5}>
+            {data?.map((product) => (
+              <CartProduct product={product} handleDelete={handleDelete} />
+            ))}
+          </Grid>
         </div>
-    )
-
-    return (
+      );
+    } else {
+      return (
         <div>
-            {notification ? <Alert severity="info">{notification}</Alert> : null}
-            {loading ? <LoadingScreen /> : <ToShow />}
-
+          <Grid direction="column" spacing={5}>
+            {data?.map((product) => (
+              <CartProduct
+                product={product}
+                handleDelete={handleDeleteUserless}
+              />
+            ))}
+          </Grid>
         </div>
-    )
-}
+      );
+    }
+  };
 
-export default Cart
+  const LoadingScreen = () => (
+    <div>
+      <p>Loading products in cart</p>
+      <CircularProgress />
+    </div>
+  );
+
+  return (
+    <div>
+      {notification ? <Alert severity="info">{notification}</Alert> : null}
+      {loading ? <LoadingScreen /> : <ToShow />}
+    </div>
+  );
+};
+
+export default Cart;
