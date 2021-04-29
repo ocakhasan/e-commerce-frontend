@@ -17,7 +17,7 @@ const ProductDetail = () => {
     const [data, setData] = useState(null);
     const [commentData, setCommentData] = useState(null);
     const [comment, setComment] = useState("");
-    const [rating, setRating] = useState(0);
+    
     const [notification, setNotification] = useState(null);
     const [loading, setLoading] = useState(true);
     const [success, setSuccess] = useState(false);
@@ -80,7 +80,7 @@ const ProductDetail = () => {
     }, [params.id]);
 
     const handleRate = async (nextValue, prevValue, name) => {
-        setRating(nextValue);
+        
         try {
             const response = await productService.rateProduct(data._id, nextValue);
             if (response.status) {

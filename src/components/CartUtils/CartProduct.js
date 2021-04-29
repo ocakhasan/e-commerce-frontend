@@ -68,7 +68,7 @@ export default function CartProdut({ product, handleDelete, showButton }) {
               
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">${product.unitPrice}</Typography>
+              <Typography variant="subtitle1">${product.previousPrice ? product.previousPrice : product.unitPrice}</Typography>
             </Grid>
           </Grid>
         </Grid>
