@@ -35,9 +35,6 @@ const Cart = () => {
           .then((response) => {
             if (response.status) {
               setData(response.cart);
-              setLoading(false);
-            } else {
-              setLoading(false);
             }
           })
           .catch((error) => {
@@ -60,11 +57,10 @@ const Cart = () => {
   const handleDelete = async (id) => {
     try {
       const response = await cartService.deleteProduct(id);
+      console.log("response", response.user.products);
       if (response.status) {
         handleNotification("Product is deleted from the cart", true);
-        let copyObj = data;
-        const index = data.indexOf(id);
-        setData(copyObj.splice(index, 1));
+        setData(response.user.products);
       } else {
         handleNotification("There is a problem", false);
       }
