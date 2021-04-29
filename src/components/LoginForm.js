@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 const LoginForm = ({ handleLogin }) => {
     const [notification, setNotification] = useState(null);
-
     const history = useHistory();
+
     useEffect(() => {
         if (window.localStorage.getItem("logged")) {
             history.push("/");
@@ -52,7 +52,6 @@ const LoginForm = ({ handleLogin }) => {
                 <div className="login-card">
                     <p className="loginform_h2">Login to Shop</p>
                     <p className="loginform_p">
-                        {" "}
                         Login to shop basketball accessories and products,
                         including NBA jerseys and indoor and outdoor basketball
                         systems.
@@ -63,11 +62,7 @@ const LoginForm = ({ handleLogin }) => {
                     className="detail_form"
                     data-testid="form"
                 >
-                    {/* <div className="form-part">
-                        <label className="clr-purple">Email</label>
-                        <input type="email" name="email" {...formik.getFieldProps('userEmail')}
-                        />
-                    </div> */}
+
                     <TextField
                         variant="outlined"
                         type="email"
@@ -82,10 +77,6 @@ const LoginForm = ({ handleLogin }) => {
                         </div>
                     ) : null}
 
-                    {/* <div className="form-part">
-                        <label className="clr-purple">Password</label>
-                        <input type="password" name="password" {...formik.getFieldProps('password')} />
-                    </div> */}
                     <TextField
                         variant="outlined"
                         type="password"
@@ -93,6 +84,7 @@ const LoginForm = ({ handleLogin }) => {
                         label="Password"
                         {...formik.getFieldProps("password")}
                     />
+
                     {formik.touched.password && formik.errors.password ? (
                         <div className="form-error">
                             {formik.errors.password}
@@ -102,8 +94,9 @@ const LoginForm = ({ handleLogin }) => {
                     <Button type="submit" variant="contained" color="primary">
                         Login
                     </Button>
+
                     <p>
-                        If you do not have an account, you can{" "}
+                        If you do not have an account, you can
                         <Link to="/signup">sign-up</Link> from here
                     </p>
                 </form>

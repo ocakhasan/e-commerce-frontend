@@ -6,7 +6,7 @@ import cartService from "../services/cartService";
 import CartProduct from "./CartUtils/CartProduct";
 import "./styles/cart.css";
 import Typography from "@material-ui/core/Typography";
-import {Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Cart = () => {
     const [user, setUser] = useState(null);
@@ -19,7 +19,6 @@ const Cart = () => {
     useEffect(() => {
         const logged = window.localStorage.getItem("logged");
         if (logged) {
-            console.log("I am logged", logged);
             setUser(true);
             cartService.getCartProducts().then((response) => {
                 if (response.status) {
@@ -33,7 +32,6 @@ const Cart = () => {
             const cart_without_user = window.localStorage.getItem(
                 "cart_without_login"
             );
-            console.log(cart_without_user);
             if (cart_without_user) {
                 cartService
                     .getProductWithoutUser(cart_without_user)

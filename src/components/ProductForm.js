@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AddBoxIcon from '@material-ui/icons/AddBox';
 
-
 const ProductForm = ({ addProduct }) => {
 
     const formik = useFormik({
@@ -29,9 +28,6 @@ const ProductForm = ({ addProduct }) => {
     })
 
     return (
-
-
-
         <form onSubmit={formik.handleSubmit} className="detail_form">
 
             <h2>Add New Product</h2>
@@ -98,9 +94,7 @@ const ProductForm = ({ addProduct }) => {
             </Button>
 
         </form>
-
     )
-
 }
 
 export default ProductForm

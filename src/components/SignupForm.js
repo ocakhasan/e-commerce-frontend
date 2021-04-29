@@ -7,10 +7,7 @@ import './styles/SignupForm.css'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-
-
 const SignupForm = () => {
-
 
     const history = useHistory()
     useEffect(() => {
@@ -18,7 +15,6 @@ const SignupForm = () => {
             history.push("/")
         }
     }, [history])
-
 
     const formik = useFormik({
         initialValues: {
@@ -55,18 +51,13 @@ const SignupForm = () => {
         validateOnBlur: false
     })
 
-
-
     return (
         <div>
-
-
             <div className="form-div">
                 <div className="login-card">
                     <h2 className="loginform_h2">Signup to Shop</h2>
                     <p className="loginform_p">Sign up to shop basketball accessories and products, including NBA
                         jerseys and indoor and outdoor basketball systems.</p>
-                    
                 </div>
 
                 <form onSubmit={formik.handleSubmit} className="detail_form" data-testid='form'>
@@ -102,16 +93,13 @@ const SignupForm = () => {
                         <div className="form-error">{formik.errors.passwordValidation}</div>
                     ) : null}
 
-
                     <Button type="submit" color="primary" variant="contained">
                         Sign Up
                     </Button>
-                    <p>If you have an account, you can <Link to="/login">login</Link> from here</p>
 
+                    <p>If you have an account, you can <Link to="/login">login</Link> from here</p>
                 </form>
             </div>
-
-
         </div>
     )
 }

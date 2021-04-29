@@ -148,5 +148,4 @@ export default function ProfileCard({ profile, user, setUser }) {
             </Alert>
         )
     }
-
 }

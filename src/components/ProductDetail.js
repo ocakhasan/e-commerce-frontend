@@ -13,11 +13,11 @@ import Comment from "./ProductUtils/Comment";
 import "./styles/productDetail.css";
 
 const ProductDetail = () => {
+
     const params = useParams();
     const [data, setData] = useState(null);
     const [commentData, setCommentData] = useState(null);
     const [comment, setComment] = useState("");
-    
     const [notification, setNotification] = useState(null);
     const [loading, setLoading] = useState(true);
     const [success, setSuccess] = useState(false);
@@ -53,7 +53,7 @@ const ProductDetail = () => {
                     }
                 })
                 .catch((_error) => {
-                    setNotification("Comment did not sent.");
+                    setNotification("Comment is not sent.");
                     setSuccess(false);
                     setTimeout(() => setNotification(null), 3000);
                 });
@@ -80,9 +80,7 @@ const ProductDetail = () => {
     }, [params.id]);
 
     const handleRate = async (nextValue, prevValue, name) => {
-        
         try {
-
             if (!window.localStorage.getItem("logged")) {
                 history.push("/login");
             } else {
@@ -94,11 +92,10 @@ const ProductDetail = () => {
                     handleNotification("There is a problem", false);
                 }
             }
-            
+
         } catch (exception) {
             handleNotification("There is a problem", false);
         }
-        //const currentTotalRate = data.rateCount * data.rateTotal
     };
 
     const addCart = (e) => {

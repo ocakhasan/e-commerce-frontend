@@ -4,18 +4,12 @@ import { Link } from 'react-router-dom'
 import productService from '../services/productService'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-//what?
-//product page main content that lists products to the user
-
-
 const MainContent = () => {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setSearchResults] = useState(undefined)
     const inputEl = useRef("")
-    //console.log(data)
-
 
     useEffect(() => {
         async function fetchData() {
@@ -33,8 +27,6 @@ const MainContent = () => {
             }
         }
         fetchData()
-
-
     }, [])
 
     const searchHandler = (search_input) => {
@@ -74,13 +66,10 @@ const MainContent = () => {
         return (
             <div>
                 <h2>There is a problem! Products are not loaded.</h2>
-                
             </div>
         )
     }
     else {
-
-
         return (
             <div>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
