@@ -4,13 +4,16 @@ import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
 import cartService from "../services/cartService";
 import CartProduct from "./CartUtils/CartProduct";
+import "./styles/cart.css";
+import Typography from "@material-ui/core/Typography";
+import {Link } from 'react-router-dom'
 
 const Cart = () => {
     const [user, setUser] = useState(null);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notification, setNotification] = useState(null);
-    const [totalPrice, setTotalPrice] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0);
     const [success, setSuccess] = useState(true);
 
     useEffect(() => {
@@ -21,7 +24,7 @@ const Cart = () => {
             cartService.getCartProducts().then((response) => {
                 if (response.status) {
                     setData(response.cart);
-                    setTotalPrice(getTotalPrice())
+
                     setLoading(false);
                 }
             });
@@ -37,7 +40,6 @@ const Cart = () => {
                     .then((response) => {
                         if (response.status) {
                             setData(response.cart);
-                            setTotalPrice(getTotalPrice())
                             setLoading(false);
                         } else {
                             setLoading(false);
@@ -54,6 +56,10 @@ const Cart = () => {
         }
     }, []);
 
+    useEffect(() => {
+        setTotalPrice(getTotalPrice());
+    }, [data]);
+
     const handleNotification = (message, isSuccess) => {
         setNotification(message);
         setSuccess(isSuccess);
@@ -61,26 +67,26 @@ const Cart = () => {
     };
 
     const getTotalPrice = () => {
-        let total = 0
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].previousPrice) {
-                total += data[i].previousPrice
-            } else {
-                total += data[i].unitPrice
+        let total = 0;
+        if (data) {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].previousPrice) {
+                    total += data[i].previousPrice;
+                } else {
+                    total += data[i].unitPrice;
+                }
             }
         }
-        return total
-    }
+        return total;
+    };
 
     const handleDelete = async (id) => {
         try {
             const response = await cartService.deleteProduct(id);
+            console.log("response", response.user.products);
             if (response.status) {
                 handleNotification("Product is deleted from the cart", true);
-                let copyObj = data;
-                const index = data.indexOf(id);
-
-                setData(data.filter((product) => product !== data[index]));
+                setData(response.user.products);
             } else {
                 handleNotification("There is a problem", false);
             }
@@ -104,6 +110,7 @@ const Cart = () => {
             }
             setData(data.filter((product) => product !== data[index]));
             currentCart.splice(index, 1);
+            handleNotification("Product deleted from the cart", true)
 
             window.localStorage.setItem(
                 "cart_without_login",
@@ -120,27 +127,63 @@ const Cart = () => {
         if (user) {
             return (
                 <div>
-                    <Grid direction="column" spacing={5}>
-                        {data?.map((product) => (
-                            <CartProduct product={product} handleDelete={handleDelete} showButton={true} />
-                        ))}
-                    </Grid>
-                    <p>Total Price : {totalPrice}</p>
+                    {data?.length !== 0 ? (
+                        <div className="cart_div">
+                            <Grid direction="column" spacing={5}>
+                                {data?.map((product) => (
+                                    <CartProduct
+                                        product={product}
+                                        handleDelete={handleDelete}
+                                        showButton={true}
+                                    />
+                                ))}
+                            </Grid>
+                            <div className="checkout_price">
+                                <Typography
+                                    variant="body"
+                                    component="h2"
+                                    gutterBottom
+                                >
+                                    Total Price : {totalPrice}$
+                                </Typography>
+                            </div>
+                        </div>
+                    ) : (
+                        <Alert severity="info">
+                            There is no item in the cart
+                        </Alert>
+                    )}
                 </div>
             );
         } else {
             return (
                 <div>
-                    <Grid direction="column" spacing={5}>
-                        {data?.map((product) => (
-                            <CartProduct
-                                product={product}
-                                handleDelete={handleDeleteUserless}
-                                showButton={true}
-                            />
-                        ))}
-                    </Grid>
-                    <p>Total Price : {totalPrice}</p>
+                    {data?.length !== 0 ? (
+                        <div className="cart_div">
+                            <Grid direction="column" spacing={5}>
+                                {data?.map((product) => (
+                                    <CartProduct
+                                        product={product}
+                                        handleDelete={handleDeleteUserless}
+                                        showButton={true}
+                                    />
+                                ))}
+                            </Grid>
+                            <div className="checkout_price">
+                                <Typography
+                                    variant="body"
+                                    component="h2"
+                                    gutterBottom
+                                >
+                                    Total Price : {totalPrice}$
+                                </Typography>
+                            </div>
+                        </div>
+                    ) : (
+                        <Alert severity="info">
+                            There is no item in the cart. You can see the products from <Link to="/products">here</Link>
+                        </Alert>
+                    )}
                 </div>
             );
         }
@@ -155,7 +198,11 @@ const Cart = () => {
 
     return (
         <div>
-            {notification ? <Alert severity={success? "info": "error"}>{notification}</Alert> : null}
+            {notification ? (
+                <Alert severity={success ? "info" : "error"}>
+                    {notification}
+                </Alert>
+            ) : null}
             {loading ? <LoadingScreen /> : <ToShow />}
         </div>
     );

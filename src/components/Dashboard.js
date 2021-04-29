@@ -318,7 +318,7 @@ const Dashboard = () => {
               <TableCell align="right">{product.description}</TableCell>
               <TableCell align="right">{product.unitPrice}</TableCell>
               {allowed === 2 ? (
-                <TableCell align="right">{product.rateCount}</TableCell>
+                <TableCell align="right">{product.rate}</TableCell>
               ) : (
                 <TableCell align="right">{product.previousPrice}</TableCell>
               )}

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Bebas+Neue&family=Dosis&display=swap');
+
 .form-div{
     display:flex;
     flex-direction: row;
@@ -49,6 +51,20 @@
 
 .form-error{
     color:red;
+}
+
+.loginform_h2{
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 10px;
+}
+
+.loginform_p{
+    font-size: 1.4rem;
+    font-family: 'Dosis', sans-serif;
+    line-height: 1.6;
 }
 
 @media only screen and (max-width:800px){

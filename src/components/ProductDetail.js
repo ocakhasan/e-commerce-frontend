@@ -82,13 +82,19 @@ const ProductDetail = () => {
     const handleRate = async (nextValue, prevValue, name) => {
         
         try {
-            const response = await productService.rateProduct(data._id, nextValue);
-            if (response.status) {
-                setData(response.product);
-                handleNotification("Your rate is sent", true);
+
+            if (!window.localStorage.getItem("logged")) {
+                history.push("/login");
             } else {
-                handleNotification("There is a problem", false);
+                const response = await productService.rateProduct(data._id, nextValue);
+                if (response.status) {
+                    setData(response.product);
+                    handleNotification("Your rate is sent", true);
+                } else {
+                    handleNotification("There is a problem", false);
+                }
             }
+            
         } catch (exception) {
             handleNotification("There is a problem", false);
         }
@@ -147,7 +153,7 @@ const ProductDetail = () => {
                 <div className="sale_prices">
                     <div className="sale">
                         <p>%{salePercentage}</p>
-                        <small>İndirim</small>
+                        <small>Discount</small>
                     </div>
                     <div className="prices">
                         <p className="old_price">{data.unitPrice}</p>
@@ -199,7 +205,7 @@ const ProductDetail = () => {
 
                                 </div>
 
-                                <small>{data.rateTotal} değerlendirme</small>
+                                <small>{data.rateTotal} reviews</small>
                             </div>
                         </div>
 
@@ -238,7 +244,7 @@ const ProductDetail = () => {
 
                 <div className="comments">
                     <Typography variant="h4" component="h4" gutterBottom>
-                        Comments
+                        {commentData?.length === 0 ? "There is no comment. Be the first one!" : "Comments"}
                     </Typography>
                     {commentData &&
                         commentData.map((comment) => (

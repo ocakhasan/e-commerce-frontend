@@ -63,10 +63,10 @@ const SignupForm = () => {
 
             <div className="form-div">
                 <div className="login-card">
-                    <h2>Signup to Shop</h2>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Nulla atque temporibus fugiat at. Unde cumque dicta quis, est doloribus,
-                    provident hic vero ad officiis rem eveniet, cupiditate dolor error sit.
+                    <h2 className="loginform_h2">Signup to Shop</h2>
+                    <p className="loginform_p">Sign up to shop basketball accessories and products, including NBA
+                        jerseys and indoor and outdoor basketball systems.</p>
+                    
                 </div>
 
                 <form onSubmit={formik.handleSubmit} className="detail_form" data-testid='form'>

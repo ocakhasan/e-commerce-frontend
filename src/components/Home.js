@@ -17,7 +17,7 @@ const Home = () => {
                     <button className="home-button" onClick={() => history.push("/products")}>Explore</button>
 
                 </div>
-                <img src={process.env.PUBLIC_URL + '/shop.jpg'} alt="product" className="home-img"></img>
+                <img src={process.env.PUBLIC_URL + '/basketball.jpg'} alt="product" className="home-img"></img>
             </div>
             <Products />
         </div>
