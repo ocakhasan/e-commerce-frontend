@@ -1,10 +1,10 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Button from '@material-ui/core/Button'
+import Button from "@material-ui/core/Button";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    margin: 'auto',
+    margin: "auto",
     maxWidth: 500,
   },
   image: {
@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     height: 128,
   },
   img: {
-    margin: 'auto',
-    display: 'block',
-    maxWidth: '100%',
-    maxHeight: '100%',
+    margin: "auto",
+    display: "block",
+    maxWidth: "100%",
+    maxHeight: "100%",
   },
 }));
 
-export default function CartProdut({product, handleDelete}) {
+export default function CartProdut({ product, handleDelete }) {
   const classes = useStyles();
 
   return (
@@ -36,7 +36,11 @@ export default function CartProdut({product, handleDelete}) {
         <Grid container spacing={2}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={process.env.PUBLIC_URL + "/glass.jpg"} />
+              <img
+                className={classes.img}
+                alt="complex"
+                src={product.imagePath || process.env.PUBLIC_URL + "/glass.jpg"}
+              />
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
@@ -53,13 +57,17 @@ export default function CartProdut({product, handleDelete}) {
                 </Typography>
               </Grid>
               <Grid item>
-                <Button variant="body2" type="submit" onClick={() => handleDelete(product._id)}>
+                <Button
+                  variant="body2"
+                  type="submit"
+                  onClick={() => handleDelete(product._id)}
+                >
                   Remove
                 </Button>
               </Grid>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">${product.previousPrice}</Typography>
+              <Typography variant="subtitle1">${product.unitPrice}</Typography>
             </Grid>
           </Grid>
         </Grid>

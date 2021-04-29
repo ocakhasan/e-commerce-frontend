@@ -114,7 +114,7 @@ const MainContent = () => {
                                     </h2>
                                 </div>
                                 <div className="card_image">
-                                    <img src={process.env.PUBLIC_URL + "/glass.jpg"} alt="product" />
+                                    <img src={item.imagePath || process.env.PUBLIC_URL + "/glass.jpg"} alt="product" />
                                 </div>
                                 <div className="card_detail">
 
