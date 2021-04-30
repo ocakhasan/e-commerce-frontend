@@ -15,7 +15,7 @@ jest.mock('axios');
 describe("<ProductDetail />", () => {
     test('<ProductDetail /> if there is no product in the given url', () => {
         const route = "/product/hasan"
-        
+
 
         const component = renderWithRouter(<ProductDetail />, { route })
 
@@ -26,51 +26,51 @@ describe("<ProductDetail />", () => {
     test('<ProductDetail /> if there is a product, then it prints the information', async () => {
         const data = {
             data: {
-              status:true,
-              product: {
-                  productName: "productname1",
-                  unitPrice: 100,
-                  stock: 20,
-                  warranty: 10,
-                  comments: [],
-                  rateCount: 0,
-                  rateTotal: 0
-              }
+                status: true,
+                product: {
+                    productName: "productname1",
+                    unitPrice: 100,
+                    stock: 20,
+                    warranty: 10,
+                    comments: [],
+                    rateCount: 0,
+                    rateTotal: 0
+                }
             },
-          };
-          const route = "/product/newid"
-          window.history.pushState({}, 'Test page', route)
-       
-          axios.get.mockImplementationOnce(() => Promise.resolve(data));
+        };
+        const route = "/product/newid"
+        window.history.pushState({}, 'Test page', route)
 
-          await act (async () => renderWithRouter(<ProductDetail />))
-          expect(screen.getByText("productname1")).toBeInTheDocument();
-          expect(screen.getByText("Comments")).toBeInTheDocument();
+        axios.get.mockImplementationOnce(() => Promise.resolve(data));
+
+        await act(async () => renderWithRouter(<ProductDetail />))
+        expect(screen.getByText("productname1")).toBeInTheDocument();
+        expect(screen.getByText("There is no comment. Be the first one!")).toBeInTheDocument();
 
     })
 
     test('<ProductDetail /> if there is a problem loading the product, then it gives the error', async () => {
         const data = {
             data: {
-              status:false,
-              product: {
-                  productName: "productname1",
-                  unitPrice: 100,
-                  stock: 20,
-                  warranty: 10,
-                  comments: [],
-                  rateCount: 0,
-                  rateTotal: 0
-              }
+                status: false,
+                product: {
+                    productName: "productname1",
+                    unitPrice: 100,
+                    stock: 20,
+                    warranty: 10,
+                    comments: [],
+                    rateCount: 0,
+                    rateTotal: 0
+                }
             },
-          };
-          const route = "/product/newid"
-          window.history.pushState({}, 'Test page', route)
-       
-          axios.get.mockImplementationOnce(() => Promise.resolve(data));
+        };
+        const route = "/product/newid"
+        window.history.pushState({}, 'Test page', route)
 
-          await act (async () => renderWithRouter(<ProductDetail />))
-          expect(screen.getByText("There is no product like this! Or we have a problem.")).toBeInTheDocument();
+        axios.get.mockImplementationOnce(() => Promise.resolve(data));
+
+        await act(async () => renderWithRouter(<ProductDetail />))
+        expect(screen.getByText("There is no product like this! Or we have a problem.")).toBeInTheDocument();
 
     })
 })
