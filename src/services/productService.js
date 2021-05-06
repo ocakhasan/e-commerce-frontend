@@ -33,10 +33,7 @@ const deleteProduct = async id => {
 }
 
 const updateProduct = async (oldObject, newObject) => {
-    console.log(oldObject)
-    console.log(newObject)
     const toSend = { rate: oldObject.rateCount, token, ...newObject }
-    console.log(toSend)
     const url = `/admin/pm/product/${oldObject._id}`
     try {
         const response = await axios.put(url, toSend)

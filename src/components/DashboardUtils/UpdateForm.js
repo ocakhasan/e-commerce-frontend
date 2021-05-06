@@ -72,7 +72,7 @@ const ProductUpdateForm = ({ data }) => {
                 InputLabelProps={{
                     shrink: true,
                 }}
-                {...formik.getFieldProps('category')}
+                {...formik.getFieldProps('categoryID')}
             />
 
             <TextField
