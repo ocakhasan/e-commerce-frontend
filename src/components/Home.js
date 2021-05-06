@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardActionArea,
   CardContent,
@@ -8,15 +7,13 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import ExploreIcon from "@material-ui/icons/Explore";
 import React from "react";
 import Carousel from "react-material-ui-carousel";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./styles/home.css";
 import "./styles/Products.css";
 
 const Home = ({ data }) => {
-  const history = useHistory();
   const len = data ? (data.length % 3) + 1 : 0;
   return (
     <>
@@ -30,49 +27,45 @@ const Home = ({ data }) => {
             experience
           </Typography>
 
-
           {len > 0 && (
-            <Carousel 
-            timeout={250} 
-            navButtonsAlwaysInvisible
-            animation="slide"
-            className="product_container">
+            <Carousel
+              timeout={250}
+              navButtonsAlwaysInvisible
+              animation="slide"
+              className="product_container"
+            >
               {data?.slice(0, 3).map((product, i) => (
-                <Card style={{marginLeft: 15, marginRight: 15}}>
-                  <CardActionArea>
-                    <CardMedia
-                      style={{objectFit: "contain"}}
-                      component="img"
-                      height="200"
-                      src={product.imagePath}
-                      image={product.imagePath}
-                      title={product.productName}
-                    />
-                  </CardActionArea>
-                  <CardContent>
-                    <Typography
-                      style={{ textAlign: "center", marginTop: 14 }}
-                      gutterBottom
-                      variant="h5"
-                      component="h2"
-                    >
-                      {product.productName}
-                    </Typography>
-                  </CardContent>
-                </Card>
+                <Link
+                  to={"/product/" + product._id}
+                  style={{ textDecoration: "none" }}
+                  key={product._id}
+                >
+                  <Card style={{ marginLeft: 15, marginRight: 15 }}>
+                    <CardActionArea>
+                      <CardMedia
+                        style={{ objectFit: "contain" }}
+                        component="img"
+                        height="200"
+                        src={product.imagePath}
+                        image={product.imagePath}
+                        title={product.productName}
+                      />
+                    </CardActionArea>
+                    <CardContent>
+                      <Typography
+                        style={{ textAlign: "center", marginTop: 14 }}
+                        gutterBottom
+                        variant="h5"
+                        component="h2"
+                      >
+                        {product.productName}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </Carousel>
           )}
-          
-          {/* <Button
-            size="large"
-            style={{ marginTop: 15 }}
-            variant="outlined"
-            onClick={() => history.push("/products")}
-            endIcon={<ExploreIcon style={{ padding: 0 }} />}
-          >
-            Explore
-          </Button> */}
         </div>
         <img
           src={process.env.PUBLIC_URL + "/basketball.jpg"}
