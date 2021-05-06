@@ -213,16 +213,13 @@ const ProductDetail = () => {
 
             {data.stock ? (
               <div className="product_buy">
-                <form onSubmit={addCart}>
                   <Button
                     style={{ backgroundColor: "#ff7826", color: "white" }}
+                    onClick={addCart}
                   >
-                    <ShoppingCartOutlinedIcon />
+                    <ShoppingCartOutlinedIcon  />
                     Add to Cart
                   </Button>
-                  {/* <button className="buy_button" type="submit">
-                  </button> */}
-                </form>
               </div>
             ) : (
               <Alert severity="info">Out of Stock</Alert>

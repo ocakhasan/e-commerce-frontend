@@ -56,9 +56,18 @@ export const ProductCard = ({ product }) => {
         >
           {product.productName}
         </Typography>
-        <Typography style={{ textAlign: "center" }} variant="body2">
-          {product.description}
-        </Typography>
+        <Grid container direction="column" justify="center" alignItems="center">
+          {product.previousPrice > 0 ? (
+            <>
+              <Typography variant="h6" style={{ textDecoration: "line-through" }}>
+                {product.previousPrice}$
+              </Typography>
+              <Typography variant="h6">{product.unitPrice}$</Typography>
+            </>
+          ) : (
+            <Typography variant="h6">{product.unitPrice}$</Typography>
+          )}
+        </Grid>
       </CardContent>
     </Card>
   );

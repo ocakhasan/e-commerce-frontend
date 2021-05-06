@@ -40,7 +40,7 @@ const Home = ({ data }) => {
                   style={{ textDecoration: "none" }}
                   key={product._id}
                 >
-                  <Card style={{ marginLeft: 15, marginRight: 15 }}>
+                  <Card style={{ margin: "0 15 0 15", padding:0 }}>
                     <CardActionArea>
                       <CardMedia
                         style={{ objectFit: "contain" }}
@@ -61,6 +61,32 @@ const Home = ({ data }) => {
                         {product.productName}
                       </Typography>
                     </CardContent>
+
+                    <Grid
+                      container
+                      style={{marginTop: 0, marginBottom: 5}}
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                    >
+                      {product.previousPrice > 0 ? (
+                        <>
+                          <Typography
+                            variant="h6"
+                            style={{ textDecoration: "line-through" }}
+                          >
+                            {product.previousPrice}$
+                          </Typography>
+                          <Typography variant="h6">
+                            {product.unitPrice}$
+                          </Typography>
+                        </>
+                      ) : (
+                        <Typography variant="h6">
+                          {product.unitPrice}$
+                        </Typography>
+                      )}
+                    </Grid>
                   </Card>
                 </Link>
               ))}
