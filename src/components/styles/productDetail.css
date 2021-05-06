@@ -85,6 +85,7 @@
 .product_rating{
     display:flex;
     flex-direction: column;
+    margin-left: 1em;
 }
 
 .buy_button{
@@ -97,7 +98,7 @@
 }
 
 .rate_div{
-    transform: scale(1.2);
+    transform: scale(1.8);
 }
 
 .yellow_color{
