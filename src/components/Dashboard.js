@@ -211,7 +211,7 @@ const Dashboard = () => {
                         ) : (
                             <TableCell align="right">Previous Price</TableCell>
                         )}
-
+                        <TableCell align="right">Category ID</TableCell>
                         {allowed === 2 ? (
                             <TableCell align="right">Delete</TableCell>
                         ) : (
@@ -234,7 +234,7 @@ const Dashboard = () => {
                             ) : (
                                 <TableCell align="right">{product.previousPrice}</TableCell>
                             )}
-
+                            <TableCell align="right">{product.categoryID}</TableCell>
                             {allowed === 2 ? (
                                 <TableCell align="right">
                                     <Button
