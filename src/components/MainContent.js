@@ -1,126 +1,120 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./styles/Products.css"
-import { Link } from 'react-router-dom'
-import productService from '../services/productService'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Typography } from "@material-ui/core";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import productService from "../services/productService";
+import Spinner from "./Spinner";
+import "./styles/productCard.css";
+import "./styles/Products.css";
 
-const MainContent = () => {
-    const [data, setData] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const [searchTerm, setSearchTerm] = useState("")
-    const [searchResults, setSearchResults] = useState(undefined)
-    const inputEl = useRef("")
+const useStyles = makeStyles({
+  root: {
+    transition: "transform 0.4s ease-in-out",
+  },
+  cardHovered: {
+    transform: "scale3d(1.05, 1.05, 1)",
+  },
+});
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await productService.getAllProduct()
-                if (response.status) {
-                    setData(response.products)
-                    setLoading(false)
-                    setSearchResults(response.products)
-                } else {
-                    setLoading(false)
-                }
-            } catch (exception) {
-                setLoading(false)
-            }
+export const ProductCard = ({ product }) => {
+  const classes = useStyles();
+
+  const [state, setState] = useState({
+    raised: false,
+    shadow: 1,
+  });
+  return (
+    <Card
+      className={classes.root}
+      classes={{ root: state.raised ? classes.cardHovered : "" }}
+      onMouseOver={() => setState({ raised: true, shadow: 3 })}
+      onMouseOut={() => setState({ raised: false, shadow: 1 })}
+      raised={state.raised}
+      zdepth={state.shadow}
+      style={{ width: 255, margin: 20, height: 338 }}
+    >
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="200"
+          src={product.imagePath}
+          image={product.imagePath}
+          title={product.productName}
+        />
+      </CardActionArea>
+      <CardContent>
+        <Typography
+          style={{ textAlign: "center", marginBottom: 10 }}
+          gutterBottom
+          variant="h5"
+          component="h2"
+        >
+          {product.productName}
+        </Typography>
+        <Typography style={{ textAlign: "center" }} variant="body2">
+          {product.description}
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+const MainContent = ({ data, setData, searchResults, setSearchResults }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await productService.getAllProduct();
+        if (response.status) {
+          setData(response.products);
+          setLoading(false);
+          setSearchResults(response.products);
+        } else {
+          setLoading(false);
         }
-        fetchData()
-    }, [])
-
-    const searchHandler = (search_input) => {
-        setSearchTerm(inputEl.current.value)
-        if (search_input !== "") {
-            const newProductList = data.filter((product) => {
-                return Object.values(product)
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(search_input.toLowerCase())
-            })
-            console.log(newProductList)
-            setSearchResults(newProductList)
-
-        }
-        else {
-            setSearchResults(data)
-        }
-    };
-
-    const getSearchTerm = () => {
-        searchHandler(inputEl.current.value)
-    };
-
-    const searchFeedback = () => {
-        setSearchTerm(inputEl.current.value)
-    };
-
-    if (loading) {
-        return (
-            <div>
-                <h2>Products Loading</h2>
-                <CircularProgress />
-            </div>
-        )
-    } else if (!loading && !data) {
-        return (
-            <div>
-                <h2>There is a problem! Products are not loaded.</h2>
-            </div>
-        )
+      } catch (exception) {
+        setLoading(false);
+      }
     }
-    else {
-        return (
-            <div>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-                <h1 className="header">Products</h1>
+    fetchData();
+  }, []);
 
-                <div className="search_bar">
-                    <div className="icon_input">
-                        <input
-                            ref={inputEl}
-                            type="text"
-                            placeholder="Search Products"
-                            className="search_input" value={searchTerm}
-                            onChange={searchFeedback}
-                        />
+  if (loading) {
+    return <Spinner />;
+  } else if (!loading && !data) {
+    return (
+      <div>
+        <h2>There is a problem! Products are not loaded.</h2>
+      </div>
+    );
+  } else {
+    return (
+      <div className="product_container">
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        ></link>
 
-                        <button className="search_button" type="submit" onClick={getSearchTerm}>
-                            <p>Search</p>
-                            <i className="fa fa-search" />
-                        </button>
-                    </div>
-                </div>
+        <Grid container direction="row" justify="center" alignItems="center">
+          {searchResults?.map((product) => (
+            <Link
+              to={"/product/" + product._id}
+              style={{ textDecoration: "none" }}
+              key={product._id}
+            >
+              <ProductCard product={product} />
+            </Link>
+          ))}
+        </Grid>
+      </div>
+    );
+  }
+};
 
-                <div className="main_content">
-                    {searchResults?.map((item) => (
-
-                        <Link to={"/product/" + item._id} style={{ textDecoration: 'none' }} key={item._id}>
-                            < div className="card" key={item._id} >
-                                <div className="card_header">
-                                    <h2>
-                                        {item.productName}
-                                    </h2>
-                                </div>
-                                <div className="card_image">
-                                    <img src={item.imagePath || process.env.PUBLIC_URL + "/glass.jpg"} alt="product" />
-                                </div>
-                                <div className="card_detail">
-
-                                    <p className="card_price">
-                                        {item.unitPrice}TL
-                                    </p>
-                                    <button className="card_button">Get Details</button>
-                                </div>
-
-
-                            </div >
-                        </Link>
-                    ))}
-                </div>
-            </div>
-        )
-    }
-}
-
-export default MainContent
+export default MainContent;
