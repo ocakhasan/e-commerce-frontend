@@ -73,35 +73,35 @@ const Navbar = ({ user, handleLogout, data, setSearchResults }) => {
 
       <Grid item direction="row" justify="space-evenly" alignItems="center">
         <Typography style={{ margin: 3 }}>
-          <Link2 href="/products" color="inherit">
+          <Link2 href="/products/all" color="inherit">
             All Products
           </Link2>
         </Typography>
       </Grid>
       <Grid item direction="row" justify="space-evenly" alignItems="center">
         <Typography style={{ margin: 3 }}>
-          <Link2 href="#" color="inherit">
+          <Link2 href="/products/0" color="inherit">
             Jerseys
           </Link2>
         </Typography>
       </Grid>
       <Grid item direction="row" justify="space-evenly" alignItems="center">
         <Typography style={{ margin: 3 }}>
-          <Link2 href="#" color="inherit">
+          <Link2 href="/products/1" color="inherit">
             Shoes
           </Link2>
         </Typography>
       </Grid>
       <Grid item direction="row" justify="space-evenly" alignItems="center">
         <Typography style={{ margin: 3 }}>
-          <Link2 href="#" color="inherit">
+          <Link2 href="/products/2" color="inherit">
             Accessories
           </Link2>
         </Typography>
       </Grid>
       <Grid item direction="row" justify="space-evenly" alignItems="center">
         <Typography style={{ margin: 3 }}>
-          <Link2 href="#" color="inherit">
+          <Link2 href="/products/3" color="inherit">
             Games
           </Link2>
         </Typography>

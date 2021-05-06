@@ -6,7 +6,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import productService from "../services/productService";
 import Spinner from "./Spinner";
 import "./styles/productCard.css";
@@ -66,11 +66,17 @@ export const ProductCard = ({ product }) => {
 
 const MainContent = ({ data, setData, searchResults, setSearchResults }) => {
   const [loading, setLoading] = useState(true);
+  let { id } = useParams();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await productService.getAllProduct();
+        let response;
+        if (!id || id === "all") {
+          response = await productService.getAllProduct();
+        } else {
+          response = await productService.getProductsByCategory(id);
+        }
         if (response.status) {
           setData(response.products);
           setLoading(false);

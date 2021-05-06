@@ -91,7 +91,7 @@ function App() {
             <UpdateForm />
           </Route>
 
-          <Route exact path="/products">
+          <Route exact path="/products/:id">
             <MainContent
               data={data}
               setData={setData}
