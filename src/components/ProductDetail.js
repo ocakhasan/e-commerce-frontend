@@ -252,7 +252,7 @@ const ProductDetail = () => {
           <Typography variant="h4" component="h5" gutterBottom>
             <Divider style={{ margin: 10, marginTop: 20 }} />
             {commentData?.length === 0
-              ? "There is no comment. Be the first one!"
+              ? <Alert severity="info">There is no comment. Be the first one!</Alert>
               : "Comments"}
           </Typography>
           {commentData &&

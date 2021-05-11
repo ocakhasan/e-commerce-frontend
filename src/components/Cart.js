@@ -6,6 +6,8 @@ import cartService from "../services/cartService";
 import CartProduct from "./CartUtils/CartProduct";
 import "./styles/cart.css";
 import Typography from "@material-ui/core/Typography";
+import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
 
 const Cart = () => {
@@ -121,70 +123,53 @@ const Cart = () => {
         setLoading(false);
     };
 
+
     const ToShow = () => {
-        if (user) {
-            return (
-                <div>
-                    {data?.length !== 0 ? (
-                        <div className="cart_div">
-                            <Grid direction="column" spacing={5}>
-                                {data?.map((product) => (
-                                    <CartProduct
-                                        product={product}
-                                        handleDelete={handleDelete}
-                                        showButton={true}
-                                    />
-                                ))}
-                            </Grid>
-                            <div className="checkout_price">
-                                <Typography
-                                    variant="body"
-                                    component="h2"
-                                    gutterBottom
-                                >
-                                    Total Price : {totalPrice}$
-                                </Typography>
-                            </div>
+        return (
+            <div>
+                {data?.length !== 0 ? (
+                    <div className="cart_div">
+                        {
+                            user ?
+                                <Grid direction="column" spacing={5}>
+                                    {data?.map((product) => (
+                                        <CartProduct
+                                            product={product}
+                                            handleDelete={handleDelete}
+                                            showButton={true}
+                                        />
+                                    ))}
+                                </Grid> :
+                                <Grid direction="column" spacing={5}>
+                                    {data?.map((product) => (
+                                        <CartProduct
+                                            product={product}
+                                            handleDelete={handleDeleteUserless}
+                                            showButton={true}
+                                        />
+                                    ))}
+                                </Grid>
+                        }
+
+                        <div className="checkout_price">
+                            <Typography
+                                variant="body"
+                                component="h2"
+                                gutterBottom
+                            >
+                                Total Price : {totalPrice}$
+                            </Typography>
+                            <Link to="/order"><Button variant="outlined" color="secondary"><AddShoppingCartIcon />Checkout</Button></Link>
                         </div>
-                    ) : (
-                        <Alert severity="info">
-                            There is no item in the cart
-                        </Alert>
-                    )}
-                </div>
-            );
-        } else {
-            return (
-                <div>
-                    {data?.length !== 0 ? (
-                        <div className="cart_div">
-                            <Grid direction="column" spacing={5}>
-                                {data?.map((product) => (
-                                    <CartProduct
-                                        product={product}
-                                        handleDelete={handleDeleteUserless}
-                                        showButton={true}
-                                    />
-                                ))}
-                            </Grid>
-                            <div className="checkout_price">
-                                <Typography
-                                    variant="body"
-                                    component="h2"
-                                    gutterBottom
-                                >
-                                    Total Price : {totalPrice}$
-                                </Typography>
-                            </div>
-                        </div>
-                    ) : (
-                        <Alert severity="info">
-                            There is no item in the cart. You can see the products from <Link to="/products">here</Link>
-                        </Alert>
-                    )}
-                </div>
-            );
-        }
+                    </div>
+                ) : (
+                    <Alert severity="info">
+                        There is no item in the cart
+                    </Alert>
+                )}
+            </div>
+        );
+
     };
 
     const LoadingScreen = () => (

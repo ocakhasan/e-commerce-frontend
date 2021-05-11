@@ -59,7 +59,7 @@ export const ProductCard = ({ product }) => {
         <Grid container direction="column" justify="center" alignItems="center">
           {product.previousPrice > 0 ? (
             <>
-              <Typography variant="h6" style={{ textDecoration: "line-through" }}>
+              <Typography variant="h6" style={{ textDecoration: "line-through", color: "red" }}>
                 {product.previousPrice}$
               </Typography>
               <Typography variant="h6">{product.unitPrice}$</Typography>
