@@ -17,6 +17,21 @@ const createOrder = async (address) => {
     return response.data
 }
 
-const orderService = { createOrder }
+
+const getAllOrders = async () => {
+    const url = "/api/orders"
+    const response = await axios.get(url)
+    return response.data
+}
+
+const updateOrderStatus = async (id, value) => {
+    const url = `/api/order/${id}`
+    const response = await axios.put(url, {
+        status: value
+    })
+    return response.data
+}
+
+const orderService = { createOrder, getAllOrders, updateOrderStatus }
 
 export default orderService

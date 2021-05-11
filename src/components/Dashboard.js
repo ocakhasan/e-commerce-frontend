@@ -1,34 +1,54 @@
-import { Typography } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import Snackbar from "@material-ui/core/Snackbar";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
+import {
+    Typography,
+    Button,
+    Paper,
+    Snackbar,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    InputLabel,
+    MenuItem,
+    FormHelperText,
+    FormControl,
+    Select
+} from "@material-ui/core";
+
+
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import LoopIcon from '@material-ui/icons/Loop';
+import MotorcycleIcon from '@material-ui/icons/Motorcycle';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+
+
 import Alert from "@material-ui/lab/Alert";
+
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+
 import commentService from "../services/commentService";
 import productService from "../services/productService";
+import orderService from "../services/orderService";
+
 import ProductForm from "./ProductForm";
 import "./styles/dashboard.css";
 
 const Dashboard = () => {
     const [productData, setProductData] = useState([]);
     const [commentData, setCommentData] = useState([]);
+    const [orderData, setOrderData] = useState([]);
     const [allowed, setAllowed] = useState(0);
     const [notification, setNotification] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [change, setChange] = useState([]); //for the order change
     const history = useHistory();
 
     const handleNotification = (message, isSuccess) => {
@@ -74,6 +94,26 @@ const Dashboard = () => {
                 }
             } catch (exception) {
                 handleNotification("Comments did not fetched. There is a problem", false);
+            }
+        }
+        fetchData();
+    }, []);
+
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await orderService.getAllOrders();
+                if (response.status) {
+                    setOrderData(response.orders);
+                    setChange(response.orders)
+                    console.log(response.orders)
+                } else {
+                    handleNotification("Orders did not fetched. There is a problem", false
+                    );
+                }
+            } catch (exception) {
+                handleNotification("Orders did not fetched. There is a problem", false);
             }
         }
         fetchData();
@@ -134,6 +174,112 @@ const Dashboard = () => {
             handleNotification(`Approval did not happen`, false);
         }
     };
+
+    const handleDeliveryStatus = async (id, value) => {
+        try {
+            const response = await orderService.updateOrderStatus(id, value)
+            if (response.status) {
+                handleNotification(`Operation successful`, true);
+                setOrderData(
+                    orderData.map(order => order._id === id ? { ...order, status: value } : order)
+                )
+            } else {
+                handleNotification(`Approval did not happen`, false);
+            }
+        } catch (exception) {
+            handleNotification(`Approval did not happen`, false);
+        }
+    }
+
+    function getStatusString(id) {
+        if (id === 0) {
+            return "Processing"
+        } else if (id === 1) {
+            return "In Transit"
+        } else {
+            return "Delivered"
+        }
+    }
+
+
+    function getStatus(id) {
+        if (id === 0) {
+            return <div className><LoopIcon />Processing</div>
+        } else if (id === 1) {
+            return <p className="order"><MotorcycleIcon /> In Transit</p>
+        } else {
+            return <p className="order"><CheckCircleIcon />Delivered</p>
+        }
+    }
+
+    function changeDelivery(idx, value) {
+
+        let newArr = JSON.stringify(change);
+        newArr = JSON.parse(newArr)
+        newArr[idx]['status'] = value
+        console.log(newArr[idx]['status'] === orderData[idx]['status'])
+        setChange(newArr)
+    }
+
+    const Orders = () => {
+        if (orderData) {
+            return (
+                <TableContainer component={Paper}>
+                    <Typography variant="h4" component="h2" gutterBottom>
+                        Orders
+                    </Typography>
+                    <Table size="small" aria-label="a dense table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="right">Customer Id</TableCell>
+                                <TableCell align="right">Products Detail</TableCell>
+                                <TableCell align="right">Status</TableCell>
+                                <TableCell align="right">Change</TableCell>
+                                <TableCell align="right">Update</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {orderData.map((order, i) => (
+                                <TableRow key={i}>
+                                    <TableCell component="th" scope="row" align="right">
+                                        {order.customer[0]}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row" align="right">
+                                        <Link to={"/" + order._id}>{order._id}</Link>
+                                    </TableCell>
+
+                                    <TableCell component="th" scope="row" align="right">
+                                        {getStatus(order.status)}
+                                    </TableCell>
+
+                                    <TableCell component="th" scope="row" align="right">
+                                        <FormControl>
+                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={change[i]['status']}
+                                                onChange={(e) => changeDelivery(i, e.target.value)}
+                                            >
+                                                <MenuItem value={0}>Processing</MenuItem>
+                                                <MenuItem value={1}>In Transit</MenuItem>
+                                                <MenuItem value={2}>Delivered</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </TableCell>
+
+                                    <TableCell component="th" scope="row" align="right">
+                                        <Button variant="contained" color="primary" onClick={() => handleDeliveryStatus(order._id, change[i]['status'])}>Update</Button>
+                                    </TableCell>
+
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )
+        }
+    }
 
     const Comments = () => {
         if (commentData) {
@@ -297,6 +443,7 @@ const Dashboard = () => {
                     <TabList>
                         <Tab>Products</Tab>
                         <Tab>Comments</Tab>
+                        <Tab>Orders</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -305,6 +452,9 @@ const Dashboard = () => {
                     </TabPanel>
                     <TabPanel>
                         <Comments />
+                    </TabPanel>
+                    <TabPanel>
+                        <Orders />
                     </TabPanel>
                 </Tabs>
             ) : (
