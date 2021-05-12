@@ -32,6 +32,12 @@ const updateOrderStatus = async (id, value) => {
     return response.data
 }
 
-const orderService = { createOrder, getAllOrders, updateOrderStatus }
+const getUserOrders = async (id) => {
+    const url = `/api/orders/${id}`
+    const response = await axios.get(url)
+    return response.data
+}
+
+const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders }
 
 export default orderService
