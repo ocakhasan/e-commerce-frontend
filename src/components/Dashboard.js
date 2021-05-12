@@ -25,6 +25,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import LoopIcon from '@material-ui/icons/Loop';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import AddBoxIcon from '@material-ui/icons/AddBox'
 
 
 import Alert from "@material-ui/lab/Alert";
@@ -342,10 +343,18 @@ const Dashboard = () => {
     };
 
     const Products = () => (
+
         <TableContainer component={Paper}>
-            <Typography variant="h4" component="h2" gutterBottom>
-                Products
-            </Typography>
+            <div className="title-add">
+                <Typography variant="h4" component="h2" gutterBottom>
+                    Products
+                </Typography>
+                <Link to="/addproduct">
+                    <Button type="submit" variant="contained" color="primary">
+                        <AddBoxIcon />Add New Product
+                    </Button>
+                </Link>
+            </div>
             <Table size="small" aria-label="a dense table">
                 <TableHead>
                     <TableRow>
@@ -448,7 +457,7 @@ const Dashboard = () => {
 
                     <TabPanel>
                         <Products />
-                        <ProductForm addProduct={addProduct} />
+                        {/* <ProductForm addProduct={addProduct} /> */}
                     </TabPanel>
                     <TabPanel>
                         <Comments />

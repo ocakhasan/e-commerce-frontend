@@ -103,35 +103,36 @@ const Profile = ({ user, setUser }) => {
                 </div>
                 <div className="orders">
                     <h2>Orders</h2>
-                    {orderData?.map((order, i) => (
-                        <>
-                            <div>
+                    {orderData?.reverse().map((order, i) => (
+                        <div className="order">
+                            <div className="order_info">
                                 <h4>Order {i + 1}</h4>
-                                <div className="order_products">
-                                    {order.products.map(product => (
-                                        <div className="order_product">
-                                            <img src={product.imagePath} alt={product.productName} className="order_product_image" />
-                                            <div className="order_product_right">
-                                                <div className="order_product_info">
-                                                    <p className="order_product_name">{product.productName}</p>
-                                                    <p className="order_product_price">{product.previousPrice ? product.previousPrice : product.unitPrice} $</p>
-                                                    <p className="order_address"><span className="address_span">Address</span>: {order.address}</p>
-                                                </div>
+                                <button className="order_refund_button">Refund</button>
+                            </div>
+                            <div className="order_products">
+                                {order.products.map(product => (
+                                    <div className="order_product">
+                                        <img src={product.imagePath} alt={product.productName} className="order_product_image" />
+                                        <div className="order_product_right">
+                                            <div className="order_product_info">
+                                                <p className="order_product_name">{product.productName}</p>
+                                                <p className="order_product_price">{product.previousPrice ? product.previousPrice : product.unitPrice} $</p>
+                                                <p className="order_address"><span className="address_span">Address</span>: {order.address}</p>
+                                            </div>
 
-                                                <div className="order_product_status">
-                                                    <p>{getStatus(order.status)}</p>
-                                                    <button className="order_refund_button">Refund</button>
-                                                </div>
+                                            <div className="order_product_status">
+                                                <p>{getStatus(order.status)}</p>
 
                                             </div>
 
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
 
-                            <p className="total_price"><span>Total Price</span>{getTotalPrice(order)}</p>
-                        </>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="total_price"><span>Total Price</span>{getTotalPrice(order)} $</p>
+                        </div>
+
                     ))}
                 </div>
                 <div className="profile_info">

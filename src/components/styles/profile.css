@@ -7,13 +7,24 @@
 .sidebar {
   flex: 1;
   min-height: 100vh;
-  background-color: aqua;
+  border: 1px solid yellow;
+}
+
+.profile_info {
+  flex: 1;
+  border: 1px solid red;
+}
+
+.order {
+  border: 2px solid rgb(207, 195, 195);
+  margin: 1rem 0;
+  border-radius: 5px;
+  font-family: inherit;
 }
 
 .orders {
   flex: 3;
   min-height: 100vh;
-  border: 1px solid red;
 }
 
 .order_product {
@@ -21,7 +32,7 @@
   flex-direction: row;
   padding: 1rem;
   margin: 1rem 0;
-  border: 1px solid rgb(207, 195, 195);
+  /*  border: 1px solid rgb(207, 195, 195); */
   border-radius: 5px;
 }
 
@@ -30,10 +41,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.profile_info {
-  flex: 1;
 }
 
 .order_product_name {
@@ -51,9 +58,14 @@
 .order_product_image {
   width: 75px;
   margin-right: 1rem;
+  border-radius: 5px;
 }
 
-.order_product_status {
+.order_info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 1rem;
 }
 
 .address_span {
@@ -72,4 +84,15 @@
 .order_refund_button:hover {
   cursor: pointer;
   background-color: rgb(224, 212, 224);
+}
+
+.total_price {
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bolder;
+}
+
+.total_price > span {
+  color: teal;
+  margin-right: 1rem;
 }

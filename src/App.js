@@ -15,6 +15,7 @@ import commentService from "./services/commentService";
 import loginService from "./services/loginService";
 import productService from "./services/productService";
 import Order from './components/Order'
+import ProductForm from "./components/ProductForm";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -50,6 +51,10 @@ function App() {
             console.log("ex", exception);
         }
     };
+
+    const addProduct = async values => {
+
+    }
 
     const handleLogout = () => {
         window.localStorage.removeItem("logged");
@@ -103,6 +108,10 @@ function App() {
                             searchResults={searchResults}
                             setSearchResults={setSearchResults}
                         />
+                    </Route>
+
+                    <Route exact path="/addproduct">
+                        <ProductForm />
                     </Route>
 
                     <Route exact path="/profile">

@@ -21,3 +21,8 @@
   gap: 1rem;
   flex-direction: column;
 }
+
+.title-add {
+  display: flex;
+  justify-content: space-between;
+}

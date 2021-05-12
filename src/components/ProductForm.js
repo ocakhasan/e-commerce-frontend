@@ -3,8 +3,12 @@ import { useFormik } from 'formik'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import productService from '../services/productService';
+import { useHistory } from 'react-router-dom';
 
-const ProductForm = ({ addProduct }) => {
+const ProductForm = () => {
+
+    const history = useHistory()
 
     const formik = useFormik({
         initialValues: {
@@ -18,9 +22,16 @@ const ProductForm = ({ addProduct }) => {
             rate: 0
         },
 
-        onSubmit: values => {
+        onSubmit: async values => {
             console.log('post request to submit')
-            addProduct(values)
+            try {
+                const response = await productService.addProduct({ userType: 2, ...values })
+                if (response.status) {
+                    history.push("/dashboard")
+                }
+            } catch (exception) {
+                console.log(exception)
+            }
 
         },
         validateOnChange: false,
