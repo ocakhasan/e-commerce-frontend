@@ -38,6 +38,17 @@ const getUserOrders = async (id) => {
     return response.data
 }
 
-const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders }
+
+const cancelOrder = async id => {
+    const url = `/api/order/${id}`
+    let token = getToken()
+    console.log("delete token", token)
+
+    const response = await axios.post(url, { token })
+
+    return response.data
+}
+
+const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders, cancelOrder }
 
 export default orderService

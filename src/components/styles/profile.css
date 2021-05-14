@@ -96,3 +96,13 @@
   color: teal;
   margin-right: 1rem;
 }
+
+.color-red {
+  border: 1px solid red;
+  color: red;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}

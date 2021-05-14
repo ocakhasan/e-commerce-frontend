@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Snackbar } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
@@ -15,14 +15,14 @@ const Profile = ({ user, setUser }) => {
     const [loading, setLoading] = useState(true);
     const [userLocal, setUserLocal] = useState(false);
     const [orderData, setOrderData] = useState(null)
-    const [notification, setNotification] = useState(null)
+    const [notification, handleNotification] = useState(null)
     const [success, setSuccess] = useState(true)
 
 
-    const handleNotification = (message, success) => {
+    const handleNotificationMessage = (message, success) => {
         handleNotification(message)
         setSuccess(success);
-        setTimeout(() => setNotification(null), 3000);
+        setTimeout(() => handleNotification(null), 3000);
     }
 
     useEffect(() => {
@@ -35,10 +35,10 @@ const Profile = ({ user, setUser }) => {
                     setOrderData(response.orders)
                     console.log("profile orders", response.orders)
                 } else {
-                    handleNotification("Orders are not fetched", false)
+                    handleNotificationMessage("Orders are not fetched", false)
                 }
             } catch (exception) {
-                handleNotification("Orders are not fetched", false)
+                handleNotificationMessage("Orders are not fetched", false)
             }
         }
         if (logged) {
@@ -75,6 +75,24 @@ const Profile = ({ user, setUser }) => {
         return totalPrice
     }
 
+    const handleCancel = async (order) => {
+        if (order.status === 0) {
+            try {
+                const response = await orderService.cancelOrder(order._id)
+                if (response.status) {
+                    setOrderData(orderData.filter(o => o._id !== order._id))
+                    handleNotificationMessage("Order canceled", true)
+                } else {
+                    handleNotificationMessage("Order is not cancelled", false)
+                }
+            } catch (exception) {
+                handleNotificationMessage("Order is not cancelled", false)
+            }
+        } else {
+            handleNotificationMessage("You can only cancel orders which is processing", false)
+        }
+    }
+
     if (loading) {
         return (
             <div>
@@ -96,6 +114,17 @@ const Profile = ({ user, setUser }) => {
     } else {
         return (
             <div className="profile_card">
+                {
+                    notification && (
+                        <Snackbar open={notification} autoHideDuration={6000}>
+                            <Alert severity={success ? "success" : "error"}>
+                                {notification}
+                            </Alert>
+                        </Snackbar>
+                    )
+
+                    //<Alert severity={success? "success": "error"}>{notification}</Alert>
+                }
                 <div className="sidebar">
                     <ul>
                         <li>Orders</li>
@@ -107,7 +136,10 @@ const Profile = ({ user, setUser }) => {
                         <div className="order">
                             <div className="order_info">
                                 <h4>Order {i + 1}</h4>
-                                <button className="order_refund_button">Refund</button>
+                                <div className="buttons">
+                                    <button className="order_refund_button">Refund</button>
+                                    {order.status === 0 ? <button className="order_refund_button color-red" onClick={() => handleCancel(order)}>Cancel Order</button> : null}
+                                </div>
                             </div>
                             <div className="order_products">
                                 {order.products.map(product => (
