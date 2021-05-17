@@ -32,6 +32,10 @@ const Order = () => {
         return total;
     };
 
+    useEffect(() => {
+        setTotalPrice(getTotalPrice());
+    }, [data])
+
     const handleNotification = (message, success) => {
         setNotification(message);
         setSuccess(success)
@@ -126,13 +130,18 @@ const Order = () => {
     }
 
     useEffect(() => {
-        setUser(JSON.parse(window.localStorage.getItem("logged")))
-        cartService.getCartProducts().then((response) => {
-            if (response.status) {
-                setData(response.cart);
-            }
-        });
-        setTotalPrice(getTotalPrice())
+        let user = window.localStorage.getItem("logged")
+        if (!user) {
+            history.push("/login")
+        } else {
+            setUser(JSON.parse(user))
+            cartService.getCartProducts().then((response) => {
+                if (response.status) {
+                    setData(response.cart);
+                }
+            });
+            setTotalPrice(getTotalPrice())
+        }
     }, [])
 
     if (user) {
@@ -148,9 +157,18 @@ const Order = () => {
                                     showButton={false}
                                 />
                             ))}
+                            <Typography
+                                variant="body"
+                                component="h2"
+                                gutterBottom
+                            >
+                                Total Price : {totalPrice}$
+                            </Typography>
                         </Grid>
 
                         <OrderForm />
+
+
 
                         {/* <div className="checkout_price">
                             <Typography
