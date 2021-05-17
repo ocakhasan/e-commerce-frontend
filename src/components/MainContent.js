@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import productService from "../services/productService";
-import { sortPriceDescending, sortPriceAscending } from "./utils";
+import { sortPriceDescending, sortPriceAscending, sortComment, sortRate } from "./utils";
 import Spinner from "./Spinner";
 import "./styles/productCard.css";
 import "./styles/Products.css";
@@ -93,6 +93,10 @@ const MainContent = ({ data, setData, searchResults, setSearchResults }) => {
             setSearchResults(sortPriceDescending(searchResults))
         } else if (cur_choice == "price_asc") {
             setSearchResults(sortPriceAscending(searchResults))
+        } else if (cur_choice == "comment") {
+            setSearchResults(sortComment(searchResults))
+        } else if (cur_choice == "rate") {
+            setSearchResults(sortRate(searchResults))
         }
         setChoice(cur_choice)
     };
@@ -147,6 +151,8 @@ const MainContent = ({ data, setData, searchResults, setSearchResults }) => {
                         <MenuItem value={"default"}>Default</MenuItem>
                         <MenuItem value={"price_desc"}>Price Descending</MenuItem>
                         <MenuItem value={"price_asc"}>Price Ascending</MenuItem>
+                        <MenuItem value={"comment"}>Comment Count</MenuItem>
+                        <MenuItem value={"rate"}>Rate</MenuItem>
                     </Select>
                 </FormControl>
 
