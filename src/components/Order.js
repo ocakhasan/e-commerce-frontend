@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import cartService from '../services/cartService'
 import CartProduct from "./CartUtils/CartProduct";
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Alert from "@material-ui/lab/Alert";

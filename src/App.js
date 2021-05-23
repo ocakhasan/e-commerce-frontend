@@ -21,7 +21,7 @@ function App() {
     const [user, setUser] = useState(null);
     const [data, setData] = useState(null);
     const [searchResults, setSearchResults] = useState(undefined);
-    const d = { data, setData, searchResults, setSearchResults };
+    // const d = { data, setData, searchResults, setSearchResults };
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem("logged");
@@ -52,9 +52,6 @@ function App() {
         }
     };
 
-    const addProduct = async values => {
-
-    }
 
     const handleLogout = () => {
         window.localStorage.removeItem("logged");

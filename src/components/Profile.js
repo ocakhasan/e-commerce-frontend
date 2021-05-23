@@ -1,9 +1,8 @@
-import { Box, Snackbar } from "@material-ui/core";
+import { Snackbar } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ProfileCard from "./ProfileCard";
 import orderService from '../services/orderService'
 import LoopIcon from '@material-ui/icons/Loop';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
