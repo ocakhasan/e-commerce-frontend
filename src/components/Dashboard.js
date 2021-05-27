@@ -34,7 +34,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-
+import Refunds from '../components/DashboardUtils/Refunds'
 import commentService from "../services/commentService";
 import productService from "../services/productService";
 import orderService from "../services/orderService";
@@ -467,7 +467,22 @@ const Dashboard = () => {
                     </TabPanel>
                 </Tabs>
             ) : (
-                <Products />
+                <Tabs>
+                    <TabList>
+                        <Tab>Products</Tab>
+                        <Tab>Refunds</Tab>
+                    </TabList>
+                    <TabPanel>
+                        <Products />
+
+                    </TabPanel>
+
+                    <TabPanel>
+                        <Refunds />
+
+                    </TabPanel>
+
+                </Tabs>
             )}
         </div>
     );

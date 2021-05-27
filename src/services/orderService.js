@@ -49,6 +49,18 @@ const cancelOrder = async id => {
     return response.data
 }
 
-const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders, cancelOrder }
+const refundOrder = async (id, num) => {
+    const url = `api/refund/${id}`
+    const response = await axios.put(url, { refund: num })
+    return response.data
+}
+
+const getAllRefund = async () => {
+    const url = "/api/refunds"
+    const response = await axios.get(url)
+    return response.data
+}
+
+const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders, cancelOrder, refundOrder, getAllRefund }
 
 export default orderService

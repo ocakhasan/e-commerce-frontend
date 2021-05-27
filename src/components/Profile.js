@@ -1,4 +1,4 @@
-import { Snackbar } from "@material-ui/core";
+import { Button, Snackbar } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
@@ -74,6 +74,19 @@ const Profile = ({ user, setUser }) => {
         return totalPrice
     }
 
+    const handleRefund = async (order_id, num) => {
+        try {
+            const response = await orderService.refundOrder(order_id, num)
+            if (response.status) {
+                handleNotification("Request for refund is transmitted", true)
+            } else {
+                handleNotification("Refund is not successful", false)
+            }
+        } catch (exception) {
+            handleNotification("Refund is not successful", false)
+        }
+    }
+
     const handleCancel = async (order) => {
         if (order.status === 0) {
             try {
@@ -131,12 +144,12 @@ const Profile = ({ user, setUser }) => {
                 </div>
                 <div className="orders">
                     <h2>Orders</h2>
-                    {orderData?.reverse().map((order, i) => (
+                    {orderData?.map((order, i) => (
                         <div className="order">
                             <div className="order_info">
                                 <h4>Order {i + 1}</h4>
                                 <div className="buttons">
-                                    <button className="order_refund_button">Refund</button>
+                                    {order.refund ? <Button variant="outlined">Refund Requested</Button> : <button className="order_refund_button" onClick={() => handleRefund(order._id, 1)}>Refund</button>}
                                     {order.status === 0 ? <button className="order_refund_button color-red" onClick={() => handleCancel(order)}>Cancel Order</button> : null}
                                 </div>
                             </div>
@@ -170,7 +183,7 @@ const Profile = ({ user, setUser }) => {
                     C
                 </div>
 
-            </div>
+            </div >
         );
     }
 };
