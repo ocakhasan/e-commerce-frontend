@@ -97,7 +97,17 @@ const Refunds = () => {
     } else {
         return (
             <div>
-                {notification ? <Alert>{notification}</Alert> : null}
+                {
+                    notification && (
+                        <Snackbar open={notification} autoHideDuration={6000}>
+                            <Alert severity={success ? "success" : "error"}>
+                                {notification}
+                            </Alert>
+                        </Snackbar>
+                    )
+
+                    //<Alert severity={success? "success": "error"}>{notification}</Alert>
+                }
                 <TableContainer component={Paper}>
                     <Typography variant="h4" component="h2" gutterBottom>
                         Refunds
@@ -106,6 +116,7 @@ const Refunds = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Refund</TableCell>
+                                <TableCell align="right">Customer</TableCell>
                                 <TableCell align="right">Price</TableCell>
                                 <TableCell align="right">Date</TableCell>
                                 <TableCell align="right">Status</TableCell>
@@ -120,6 +131,9 @@ const Refunds = () => {
                                 <TableRow key={refund._id}>
                                     <TableCell component="th" scope="row">
                                         {refund._id}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {refund.customer.username}
                                     </TableCell>
                                     <TableCell align="right">
                                         {/* <Link to={"/product/" + comment.product}>
@@ -138,7 +152,7 @@ const Refunds = () => {
                                         <div>
                                             <Button variant="outlined" color="primary"
                                                 disabled={refund.refund !== 1} onClick={() => handleRefund(refund._id, 2)}><ThumbUpIcon /></Button>
-                                            <Button variant="outlined" color="seconday"
+                                            <Button variant="outlined" color="secondary"
                                                 disabled={refund.refund !== 1} onClick={() => handleRefund(refund._id, 3)}><ThumbDownIcon /></Button>
                                         </div>
                                     </TableCell>

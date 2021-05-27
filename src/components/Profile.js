@@ -105,6 +105,16 @@ const Profile = ({ user, setUser }) => {
         }
     }
 
+    const getRefundStatus = (refund) => {
+        if (refund == 1) {
+            return "Refund Requested"
+        } else if (refund == 2) {
+            return "Refund Approved"
+        } else if (refund == 3) {
+            return "Refund Rejected"
+        }
+    }
+
     if (loading) {
         return (
             <div>
@@ -149,7 +159,7 @@ const Profile = ({ user, setUser }) => {
                             <div className="order_info">
                                 <h4>Order {i + 1}</h4>
                                 <div className="buttons">
-                                    {order.refund ? <Button variant="outlined">Refund Requested</Button> : <button className="order_refund_button" onClick={() => handleRefund(order._id, 1)}>Refund</button>}
+                                    {order.refund ? <Button variant="outlined">{getRefundStatus(order.refund)}</Button> : <button className="order_refund_button" onClick={() => handleRefund(order._id, 1)}>Refund</button>}
                                     {order.status === 0 ? <button className="order_refund_button color-red" onClick={() => handleCancel(order)}>Cancel Order</button> : null}
                                 </div>
                             </div>
