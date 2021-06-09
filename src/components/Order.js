@@ -5,10 +5,16 @@ import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Alert from "@material-ui/lab/Alert";
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Divider from '@material-ui/core/Divider';
 import Grid from "@material-ui/core/Grid";
 import TextField from '@material-ui/core/TextField'
 import { useFormik } from "formik"
 import orderService from '../services/orderService'
+import HomeIcon from '@material-ui/icons/Home';
+import TodayIcon from '@material-ui/icons/Today';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
+import InputMask from 'react-input-mask'
 
 const Order = () => {
     const [user, setUser] = useState(null)
@@ -78,53 +84,76 @@ const Order = () => {
         return (
             <div>
 
-                <div>
 
-                    <form
-                        onSubmit={formik.handleSubmit}
-                        className="orderForm"
-                        data-testid="form"
+
+                <form
+                    onSubmit={formik.handleSubmit}
+                    className="orderForm"
+                    data-testid="form"
+                >
+
+                    <TextField
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <HomeIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                        variant="outlined"
+                        type="text"
+                        id="text"
+                        label="Address for Order"
+                        {...formik.getFieldProps("address")}
+                    />
+
+                    <Divider />
+
+                    <TextField
+                        variant="outlined"
+                        type="text"
+                        id="creditCartNumber"
+                        label="Credit Cart Number"
+                        {...formik.getFieldProps("creditCartNumber")}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <CreditCardIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+
+                    <TextField
+                        variant="outlined"
+                        type="text"
+                        id="expirationDate"
+                        label="Expiration Date"
+                        {...formik.getFieldProps("expirationDate")}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <TodayIcon />
+                                </InputAdornment>
+                            ),
+                        }}
                     >
+                        <InputMask mask="(12)/(21)" maskChar=" " />
+                    </TextField>
 
-                        <TextField
-                            variant="outlined"
-                            type="text"
-                            id="text"
-                            label="Address for Order"
-                            {...formik.getFieldProps("address")}
-                        />
-
-
-                        <TextField
-                            variant="outlined"
-                            type="text"
-                            id="creditCartNumber"
-                            label="Credit Cart Number"
-                            {...formik.getFieldProps("creditCartNumber")}
-                        />
-
-                        <TextField
-                            variant="outlined"
-                            type="text"
-                            id="expirationDate"
-                            label="Expiration Date"
-                            {...formik.getFieldProps("expirationDate")}
-                        />
-
-                        <TextField
-                            variant="outlined"
-                            type="text"
-                            id="cvcNumber"
-                            label="CVC Number"
-                            {...formik.getFieldProps("cvcNumber")}
-                        />
+                    <TextField
+                        variant="outlined"
+                        type="text"
+                        id="cvcNumber"
+                        label="CVC Number"
+                        {...formik.getFieldProps("cvcNumber")}
+                    />
 
 
-                        <Button type="submit" variant="contained" color="primary">
-                            Satın Al
-                        </Button>
-                    </form>
-                </div>
+                    <Button type="submit" variant="contained" color="primary">
+                        Satın Al
+                    </Button>
+                </form>
             </div>
         );
     }
@@ -150,21 +179,20 @@ const Order = () => {
                 {notification && <Alert severity={success ? "info" : "error"}>{notification}</Alert>}
                 {data?.length !== 0 ? (
                     <div className="cart_div_order">
-                        <Grid direction="column" spacing={5}>
-                            {data?.map((product) => (
-                                <CartProduct
-                                    product={product}
-                                    showButton={false}
-                                />
-                            ))}
-                            <Typography
-                                variant="body"
-                                component="h2"
-                                gutterBottom
-                            >
-                                Total Price : {totalPrice}$
-                            </Typography>
-                        </Grid>
+                        <div className="border_solid">
+                            <Grid direction="column" spacing={5}>
+                                {data?.map((product) => (
+                                    <CartProduct
+                                        product={product}
+                                        showButton={false}
+                                    />
+                                ))}
+                                <p className="totalPrice">
+                                    Total Price : <span className="totalPrice_price">{totalPrice}$</span>
+                                </p>
+                            </Grid>
+
+                        </div>
 
                         <OrderForm />
 

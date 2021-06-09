@@ -5,14 +5,20 @@
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5rem;
+  /* justify-content: center; */
   flex: 1.5;
   min-height: 100vh;
-  border: 1px solid yellow;
 }
 
 .profile_info {
   flex: 1;
-  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .order {
@@ -25,6 +31,8 @@
 .orders {
   flex: 3;
   min-height: 100vh;
+  border-left: 1px solid gray;
+  padding: 1rem;
 }
 
 .order_product {
@@ -120,4 +128,31 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+.filter_p {
+  font-size: 1.5rem;
+  color: rgb(28, 59, 28);
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.result {
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: rgb(32, 46, 32);
+}
+
+.totalPrice {
+  margin-top: 1rem;
+  font-size: 1.7rem;
+  font-weight: 400;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  text-align: center;
+}
+
+.totalPrice_price {
+  /* color: rgb(3, 85, 3); */
+  font-weight: 600;
 }

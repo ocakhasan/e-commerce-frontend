@@ -10,9 +10,11 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TextField from '@material-ui/core/TextField';
 import './styles/profile.css'
+import FaceIcon from '@material-ui/icons/Face';
+import Avatar from '@material-ui/core/Avatar';
 import axios from "axios";
 
-const Profile = ({ user, setUser }) => {
+const Profile = () => {
     const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userLocal, setUserLocal] = useState(false);
@@ -22,6 +24,7 @@ const Profile = ({ user, setUser }) => {
     const [startDate, setStartDate] = useState(Date())
     const [endDate, setEndDate] = useState(Date())
     const [resultString, setResultString] = useState(null)
+    const [user, setUser] = useState(null)
     const history = useHistory()
 
 
@@ -51,6 +54,7 @@ const Profile = ({ user, setUser }) => {
             setProfileData(JSON.parse(logged));
             setLoading(false);
             setUserLocal(true);
+            setUser(JSON.parse(logged))
             fetchData(JSON.parse(logged)['_id'])
 
         } else {
@@ -188,7 +192,7 @@ const Profile = ({ user, setUser }) => {
                     //<Alert severity={success? "success": "error"}>{notification}</Alert>
                 }
                 <div className="sidebar">
-                    <h3>Choose Order Between Date Ranges</h3>
+                    <p className="filter_p">Filter Orders By Date</p>
                     <form className="detail_form" data-testid='form' onSubmit={(e) => handleRange(e, startDate, endDate)}>
                         <TextField
                             type="date"
@@ -213,12 +217,12 @@ const Profile = ({ user, setUser }) => {
                         <Button variant="outlined" color="primary" type="submit">Get Orders</Button>
                     </form>
 
-                    <p>{resultString}</p>
+                    <p className="result">{resultString}</p>
 
 
                 </div>
                 <div className="orders">
-                    <h2>Orders</h2>
+                    <p className="filter_p">Orders</p>
                     {orderData?.length === 0 ? <Alert severity="info">There is no product</Alert> : null}
                     {orderData?.map((order, i) => (
                         <div className="order">
@@ -261,9 +265,15 @@ const Profile = ({ user, setUser }) => {
 
                     ))}
                 </div>
-                <div className="profile_info">
-                    C
-                </div>
+                {/* <div className="profile_info">
+                    <div className="avatar">
+                        {profileData.username} ajhsfjkhsjafsa
+                    </div>
+                    <p className="profile_username">
+                        <FaceIcon />{profileData.username} klajsfgjhsafas
+                    </p>
+                    <p>Deneme</p>
+                </div> */}
 
             </div >
         );
