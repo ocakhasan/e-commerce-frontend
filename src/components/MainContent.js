@@ -86,15 +86,15 @@ const MainContent = ({ data, setData, searchResults, setSearchResults }) => {
     const handleChange = (event) => {
         let cur_choice = event.target.value;
 
-        if (cur_choice == "default") {
+        if (cur_choice === "default") {
             setSearchResults(searchResults)
-        } else if (cur_choice == "price_desc") {
+        } else if (cur_choice === "price_desc") {
             setSearchResults(sortPriceDescending(searchResults))
-        } else if (cur_choice == "price_asc") {
+        } else if (cur_choice === "price_asc") {
             setSearchResults(sortPriceAscending(searchResults))
-        } else if (cur_choice == "comment") {
+        } else if (cur_choice === "comment") {
             setSearchResults(sortComment(searchResults))
-        } else if (cur_choice == "rate") {
+        } else if (cur_choice === "rate") {
             setSearchResults(sortRate(searchResults))
         }
         setChoice(cur_choice)

@@ -5,7 +5,7 @@
 }
 
 .sidebar {
-  flex: 1;
+  flex: 1.5;
   min-height: 100vh;
   border: 1px solid yellow;
 }
@@ -105,4 +105,19 @@
 .buttons {
   display: flex;
   flex-direction: column;
+}
+
+.mb-4 {
+  margin: 0.5rem 0;
+}
+
+.order_date {
+  color: red;
+}
+
+.pdf_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }

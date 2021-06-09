@@ -38,7 +38,9 @@ const Cart = () => {
                 cartService
                     .getProductWithoutUser(cart_without_user)
                     .then((response) => {
+                        console.log("response", response)
                         if (response.status) {
+                            console.log("Cart", response)
                             setData(response.cart);
                             setLoading(false);
                         } else {

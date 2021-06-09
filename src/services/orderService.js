@@ -61,6 +61,20 @@ const getAllRefund = async () => {
     return response.data
 }
 
-const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders, cancelOrder, refundOrder, getAllRefund }
+const getOrdersDateRange = async (start, end) => {
+    console.log("Send request")
+    const url = "/api/range"
+    const body = { start, end }
+    const response = await axios.post(url, body)
+    return response.data
+}
+
+const getPdf = async id => {
+    const url = `/api/pdf/${id}`
+    const response = await axios.get(url)
+    return response.data
+}
+
+const orderService = { createOrder, getAllOrders, updateOrderStatus, getUserOrders, cancelOrder, refundOrder, getAllRefund, getOrdersDateRange, getPdf }
 
 export default orderService

@@ -2,12 +2,15 @@ import { Button, Snackbar } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import orderService from '../services/orderService'
 import LoopIcon from '@material-ui/icons/Loop';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DescriptionIcon from '@material-ui/icons/Description';
+import TextField from '@material-ui/core/TextField';
 import './styles/profile.css'
+import axios from "axios";
 
 const Profile = ({ user, setUser }) => {
     const [profileData, setProfileData] = useState(null);
@@ -16,6 +19,10 @@ const Profile = ({ user, setUser }) => {
     const [orderData, setOrderData] = useState(null)
     const [notification, handleNotification] = useState(null)
     const [success, setSuccess] = useState(true)
+    const [startDate, setStartDate] = useState(Date())
+    const [endDate, setEndDate] = useState(Date())
+    const [resultString, setResultString] = useState(null)
+    const history = useHistory()
 
 
     const handleNotificationMessage = (message, success) => {
@@ -64,7 +71,7 @@ const Profile = ({ user, setUser }) => {
 
     function getTotalPrice(order) {
         let totalPrice = 0
-        console.log("order ", order)
+
         let i
         for (i = 0; i < order.products.length; i++) {
             /* product = order.products[i]
@@ -74,16 +81,32 @@ const Profile = ({ user, setUser }) => {
         return totalPrice
     }
 
+    const handleRange = async (e, start, end) => {
+        e.preventDefault()
+        console.log("I am here")
+        try {
+            setResultString(`You can check order between ${startDate} and ${endDate}`)
+            const response = await orderService.getOrdersDateRange(start, end)
+            if (response.status) {
+                setOrderData(response.orders)
+            } else {
+                handleNotificationMessage("Orders are not fetched", false)
+            }
+        } catch (exception) {
+            handleNotificationMessage("Orders are not fetched", false)
+        }
+    }
+
     const handleRefund = async (order_id, num) => {
         try {
             const response = await orderService.refundOrder(order_id, num)
             if (response.status) {
-                handleNotification("Request for refund is transmitted", true)
+                handleNotificationMessage("Request for refund is transmitted", true)
             } else {
-                handleNotification("Refund is not successful", false)
+                handleNotificationMessage("Refund is not successful", false)
             }
         } catch (exception) {
-            handleNotification("Refund is not successful", false)
+            handleNotificationMessage("Refund is not successful", false)
         }
     }
 
@@ -106,19 +129,36 @@ const Profile = ({ user, setUser }) => {
     }
 
     const getRefundStatus = (refund) => {
-        if (refund == 1) {
+        if (refund === 1) {
             return "Refund Requested"
-        } else if (refund == 2) {
+        } else if (refund === 2) {
             return "Refund Approved"
-        } else if (refund == 3) {
+        } else if (refund === 3) {
             return "Refund Rejected"
+        }
+    }
+
+    const handlePdf = async (e, id) => {
+        console.log("handle pdf")
+        e.preventDefault()
+        try {
+            const response = await orderService.getPdf(id)
+            if (response.status) {
+                //history.push(`/${response.url}`)
+                window.location.href = `http://localhost:3001${response.url}`;
+
+            } else {
+                handleNotificationMessage("Not successful", false)
+            }
+        } catch (exception) {
+            handleNotificationMessage("Not successful", false)
         }
     }
 
     if (loading) {
         return (
             <div>
-                <Alert severity="infor">Loading Profile Page</Alert>
+                <Alert severity="info">Loading Profile Page</Alert>
                 <CircularProgress />
             </div>
         );
@@ -148,19 +188,48 @@ const Profile = ({ user, setUser }) => {
                     //<Alert severity={success? "success": "error"}>{notification}</Alert>
                 }
                 <div className="sidebar">
-                    <ul>
-                        <li>Orders</li>
-                    </ul>
+                    <h3>Choose Order Between Date Ranges</h3>
+                    <form className="detail_form" data-testid='form' onSubmit={(e) => handleRange(e, startDate, endDate)}>
+                        <TextField
+                            type="date"
+                            label="Start Date"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            id="standard-error"
+                        />
+
+                        <TextField
+                            type="date"
+                            label="End Date"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            id="standard-error"
+                        />
+
+                        <Button variant="outlined" color="primary" type="submit">Get Orders</Button>
+                    </form>
+
+                    <p>{resultString}</p>
+
+
                 </div>
                 <div className="orders">
                     <h2>Orders</h2>
+                    {orderData?.length === 0 ? <Alert severity="info">There is no product</Alert> : null}
                     {orderData?.map((order, i) => (
                         <div className="order">
                             <div className="order_info">
-                                <h4>Order {i + 1}</h4>
+                                <div>
+                                    <h4 className="mb-4">Order {i + 1}</h4>
+                                    <p className="order_date">Date: {order.date}</p>
+                                </div>
                                 <div className="buttons">
                                     {order.refund ? <Button variant="outlined">{getRefundStatus(order.refund)}</Button> : <button className="order_refund_button" onClick={() => handleRefund(order._id, 1)}>Refund</button>}
-                                    {order.status === 0 ? <button className="order_refund_button color-red" onClick={() => handleCancel(order)}>Cancel Order</button> : null}
+                                    {(order.status === 0 && !order.refund) ? <button className="order_refund_button color-red" onClick={() => handleCancel(order)}>Cancel Order</button> : null}
                                 </div>
                             </div>
                             <div className="order_products">
@@ -176,7 +245,6 @@ const Profile = ({ user, setUser }) => {
 
                                             <div className="order_product_status">
                                                 <p>{getStatus(order.status)}</p>
-
                                             </div>
 
                                         </div>
@@ -184,7 +252,11 @@ const Profile = ({ user, setUser }) => {
                                     </div>
                                 ))}
                             </div>
-                            <p className="total_price"><span>Total Price</span>{getTotalPrice(order)} $</p>
+                            <div className="pdf_flex">
+                                <p className="total_price"><span>Total Price</span>{getTotalPrice(order)} $</p>
+                                <Button variant="outlined" color="secondary" onClick={(e) => handlePdf(e, order._id)}><DescriptionIcon />Get PDF</Button>
+
+                            </div>
                         </div>
 
                     ))}
