@@ -13,7 +13,6 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  border: 1px solid red;
 }
 
 .orderForm {
@@ -21,17 +20,12 @@
   display: flex;
   gap: 1rem;
   flex-direction: column;
-  border: 1px solid red;
   width: 100%;
 }
 
 .title-add {
   display: flex;
   justify-content: space-between;
-}
-
-.border_solid {
-  border: 1px solid black;
 }
 
 .order_form_part {
