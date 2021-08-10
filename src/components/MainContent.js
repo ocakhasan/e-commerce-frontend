@@ -65,9 +65,9 @@ export const ProductCard = ({ product }) => {
                     {product.previousPrice > 0 ? (
                         <>
                             <Typography variant="h6" style={{ textDecoration: "line-through", color: "red" }}>
-                                {product.previousPrice}$
+                                {product.unitPrice}$
                             </Typography>
-                            <Typography variant="h6">{product.unitPrice}$</Typography>
+                            <Typography variant="h6">{product.previousPrice}$</Typography>
                         </>
                     ) : (
                         <Typography variant="h6">{product.unitPrice}$</Typography>
