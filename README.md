@@ -6,15 +6,16 @@ You can see the screenshots of the application from [screenshots](#screenshots) 
 
 ## What does this project include?
 - User creation and authentication
-- Search, sort and add the products to cart. 
+- Sort products by comment count, price and rate. 
+- Search and add the products to cart. 
 - Comment and rate products
+- Register products to be notified when there is a sale
+- Email notification service
 - Create orders
+- Refund mechanism
+- User Profile Page
 - Add, delete, change products from admin panel
 - Manage orders and comments from admin panel
-- User Profile Page
-- Refund mechanism
-- Email notification service
-- Register products to be notified when there is a sale
 
 In short terms, this project covers the basics of a e-commerce website. Since me and my co-workers love basketball, we wanted to make this website a basketball-shop. 
 
