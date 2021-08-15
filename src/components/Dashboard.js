@@ -11,7 +11,6 @@ import {
 	TableRow,
 	InputLabel,
 	MenuItem,
-	FormHelperText,
 	FormControl,
 	Select
 } from "@material-ui/core";
@@ -39,8 +38,6 @@ import commentService from "../services/commentService";
 import productService from "../services/productService";
 import orderService from "../services/orderService";
 
-import ProductForm from "./ProductForm";
-import "./styles/dashboard.css";
 
 const Dashboard = () => {
 	const [productData, setProductData] = useState([]);
@@ -108,7 +105,6 @@ const Dashboard = () => {
 				if (response.status) {
 					setOrderData(response.orders);
 					setChange(response.orders)
-					console.log(response.orders)
 				} else {
 					handleNotification("Orders did not fetched. There is a problem", false
 					);
@@ -119,21 +115,6 @@ const Dashboard = () => {
 		}
 		fetchData();
 	}, []);
-
-	const addProduct = async (values) => {
-		const toSend = { userType: 2, ...values };
-		try {
-			const response = await productService.addProduct(toSend);
-			if (response.status) {
-				handleNotification("New Product Added", true);
-				setProductData(productData.concat(response.product));
-			} else {
-				handleNotification("Adding Product Unsuccessful", true);
-			}
-		} catch (exception) {
-			handleNotification("Adding Product Unsuccessful", true);
-		}
-	};
 
 	const handleDelete = async (e, id) => {
 		e.preventDefault();
@@ -156,7 +137,6 @@ const Dashboard = () => {
 	};
 
 	const approveComment = async (comment) => {
-		console.log("I am here");
 		try {
 			const response = await commentService.approveComment(comment);
 			if (response.status) {
@@ -192,17 +172,6 @@ const Dashboard = () => {
 		}
 	}
 
-	function getStatusString(id) {
-		if (id === 0) {
-			return "Processing"
-		} else if (id === 1) {
-			return "In Transit"
-		} else {
-			return "Delivered"
-		}
-	}
-
-
 	function getStatus(id) {
 		if (id === 0) {
 			return <div className><LoopIcon />Processing</div>
@@ -218,7 +187,6 @@ const Dashboard = () => {
 		let newArr = JSON.stringify(change);
 		newArr = JSON.parse(newArr)
 		newArr[idx]['status'] = value
-		console.log(newArr[idx]['status'] === orderData[idx]['status'])
 		setChange(newArr)
 	}
 
@@ -443,8 +411,6 @@ const Dashboard = () => {
 						</Alert>
 					</Snackbar>
 				)
-
-				//<Alert severity={success? "success": "error"}>{notification}</Alert>
 			}
 
 			{allowed === 2 ? (

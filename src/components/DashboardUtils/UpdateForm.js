@@ -9,103 +9,93 @@ import SaveIcon from '@material-ui/icons/Save';
 
 const ProductUpdateForm = ({ data }) => {
 
-    const history = useHistory()
-    const formik = useFormik({
-        initialValues: {
-            productName: data?.productName,
-            description: data?.description,
-            unitPrice: data?.unitPrice,
-            categoryID: data?.categoryID,
-            stock: data?.stock,
-            warranty: data?.warranty,
-            rate: data?.rateCount,
-            imagePath: data?.imagePath
-        },
+	const history = useHistory()
+	const formik = useFormik({
+		initialValues: {
+			productName: data?.productName,
+			description: data?.description,
+			unitPrice: data?.unitPrice,
+			categoryID: data?.categoryID,
+			stock: data?.stock,
+			warranty: data?.warranty,
+			rate: data?.rateCount,
+			imagePath: data?.imagePath
+		},
+		onSubmit: values => {
+			productService
+				.updateProduct(data, values)
+				.then((response) => {
+					history.push('/dashboard')
+				})
 
-        onSubmit: values => {
-            console.log('post request to submit')
+		},
+		validateOnChange: false,
+		validateOnBlur: false
+	})
 
-            productService
-                .updateProduct(data, values)
-                .then((response) => {
-                    console.log(response)
-                    history.push('/dashboard')
-                })
-
-        },
-        validateOnChange: false,
-        validateOnBlur: false
-    })
-
-    return (
+	return (
 
 
 
-        <form onSubmit={formik.handleSubmit} className="detail_form">
-            <TextField variant="outlined" id="standard-error" label="Product Name"
-                {...formik.getFieldProps('productName')} />
+		<form onSubmit={formik.handleSubmit} className="detail_form">
+			<TextField variant="outlined" id="standard-error" label="Product Name"
+				{...formik.getFieldProps('productName')} />
 
-            <TextField variant="outlined" id="standard-error" label="Product Description"
+			<TextField variant="outlined" id="standard-error" label="Product Description"
 
-                {...formik.getFieldProps('description')} />
+				{...formik.getFieldProps('description')} />
 
-            <TextField variant="outlined" id="standard-error" label="Image path"
+			<TextField variant="outlined" id="standard-error" label="Image path"
 
-                {...formik.getFieldProps('imagePath')} />
+				{...formik.getFieldProps('imagePath')} />
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Price"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('unitPrice')}
+			/>
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Category"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('categoryID')}
+			/>
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Stock"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('stock')}
+			/>
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Warranty"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('warranty')}
+			/>
+			<Button type="submit" variant="contained" color="primary">
+				<SaveIcon />
+				Save
+			</Button>
 
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Price"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('unitPrice')}
-            />
+		</form>
 
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Category"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('categoryID')}
-            />
-
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Stock"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('stock')}
-            />
-
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Warranty"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('warranty')}
-            />
-
-
-            <Button type="submit" variant="contained" color="primary">
-                <SaveIcon />
-                Save
-            </Button>
-
-        </form>
-
-    )
+	)
 
 }
 

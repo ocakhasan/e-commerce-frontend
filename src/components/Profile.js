@@ -2,7 +2,7 @@ import { Button, Snackbar } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import orderService from '../services/orderService'
 import LoopIcon from '@material-ui/icons/Loop';
 import MotorcycleIcon from '@material-ui/icons/Motorcycle';
@@ -10,9 +10,6 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import DescriptionIcon from '@material-ui/icons/Description';
 import TextField from '@material-ui/core/TextField';
 import './styles/profile.css'
-import FaceIcon from '@material-ui/icons/Face';
-import Avatar from '@material-ui/core/Avatar';
-import axios from "axios";
 
 const Profile = () => {
 	const [profileData, setProfileData] = useState(null);
@@ -24,8 +21,7 @@ const Profile = () => {
 	const [startDate, setStartDate] = useState(Date())
 	const [endDate, setEndDate] = useState(Date())
 	const [resultString, setResultString] = useState(null)
-	const [user, setUser] = useState(null)
-	const history = useHistory()
+	const [_, setUser] = useState(null)
 
 
 	const handleNotificationMessage = (message, success) => {
@@ -42,7 +38,6 @@ const Profile = () => {
 				const response = await orderService.getUserOrders(id)
 				if (response.status) {
 					setOrderData(response.orders)
-					console.log("profile orders", response.orders)
 				} else {
 					handleNotificationMessage("Orders are not fetched", false)
 				}
@@ -78,8 +73,6 @@ const Profile = () => {
 
 		let i
 		for (i = 0; i < order.products.length; i++) {
-			/* product = order.products[i]
-			console.log("product", product) */
 			totalPrice += order.products[i].previousPrice ? order.products[i].previousPrice : order.products[i].unitPrice
 		}
 		return totalPrice
@@ -87,22 +80,11 @@ const Profile = () => {
 
 	const handleRange = async (e, start, end) => {
 		e.preventDefault()
-		console.log("I am here")
 		try {
 			setResultString(`You can check order between ${startDate} and ${endDate}`)
-			/* const response = await orderService.getOrdersDateRange(start, end)
-			if (response.status) {
-			    setOrderData(response.orders)
-			} else {
-			    handleNotificationMessage("Orders are not fetched", false)
-			} */
-
 			const start_date = new Date(start)
-			const end_date = new Date(end)
-			console.log("deneme", orderData.filter(order => (start_date <= new Date(order.date) && (new Date(order.date) <= end_date))))
 			setOrderData(orderData.filter(order => (start_date <= new Date(order.date))))
 		} catch (exception) {
-			console.log(exception)
 			handleNotificationMessage("Orders are not fetched", false)
 		}
 	}
@@ -149,12 +131,10 @@ const Profile = () => {
 	}
 
 	const handlePdf = async (e, id) => {
-		console.log("handle pdf")
 		e.preventDefault()
 		try {
 			const response = await orderService.getPdf(id)
 			if (response.status) {
-				//history.push(`/${response.url}`)
 				window.location.href = `http://localhost:3001${response.url}`;
 
 			} else {
@@ -271,16 +251,6 @@ const Profile = () => {
 
 					))}
 				</div>
-				{/* <div className="profile_info">
-                    <div className="avatar">
-                        {profileData.username} ajhsfjkhsjafsa
-                    </div>
-                    <p className="profile_username">
-                        <FaceIcon />{profileData.username} klajsfgjhsafas
-                    </p>
-                    <p>Deneme</p>
-                </div> */}
-
 			</div >
 		);
 	}

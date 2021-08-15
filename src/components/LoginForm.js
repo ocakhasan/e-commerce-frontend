@@ -31,9 +31,7 @@ const LoginForm = ({ handleLogin }) => {
 		}),
 
 		onSubmit: async (values) => {
-			console.log(values);
 			const result = await handleLogin(values);
-			console.log("result ", result);
 			if (result) {
 				history.push("/");
 			} else {

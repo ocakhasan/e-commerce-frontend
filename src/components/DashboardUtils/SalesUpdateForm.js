@@ -6,63 +6,54 @@ import TextField from '@material-ui/core/TextField'
 import productService from '../../services/productService'
 
 const SalesUpdateForm = ({ data }) => {
-    const history = useHistory()
-    const formik = useFormik({
-        initialValues: {
-            unitPrice: data?.unitPrice,
-            previousPrice: data?.previousPrice
-        },
+	const history = useHistory()
+	const formik = useFormik({
+		initialValues: {
+			unitPrice: data?.unitPrice,
+			previousPrice: data?.previousPrice
+		},
 
-        onSubmit: values => {
-            console.log('post request to submit')
-            productService
-                .changePrice(values.unitPrice, values.previousPrice, data)
-                .then((response) => {
-                    console.log(response)
-                    history.push('/dashboard')
-                })
+		onSubmit: values => {
+			productService
+				.changePrice(values.unitPrice, values.previousPrice, data)
+				.then((response) => {
+					history.push('/dashboard')
+				})
 
-        },
-        validateOnChange: false,
-        validateOnBlur: false
-    })
+		},
+		validateOnChange: false,
+		validateOnBlur: false
+	})
 
-    return (
+	return (
+		<form onSubmit={formik.handleSubmit} className="detail_form">
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Price"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('unitPrice')}
+			/>
+			<TextField
+				variant="outlined"
+				id="standard-number"
+				label="Price"
+				type="number"
+				InputLabelProps={{
+					shrink: true,
+				}}
+				{...formik.getFieldProps('previousPrice')}
+			/>
+			<Button variant="contained" color="primary" type="submit">
+				Set the Price
+			</Button>
 
+		</form>
 
-
-        <form onSubmit={formik.handleSubmit} className="detail_form">
-
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Price"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('unitPrice')}
-            />
-
-            <TextField
-                variant="outlined"
-                id="standard-number"
-                label="Price"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                {...formik.getFieldProps('previousPrice')}
-            />
-
-
-            <Button variant="contained" color="primary" type="submit">
-                Set the Price
-            </Button>
-
-        </form>
-
-    )
+	)
 }
 
 export default SalesUpdateForm

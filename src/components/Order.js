@@ -3,7 +3,6 @@ import cartService from '../services/cartService'
 import CartProduct from "./CartUtils/CartProduct";
 import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import Alert from "@material-ui/lab/Alert";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Divider from '@material-ui/core/Divider';
@@ -40,7 +39,9 @@ const Order = () => {
 	};
 
 	useEffect(() => {
-		setTotalPrice(getTotalPrice());
+		// eslint-disable-line react-hooks/exhaustive-deps
+		let value = getTotalPrice()
+		setTotalPrice(value);
 	}, [data])
 
 	const handleNotification = (message, success) => {
@@ -64,7 +65,6 @@ const Order = () => {
 			},
 
 			onSubmit: async (values) => {
-				console.log("order", values);
 				try {
 					const response = await orderService.createOrder(values['address'])
 					if (response.status) {
@@ -200,19 +200,6 @@ const Order = () => {
 						</div>
 
 						<OrderForm />
-
-
-
-						{/* <div className="checkout_price">
-                            <Typography
-                                variant="body"
-                                component="h2"
-                                gutterBottom
-                            >
-                                Total Price : {totalPrice}$
-                            </Typography>
-                            <Link to="/order"><Button variant="outlined" color="secondary">Checkout</Button></Link>
-                        </div> */}
 					</div>
 				) : (
 					<Alert severity="info">
